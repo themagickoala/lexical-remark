@@ -1,0 +1,47 @@
+{
+  "name": "lexical-remark",
+  "description": "This package contains Markdown helpers and functionality for Lexical using remark-parse.",
+  "keywords": [
+    "lexical",
+    "editor",
+    "rich-text",
+    "markdown",
+    "remark",
+    "remark-parse"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "test:preview": "npx vite preview --outDir html --open"
+  },
+  "license": "MIT",
+  "version": "0.0.1",
+  "main": "LexicalRemark.js",
+  "peerDependencies": {
+    "lexical": "0.10.0"
+  },
+  "dependencies": {
+    "@lexical/code": "0.10.0",
+    "@lexical/headless": "^0.10.0",
+    "@lexical/html": "^0.10.0",
+    "@lexical/link": "0.10.0",
+    "@lexical/list": "0.10.0",
+    "@lexical/react": "^0.10.0",
+    "@lexical/rich-text": "0.10.0",
+    "@lexical/text": "0.10.0",
+    "@lexical/utils": "0.10.0",
+    "mdast": "^3.0.0",
+    "rehype-document": "^6.1.0",
+    "rehype-format": "^4.0.1",
+    "rehype-stringify": "^9.0.3",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
+    "remark-stringify": "^10.0.2",
+    "unified": "^10.1.2",
+    "zwitch": "^2.0.4"
+  },
+  "devDependencies": {
+    "@vitest/ui": "^0.31.0",
+    "jsdom": "^22.0.0",
+    "vitest": "^0.31.0"
+  }
+}

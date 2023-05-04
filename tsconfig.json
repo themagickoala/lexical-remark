@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2019",
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "module": "esnext",
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "downlevelIteration": true,
+    "noEmit": true,
+    "strict": true,
+    "baseUrl": ".",
+    "typeRoots": ["node_modules/@types"],
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+  },
+  "exclude": [
+    "**/dist/**",
+    "**/node_modules/**",
+  ],
+  "typedocOptions": {
+    "logLevel": "Verbose"
+  },
+  "ts-node": {
+    "transpileOnly": true
+  }
+}
