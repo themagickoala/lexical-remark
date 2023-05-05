@@ -19,7 +19,7 @@
   "version": "0.0.1",
   "main": "./lib/lexical-remark.umd.js",
   "module": "./lib/lexical-remark.es.js",
-  "types": "./lib/index.d.ts",
+  "types": "./lib/src/index.d.ts",
   "exports": {
     ".": {
       "import": "./lib/lexical-remark.es.js",
