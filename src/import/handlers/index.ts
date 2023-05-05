@@ -1,6 +1,4 @@
-import { TextFormatType } from "lexical";
-import { DecoratorNode } from "lexical";
-import { ElementNode } from "lexical";
+import { DecoratorNode, TextFormatType, ElementNode } from "lexical";
 import { Content, Parent } from "mdast";
 import { zwitch } from "zwitch";
 import { blockquote } from "./blockquote";

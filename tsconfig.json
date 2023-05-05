@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "target": "ES2019",
+    "target": "esnext",
     "lib": ["esnext", "dom", "dom.iterable"],
     "module": "esnext",
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "downlevelIteration": true,
-    "noEmit": true,
+    "noEmit": false,
     "strict": true,
     "baseUrl": ".",
     "typeRoots": ["node_modules/@types"],
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "declaration": true
   },
   "exclude": [
     "**/dist/**",

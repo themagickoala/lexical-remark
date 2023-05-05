@@ -1,6 +1,6 @@
 import { LexicalNode } from "lexical";
 import { Content, Parent } from "mdast";
-import { zwitchFunc } from "src/utils/zwitch-func";
+import { zwitchFunc } from "../../utils/zwitch-func";
 import { heading } from "./heading";
 import { horizontalrule } from "./horizontalrule";
 import { linebreak } from "./linebreak";
