@@ -16,7 +16,7 @@
     "prepublish": "npm run build"
   },
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./lib/lexical-remark.umd.js",
   "module": "./lib/lexical-remark.es.js",
   "types": "./lib/src/index.d.ts",
