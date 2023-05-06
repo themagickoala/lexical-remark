@@ -3,8 +3,10 @@ import { Content, Parent } from "mdast";
 import { zwitch } from "zwitch";
 import { blockquote } from "./blockquote";
 import { hardBreak } from "./break";
+import { code } from "./code";
 import { emphasis } from "./emphasis";
 import { heading } from "./heading";
+import { inlineCode } from "./inlineCode";
 import { link } from "./link";
 import { list } from "./list";
 import { listItem } from "./listitem";
@@ -28,17 +30,13 @@ export const importFromRemarkTree = (tree: Parent | Content, handlers: Record<st
       handlers: {
         blockquote,
         break: hardBreak,
-        code: () => undefined,
-        // definition: () => undefined,
+        code,
         emphasis,
         hardBreak,
         heading,
-        // html: () => undefined,
         // image: () => undefined,
-        // imageReference: () => undefined,
-        inlineCode: () => undefined,
+        inlineCode,
         link,
-        // linkReference: () => undefined,
         list,
         listItem,
         paragraph,

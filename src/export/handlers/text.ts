@@ -1,14 +1,14 @@
-import { Emphasis, Strong, Text } from 'mdast';
+import { Emphasis, InlineCode, Strong, Text } from 'mdast';
 import { Handler } from '.';
 import { TextNode } from 'lexical';
 
 export const text: Handler<TextNode> = (node) => {
-  const remarkNode: Text = {
-    type: 'text',
+  let remarkNode: Text | InlineCode = {
+    type: node.hasFormat('code') ? 'inlineCode' : 'text',
     value: node.getTextContent(),
   };
 
-  let nodeToAppend: Strong | Emphasis | Text = remarkNode;
+  let nodeToAppend: Strong | Emphasis | Text | InlineCode = remarkNode;
 
   if (node.hasFormat('bold')) {
     const boldNode: Strong = {

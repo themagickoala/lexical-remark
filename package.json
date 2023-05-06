@@ -27,6 +27,7 @@
     }
   },
   "peerDependencies": {
+    "@lexical/code": "0.x",
     "@lexical/link": "0.x",
     "@lexical/list": "0.x",
     "@lexical/react": "0.x",

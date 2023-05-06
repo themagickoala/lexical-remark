@@ -1,6 +1,7 @@
 import { LexicalNode } from "lexical";
 import { Content, Parent } from "mdast";
 import { zwitchFunc } from "../../utils/zwitch-func";
+import { code } from "./code";
 import { heading } from "./heading";
 import { horizontalrule } from "./horizontalrule";
 import { linebreak } from "./linebreak";
@@ -22,6 +23,7 @@ export const exportToRemarkTree = (tree: LexicalNode, { handlers = {} }: { handl
   const handle: Handler = (node, args) => {
     return zwitchFunc('getType', {
       handlers: {
+        code,
         quote,
         linebreak,
         paragraph,
