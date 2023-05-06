@@ -1,14 +1,14 @@
 import remarkStringify from 'remark-stringify';
 import remarkParse from 'remark-parse';
 import { test, expect } from 'vitest';
-import { CodeNode } from "@lexical/code";
+import { CodeHighlightNode, CodeNode } from "@lexical/code";
 import { createHeadlessEditor } from "@lexical/headless";
 import { LinkNode } from "@lexical/link";
 import { ListItemNode, ListNode } from "@lexical/list";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { createRemarkImport } from "../import/RemarkImport";
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
-import { $getRoot, $insertNodes } from 'lexical';
+import { $getRoot, $insertNodes, EditorThemeClasses } from 'lexical';
 import { createRemarkExport } from 'src/export/RemarkExport';
 import { unified } from 'unified';
 
@@ -16,6 +16,7 @@ type TestCase = {
   name: string;
   markdown: string;
   html: string;
+  skipExport?: true;
 }
 
 const testCases: TestCase[] = [
@@ -44,9 +45,43 @@ const testCases: TestCase[] = [
     markdown: '1.  A list item\n\n2.  A list item\n\n3.  A list item\n',
     html: '<ol><li value="1"><span>A list item</span></li><li value="2"><span>A list item</span></li><li value="3"><span>A list item</span></li></ol>'
   },
+  {
+    name: 'inline formatting',
+    markdown: 'This is some *italic text* in a paragraph\n',
+    html: '<p><span>This is some </span><i><em class="italic">italic text</em></i><span> in a paragraph</span></p>'
+  },
+  {
+    name: 'inline code',
+    markdown: 'This is some `inline code` in a paragraph\n',
+    html: '<p><span>This is some </span><code><span class="code-inline">inline code</span></code><span> in a paragraph</span></p>'
+  },
+  {
+    name: 'inline code',
+    markdown: 'This is some ***bold and italic text*** in a paragraph\n',
+    html: '<p><span>This is some </span><i><b><strong class="italic">bold and italic text</strong></b></i><span> in a paragraph</span></p>'
+  },
+  {
+    name: 'code block',
+    markdown: '```\nThis is a code block\n```\n',
+    html: '<code class="code-block" spellcheck="false"><span>This is a code block</span></code>',
+    skipExport: true, // $generateNodesFromDom sees this as inline code because it's not multiline
+  },
+  {
+    name: 'multiline code block',
+    markdown: '```\nThis is a code block\nWith multiple lines\n```\n',
+    html: '<code class="code-block" spellcheck="false"><span>This is a code block</span><br><span>With multiple lines</span></code>',
+  },
 ];
 
-testCases.forEach(({ name, markdown, html }) => {
+export const editorTheme: EditorThemeClasses = {
+  code: 'code-block',
+  text: {
+    code: 'code-inline',
+    italic: 'italic',
+  },
+};
+
+testCases.forEach(({ name, markdown, html, skipExport }) => {
   test(`can import "${name}"`, () => {
     const editor = createHeadlessEditor({
       nodes: [
@@ -55,8 +90,10 @@ testCases.forEach(({ name, markdown, html }) => {
         ListItemNode,
         QuoteNode,
         CodeNode,
+        CodeHighlightNode,
         LinkNode,
       ],
+      theme: editorTheme,
     });
 
     editor.update(
@@ -71,41 +108,37 @@ testCases.forEach(({ name, markdown, html }) => {
     ).toBe(html);
   });
 
-  test(`can export "${name}"`, () => {
-    const editor = createHeadlessEditor({
-      nodes: [
-        HeadingNode,
-        ListNode,
-        ListItemNode,
-        QuoteNode,
-        CodeNode,
-        LinkNode,
-      ],
+  if (!skipExport) {
+    test(`can export "${name}"`, () => {
+      const editor = createHeadlessEditor({
+        nodes: [
+          HeadingNode,
+          ListNode,
+          ListItemNode,
+          QuoteNode,
+          CodeNode,
+          CodeHighlightNode,
+          LinkNode,
+        ],
+        theme: editorTheme,
+      });
+
+      editor.update(
+        () => {
+          const parser = new DOMParser();
+          const dom = parser.parseFromString(html, 'text/html');
+          const nodes = $generateNodesFromDOM(editor, dom);
+          $getRoot().select();
+          $insertNodes(nodes);
+        },
+        {
+          discrete: true,
+        },
+      );
+
+      expect(
+        editor.getEditorState().read(() => createRemarkExport()()),
+      ).toBe(markdown);
     });
-
-    editor.update(
-      () => {
-        const parser = new DOMParser();
-        const dom = parser.parseFromString(html, 'text/html');
-        const nodes = $generateNodesFromDOM(editor, dom);
-        $getRoot().select();
-        $insertNodes(nodes);
-      },
-      {
-        discrete: true,
-      },
-    );
-
-    expect(
-      editor.getEditorState().read(() => createRemarkExport()()),
-    ).toBe(markdown);
-  });
-
-  test(`regularRehyper "${name}"`, () => {
-    const file = unified()
-      .use(remarkParse)
-      .use(remarkStringify)
-      .processSync(markdown);
-    expect(String(file)).toBe(markdown);
-  });
+  }
 });

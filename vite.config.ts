@@ -17,6 +17,7 @@ export default defineConfig({
     minify: false,
     rollupOptions: {
       external: [
+        '@lexical/code',
         '@lexical/link',
         '@lexical/list',
         '@lexical/react/LexicalHorizontalRuleNode',

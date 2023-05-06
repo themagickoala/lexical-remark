@@ -15,7 +15,7 @@ export function createRemarkExport(handlers?: Record<string, Handler>): () => st
     const remarkTree = lexicalToRemark(root, { handlers });
 
     const file = unified()
-      .use(remarkStringify)
+      .use(remarkStringify, { fences: true, fence: '`' })
       .stringify(remarkTree);
 
     return String(file);

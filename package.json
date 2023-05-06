@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "vite build",
-    "test": "vitest run",
+    "test": "NODE_ENV=development vitest run",
     "test:preview": "vite preview --outDir html --open",
     "prepublish": "npm run build"
   },
