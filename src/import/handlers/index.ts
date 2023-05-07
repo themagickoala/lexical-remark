@@ -6,6 +6,7 @@ import { hardBreak } from "./break";
 import { code } from "./code";
 import { emphasis } from "./emphasis";
 import { heading } from "./heading";
+import { image } from "./image";
 import { inlineCode } from "./inlineCode";
 import { link } from "./link";
 import { list } from "./list";
@@ -34,7 +35,7 @@ export const importFromRemarkTree = (tree: Parent | Content, handlers: Record<st
         emphasis,
         hardBreak,
         heading,
-        // image: () => undefined,
+        image,
         inlineCode,
         link,
         list,

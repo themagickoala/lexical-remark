@@ -1,3 +1,4 @@
+import { ImageNode } from '../extensions/image/node';
 import { test, expect, bench } from 'vitest';
 import { CodeHighlightNode, CodeNode } from "@lexical/code";
 import { createHeadlessEditor } from "@lexical/headless";
@@ -8,8 +9,6 @@ import { createRemarkImport } from "../import/RemarkImport";
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { $getRoot, $insertNodes, EditorThemeClasses } from 'lexical';
 import { createRemarkExport } from '../export/RemarkExport';
-import fs from 'fs';
-import path from 'path';
 
 type TestCase = {
   name: string;
@@ -70,6 +69,11 @@ const testCases: TestCase[] = [
     markdown: '```\nThis is a code block\nWith multiple lines\n```\n',
     html: '<code class="code-block" spellcheck="false"><span>This is a code block</span><br><span>With multiple lines</span></code>',
   },
+  {
+    name: 'image',
+    markdown: '![image info](./pictures/image.png)\n',
+    html: '<p><img src="./pictures/image.png" alt="image info" width="inherit" height="inherit"></p>',
+  },
 ];
 
 export const editorTheme: EditorThemeClasses = {
@@ -91,6 +95,7 @@ testCases.forEach(({ name, markdown, html, skipExport }) => {
         CodeNode,
         CodeHighlightNode,
         LinkNode,
+        ImageNode,
       ],
       theme: editorTheme,
     });
@@ -118,6 +123,7 @@ testCases.forEach(({ name, markdown, html, skipExport }) => {
           CodeNode,
           CodeHighlightNode,
           LinkNode,
+          ImageNode,
         ],
         theme: editorTheme,
       });
@@ -140,28 +146,4 @@ testCases.forEach(({ name, markdown, html, skipExport }) => {
       ).toBe(markdown);
     });
   }
-
-  const body = fs.readFileSync(path.join(__dirname, 'large_body.md'), 'utf8');
-
-  bench(`can export large text body`, () => {
-    const editor = createHeadlessEditor({
-      nodes: [
-        HeadingNode,
-        ListNode,
-        ListItemNode,
-        QuoteNode,
-        CodeNode,
-        CodeHighlightNode,
-        LinkNode,
-      ],
-      theme: editorTheme,
-    });
-
-    editor.update(
-      () => createRemarkImport()(body),
-      {
-        discrete: true,
-      },
-    );
-  });
 });

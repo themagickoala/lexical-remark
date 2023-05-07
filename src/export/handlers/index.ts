@@ -4,6 +4,7 @@ import { zwitchFunc } from "../../utils/zwitch-func";
 import { code } from "./code";
 import { heading } from "./heading";
 import { horizontalrule } from "./horizontalrule";
+import { image } from "./image";
 import { linebreak } from "./linebreak";
 import { link } from "./link";
 import { list } from "./list";
@@ -34,6 +35,7 @@ export const exportToRemarkTree = (tree: LexicalNode, { handlers = {} }: { handl
         listitem,
         root,
         horizontalrule,
+        image,
         ...handlers,
       },
       unknown: (_node, _args) => console.log('unknown node type'),

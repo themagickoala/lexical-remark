@@ -32,10 +32,12 @@
     "@lexical/list": "0.x",
     "@lexical/react": "0.x",
     "@lexical/rich-text": "0.x",
-    "lexical": "0.x"
+    "lexical": "0.x",
+    "react": "^18.2.0"
   },
   "type": "module",
   "dependencies": {
+    "@lexical/utils": "^0.10.0",
     "remark-parse": "^10.0.1",
     "remark-stringify": "^10.0.2",
     "unified": "^10.1.2",
@@ -43,6 +45,7 @@
   },
   "devDependencies": {
     "@lexical/headless": "^0.10.0",
+    "@types/react": "^18.2.6",
     "@vitest/ui": "^0.31.0",
     "jsdom": "^22.0.0",
     "mdast": "^3.0.0",
