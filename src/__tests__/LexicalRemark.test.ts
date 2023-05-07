@@ -1,6 +1,4 @@
-import remarkStringify from 'remark-stringify';
-import remarkParse from 'remark-parse';
-import { test, expect } from 'vitest';
+import { test, expect, bench } from 'vitest';
 import { CodeHighlightNode, CodeNode } from "@lexical/code";
 import { createHeadlessEditor } from "@lexical/headless";
 import { LinkNode } from "@lexical/link";
@@ -9,8 +7,9 @@ import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { createRemarkImport } from "../import/RemarkImport";
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { $getRoot, $insertNodes, EditorThemeClasses } from 'lexical';
-import { createRemarkExport } from 'src/export/RemarkExport';
-import { unified } from 'unified';
+import { createRemarkExport } from '../export/RemarkExport';
+import fs from 'fs';
+import path from 'path';
 
 type TestCase = {
   name: string;
@@ -141,4 +140,28 @@ testCases.forEach(({ name, markdown, html, skipExport }) => {
       ).toBe(markdown);
     });
   }
+
+  const body = fs.readFileSync(path.join(__dirname, 'large_body.md'), 'utf8');
+
+  bench(`can export large text body`, () => {
+    const editor = createHeadlessEditor({
+      nodes: [
+        HeadingNode,
+        ListNode,
+        ListItemNode,
+        QuoteNode,
+        CodeNode,
+        CodeHighlightNode,
+        LinkNode,
+      ],
+      theme: editorTheme,
+    });
+
+    editor.update(
+      () => createRemarkImport()(body),
+      {
+        discrete: true,
+      },
+    );
+  });
 });

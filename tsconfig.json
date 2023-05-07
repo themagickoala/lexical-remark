@@ -8,6 +8,8 @@
     "moduleResolution": "node",
     "downlevelIteration": true,
     "noEmit": false,
+    "outDir": "lib",
+    "rootDir": "src",
     "strict": true,
     "baseUrl": ".",
     "typeRoots": ["node_modules/@types"],
@@ -16,8 +18,10 @@
     "declaration": true
   },
   "exclude": [
-    "**/dist/**",
+    "**/lib/**",
     "**/node_modules/**",
+    "vite.config.ts",
+    "**/__tests__/**"
   ],
   "typedocOptions": {
     "logLevel": "Verbose"
