@@ -74,6 +74,11 @@ const testCases: TestCase[] = [
     markdown: '![image info](./pictures/image.png)\n',
     html: '<p><img src="./pictures/image.png" alt="image info" width="inherit" height="inherit"></p>',
   },
+  {
+    name: 'image link',
+    markdown: '[![image info](./pictures/image.png)](https://google.com)\n',
+    html: '<p><a href="https://google.com"><img src="./pictures/image.png" alt="image info" width="inherit" height="inherit"></a></p>',
+  },
 ];
 
 export const editorTheme: EditorThemeClasses = {

@@ -12,7 +12,7 @@ import {
 import { $wrapNodeInElement, mergeRegister } from '@lexical/utils';
 // import { toggleLink, TOGGLE_LINK_COMMAND } from '../editor-link/editor-link.plugin';
 
-export type InsertImagePayload = Readonly<ImagePayload>;
+type InsertImagePayload = Readonly<ImagePayload>;
 
 export const INSERT_IMAGE_COMMAND: LexicalCommand<InsertImagePayload> = createCommand('INSERT_IMAGE_COMMAND');
 
