@@ -1,5 +1,5 @@
 import { Strong } from "mdast";
-import { Handler } from ".";
+import { Handler } from "./index.js";
 
 export const strong: Handler<Strong, true> = (node, { parent, formatting = [], rootHandler }) => {
   node.children.forEach((child) => {

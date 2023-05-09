@@ -1,6 +1,6 @@
 import { $createParagraphNode } from 'lexical';
 import { Paragraph } from "mdast";
-import { Handler } from '.';
+import { Handler } from "./index.js";
 
 export const paragraph: Handler<Paragraph> = (node, { parent, formatting, rootHandler }) => {
   const lexicalNode = $createParagraphNode();

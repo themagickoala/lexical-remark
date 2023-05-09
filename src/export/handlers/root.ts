@@ -1,5 +1,5 @@
 import { Content, Root } from 'mdast';
-import { Handler } from '.';
+import { Handler } from "./index.js";
 import { RootNode } from 'lexical';
 
 export const root: Handler<RootNode> = (node, { rootHandler }) => {

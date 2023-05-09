@@ -1,5 +1,5 @@
 import { Emphasis } from "mdast";
-import { Handler } from ".";
+import { Handler } from "./index.js";
 
 export const emphasis: Handler<Emphasis> = (node, { parent, formatting = [], rootHandler }) => {
   node.children.forEach((child) => {

@@ -1,5 +1,5 @@
 import { Link, StaticPhrasingContent } from 'mdast';
-import { Handler } from '.';
+import { Handler } from "./index.js";
 import { LinkNode } from '@lexical/link';
 
 export const link: Handler<LinkNode> = (node, { rootHandler }) => {

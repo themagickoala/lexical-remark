@@ -1,21 +1,21 @@
 import { DecoratorNode, TextFormatType, ElementNode } from "lexical";
 import { Content, Parent } from "mdast";
 import { zwitch } from "zwitch";
-import { blockquote } from "./blockquote";
-import { hardBreak } from "./break";
-import { code } from "./code";
-import { emphasis } from "./emphasis";
-import { heading } from "./heading";
-import { image } from "./image";
-import { inlineCode } from "./inlineCode";
-import { link } from "./link";
-import { list } from "./list";
-import { listItem } from "./listitem";
-import { paragraph } from "./paragraph";
-import { root } from "./root";
-import { strong } from "./strong";
-import { text } from "./text";
-import { thematicBreak } from "./thematicBreak";
+import { blockquote } from "./blockquote.js";
+import { hardBreak } from "./break.js";
+import { code } from "./code.js";
+import { emphasis } from "./emphasis.js";
+import { heading } from "./heading.js";
+import { image } from "./image.js";
+import { inlineCode } from "./inlineCode.js";
+import { link } from "./link.js";
+import { list } from "./list.js";
+import { listItem } from "./listitem.js";
+import { paragraph } from "./paragraph.js";
+import { root } from "./root.js";
+import { strong } from "./strong.js";
+import { text } from "./text.js";
+import { thematicBreak } from "./thematicBreak.js";
 
 export type Handler<
   NodeType extends Parent | Content = Parent | Content,

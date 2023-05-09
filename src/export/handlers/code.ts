@@ -1,4 +1,4 @@
-import { Handler } from '.';
+import { Handler } from "./index.js";
 import { CodeNode } from '@lexical/code';
 import { Code } from 'mdast';
 import { $isTextNode, $isLineBreakNode } from 'lexical';

@@ -2,7 +2,7 @@ import { $getRoot } from 'lexical';
 import { Content, Parent } from 'mdast';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
-import { Handler, importFromRemarkTree } from './handlers';
+import { Handler, importFromRemarkTree } from './handlers/index.js';
 
 export function remarkLexify(this: any, handlers: Record<string, Handler> = {}) {
   const compiler = (tree: Parent | Content) => {

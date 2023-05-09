@@ -1,6 +1,6 @@
 import { $createQuoteNode } from "@lexical/rich-text";
 import { Blockquote } from "mdast";
-import { Handler } from ".";
+import { Handler } from "./index.js";
 
 export const blockquote: Handler<Blockquote> = (node, { parent, formatting, rootHandler }) => {
   const lexicalNode = $createQuoteNode();

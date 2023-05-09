@@ -1,5 +1,5 @@
 import { ListItem, BlockContent } from 'mdast';
-import { Handler } from '.';
+import { Handler } from "./index.js";
 import { ListItemNode } from '@lexical/list';
 
 export const listitem: Handler<ListItemNode> = (node, { rootHandler }) => {

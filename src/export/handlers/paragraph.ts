@@ -1,6 +1,6 @@
 import { Content, Emphasis, InlineCode, Literal, Parent, Strong } from 'mdast';
 import { Paragraph, PhrasingContent } from 'mdast';
-import { Handler } from '.';
+import { Handler } from "./index.js";
 import { $isLineBreakNode, $isTextNode, ParagraphNode, TextNode } from 'lexical';
 
 const textTypes = ['text', 'inlineCode'];

@@ -1,6 +1,6 @@
 import { $createLineBreakNode, $createTextNode } from "lexical";
 import { Text } from "mdast";
-import { Handler } from ".";
+import { Handler } from "./index.js";
 
 export const text: Handler<Text, true> = (node, { parent, formatting = [] }) => {
   const lines = node.value.split(/\n/);

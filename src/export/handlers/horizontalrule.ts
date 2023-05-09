@@ -1,5 +1,5 @@
 import { ThematicBreak } from 'mdast';
-import { Handler } from '.';
+import { Handler } from "./index.js";
 import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 
 export const horizontalrule: Handler<HorizontalRuleNode> = () => {

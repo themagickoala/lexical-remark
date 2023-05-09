@@ -1,6 +1,6 @@
 import { $createListNode } from "@lexical/list";
 import { List } from "mdast";
-import { Handler } from ".";
+import { Handler } from "./index.js";
 
 export const list: Handler<List> = (node, { parent, formatting, rootHandler }) => {
   const lexicalNode = $createListNode(node.ordered ? "number" : "bullet");

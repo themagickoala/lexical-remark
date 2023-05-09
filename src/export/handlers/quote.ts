@@ -1,6 +1,6 @@
 import { BlockContent, Blockquote } from 'mdast';
 import { QuoteNode } from '@lexical/rich-text';
-import { Handler } from '.';
+import { Handler } from "./index.js";
 
 export const quote: Handler<QuoteNode> = (node, { rootHandler }) => {
   const remarkNode: Blockquote = {

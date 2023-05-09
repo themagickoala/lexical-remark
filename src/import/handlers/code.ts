@@ -1,7 +1,7 @@
 import { $createCodeHighlightNode, $createCodeNode } from "@lexical/code";
 import { $createLineBreakNode, $createTextNode } from "lexical";
 import { Code, Text } from "mdast";
-import { Handler } from ".";
+import { Handler } from "./index.js";
 
 export const code: Handler<Code> = (node, { rootHandler, parent, formatting }) => {
   const lexicalNode = $createCodeNode();

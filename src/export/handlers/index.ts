@@ -1,18 +1,18 @@
 import { LexicalNode } from "lexical";
 import { Content, Parent } from "mdast";
-import { zwitchFunc } from "../../utils/zwitch-func";
-import { code } from "./code";
-import { heading } from "./heading";
-import { horizontalrule } from "./horizontalrule";
-import { image } from "./image";
-import { linebreak } from "./linebreak";
-import { link } from "./link";
-import { list } from "./list";
-import { listitem } from "./listitem";
-import { paragraph } from "./paragraph";
-import { quote } from "./quote";
-import { root } from "./root";
-import { text } from "./text";
+import { zwitchFunc } from "../../utils/zwitch-func.js";
+import { code } from "./code.js";
+import { heading } from "./heading.js";
+import { horizontalrule } from "./horizontalrule.js";
+import { image } from "./image.js";
+import { linebreak } from "./linebreak.js";
+import { link } from "./link.js";
+import { list } from "./list.js";
+import { listitem } from "./listitem.js";
+import { paragraph } from "./paragraph.js";
+import { quote } from "./quote.js";
+import { root } from "./root.js";
+import { text } from "./text.js";
 
 export type Handler<
   NodeType extends LexicalNode = LexicalNode,

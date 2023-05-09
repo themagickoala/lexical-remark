@@ -3,7 +3,7 @@ import type { DOMExportOutput, EditorConfig, LexicalNode, NodeKey, SerializedLex
 import { lazy, Suspense } from 'react';
 import { isHTMLElement } from '@lexical/utils';
 
-const ImageComponent = lazy(() => import('./component'));
+const ImageComponent = lazy(() => import('./component.js'));
 
 export interface ImagePayload {
   altText: string;

@@ -1,5 +1,5 @@
 import { Image } from 'mdast';
-import { Handler } from '.';
+import { Handler } from "./index.js";
 import { ImageNode } from '../../extensions/image/node';
 
 export const image: Handler<ImageNode> = (node) => {
