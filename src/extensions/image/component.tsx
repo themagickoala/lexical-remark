@@ -1,7 +1,7 @@
 import { $isImageNode } from './node.js';
 import { mergeRegister } from '@lexical/utils';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext.js';
+import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection.js';
 import {
   $getNodeByKey,
   $getSelection,

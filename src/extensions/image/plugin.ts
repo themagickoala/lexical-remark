@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext.js';
 import { $createImageNode, ImageNode, ImagePayload } from './node.js';
 import {
   $createParagraphNode,
