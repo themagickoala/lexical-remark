@@ -1,7 +1,7 @@
 import lexical from 'lexical';
 import type { DOMExportOutput, EditorConfig, LexicalNode, NodeKey, SerializedLexicalNode, Spread, DOMConversionMap } from 'lexical';
 import { lazy, Suspense } from 'react';
-import { isHTMLElement } from '@lexical/utils';
+import lexicalUtils from '@lexical/utils';
 
 const ImageComponent = lazy(() => import('./component.js'));
 
@@ -59,8 +59,8 @@ export class ImageNode extends lexical.DecoratorNode<JSX.Element> {
     return {
       img: (node: Node) => ({
         conversion: (domNode) => {
-          const altText = isHTMLElement(domNode) ? domNode.getAttribute('alt') ?? '' : '';
-          const src = isHTMLElement(domNode) ? domNode.getAttribute('src') ?? '' : '';
+          const altText = lexicalUtils.isHTMLElement(domNode) ? domNode.getAttribute('alt') ?? '' : '';
+          const src = lexicalUtils.isHTMLElement(domNode) ? domNode.getAttribute('src') ?? '' : '';
           return { node: $createImageNode({ altText, src }) };
         },
         priority: 1,

@@ -1,17 +1,8 @@
 import { $isImageNode } from './node.js';
-import { mergeRegister } from '@lexical/utils';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext.js';
-import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection.js';
-import {
-  $getNodeByKey,
-  $getSelection,
-  $isNodeSelection,
-  CLICK_COMMAND,
-  COMMAND_PRIORITY_LOW,
-  KEY_BACKSPACE_COMMAND,
-  KEY_DELETE_COMMAND,
-  SELECTION_CHANGE_COMMAND,
-} from 'lexical';
+import lexicalUtils from '@lexical/utils';
+import lexicalComposerContext from '@lexical/react/LexicalComposerContext.js';
+import lexicalNodeSelection from '@lexical/react/useLexicalNodeSelection.js';
+import lexical from 'lexical';
 import type { LexicalEditor, NodeKey } from 'lexical';
 import { Suspense, useCallback, useEffect, useRef } from 'react';
 
@@ -55,15 +46,15 @@ export default function EditorImageComponent({
   width: 'inherit' | number;
 }): JSX.Element {
   const imageRef = useRef<null | HTMLImageElement>(null);
-  const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey);
-  const [editor] = useLexicalComposerContext();
+  const [isSelected, setSelected, clearSelection] = lexicalNodeSelection.useLexicalNodeSelection(nodeKey);
+  const [editor] = lexicalComposerContext.useLexicalComposerContext();
   const activeEditorRef = useRef<LexicalEditor | null>(null);
 
   const onDelete = useCallback(
     (event: KeyboardEvent) => {
-      if (isSelected && $isNodeSelection($getSelection())) {
+      if (isSelected && lexical.$isNodeSelection(lexical.$getSelection())) {
         event.preventDefault();
-        const node = $getNodeByKey(nodeKey);
+        const node = lexical.$getNodeByKey(nodeKey);
 
         if ($isImageNode(node)) {
           node.remove();
@@ -78,18 +69,18 @@ export default function EditorImageComponent({
   );
 
   useEffect(() => {
-    const unregister = mergeRegister(
+    const unregister = lexicalUtils.mergeRegister(
       editor.registerCommand(
-        SELECTION_CHANGE_COMMAND,
+        lexical.SELECTION_CHANGE_COMMAND,
         (_, activeEditor) => {
           activeEditorRef.current = activeEditor;
           return false;
         },
-        COMMAND_PRIORITY_LOW,
+        lexical.COMMAND_PRIORITY_LOW,
       ),
 
       editor.registerCommand<MouseEvent>(
-        CLICK_COMMAND,
+        lexical.CLICK_COMMAND,
         (payload) => {
           const event = payload;
 
@@ -106,11 +97,11 @@ export default function EditorImageComponent({
 
           return false;
         },
-        COMMAND_PRIORITY_LOW,
+        lexical.COMMAND_PRIORITY_LOW,
       ),
 
-      editor.registerCommand(KEY_DELETE_COMMAND, onDelete, COMMAND_PRIORITY_LOW),
-      editor.registerCommand(KEY_BACKSPACE_COMMAND, onDelete, COMMAND_PRIORITY_LOW),
+      editor.registerCommand(lexical.KEY_DELETE_COMMAND, onDelete, lexical.COMMAND_PRIORITY_LOW),
+      editor.registerCommand(lexical.KEY_BACKSPACE_COMMAND, onDelete, lexical.COMMAND_PRIORITY_LOW),
     );
 
     return () => {

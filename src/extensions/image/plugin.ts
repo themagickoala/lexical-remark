@@ -1,46 +1,37 @@
 import { useEffect } from 'react';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext.js';
+import lexicalComposerContext from '@lexical/react/LexicalComposerContext.js';
 import { $createImageNode, ImageNode, ImagePayload } from './node.js';
-import {
-  $createParagraphNode,
-  $insertNodes,
-  $isRootOrShadowRoot,
-  COMMAND_PRIORITY_EDITOR,
-  createCommand,
-  LexicalCommand,
-} from 'lexical';
-import { $wrapNodeInElement, mergeRegister } from '@lexical/utils';
-// import { toggleLink, TOGGLE_LINK_COMMAND } from '../editor-link/editor-link.plugin';
+import lexical, { LexicalCommand } from 'lexical';
+import lexicalUtils from '@lexical/utils';
 
 type InsertImagePayload = Readonly<ImagePayload>;
 
-export const INSERT_IMAGE_COMMAND: LexicalCommand<InsertImagePayload> = createCommand('INSERT_IMAGE_COMMAND');
+export const INSERT_IMAGE_COMMAND: LexicalCommand<InsertImagePayload> = lexical.createCommand('INSERT_IMAGE_COMMAND');
 
 // istanbul ignore next: not possible to reliably test with jest
 export const ImagePlugin = (): JSX.Element | null => {
-  const [editor] = useLexicalComposerContext();
+  const [editor] = lexicalComposerContext.useLexicalComposerContext();
 
   useEffect(() => {
     if (!editor.hasNodes([ImageNode])) {
       throw new Error('ImagesPlugin: ImageNode not registered on editor');
     }
 
-    return mergeRegister(
+    return lexicalUtils.mergeRegister(
       editor.registerCommand<InsertImagePayload>(
         INSERT_IMAGE_COMMAND,
         (payload) => {
           const imageNode = $createImageNode(payload);
-          $insertNodes([imageNode]);
+          lexical.$insertNodes([imageNode]);
 
-          if ($isRootOrShadowRoot(imageNode.getParentOrThrow())) {
-            $wrapNodeInElement(imageNode, $createParagraphNode).selectEnd();
+          if (lexical.$isRootOrShadowRoot(imageNode.getParentOrThrow())) {
+            lexicalUtils.$wrapNodeInElement(imageNode, lexical.$createParagraphNode).selectEnd();
           }
 
           return true;
         },
-        COMMAND_PRIORITY_EDITOR,
+        lexical.COMMAND_PRIORITY_EDITOR,
       ),
-      // editor.registerCommand(TOGGLE_LINK_COMMAND, toggleLink, COMMAND_PRIORITY_EDITOR),
     );
   }, [editor]);
 

@@ -1,5 +1,5 @@
 import { Heading, PhrasingContent } from 'mdast';
-import { HeadingNode } from '@lexical/rich-text';
+import type { HeadingNode } from '@lexical/rich-text';
 import { Handler } from "./index.js";
 
 export const heading: Handler<HeadingNode> = (node, { rootHandler }) => {

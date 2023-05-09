@@ -1,9 +1,9 @@
 import { bench } from 'vitest';
-import { CodeHighlightNode, CodeNode } from "@lexical/code";
-import { createHeadlessEditor } from "@lexical/headless";
-import { LinkNode } from "@lexical/link";
-import { ListItemNode, ListNode } from "@lexical/list";
-import { HeadingNode, QuoteNode } from "@lexical/rich-text";
+import lexicalCode from "@lexical/code";
+import lexicalHeadless from "@lexical/headless";
+import lexicalLink from "@lexical/link";
+import lexicalList from "@lexical/list";
+import lexicalRichText from "@lexical/rich-text";
 import { createRemarkImport } from "../import/RemarkImport";
 import type { EditorThemeClasses } from 'lexical';
 import fs from 'fs';
@@ -20,15 +20,15 @@ export const editorTheme: EditorThemeClasses = {
 const body = fs.readFileSync(path.join(__dirname, 'large_body.md'), 'utf8');
 
 bench(`can export large text body`, () => {
-  const editor = createHeadlessEditor({
+  const editor = lexicalHeadless.createHeadlessEditor({
     nodes: [
-      HeadingNode,
-      ListNode,
-      ListItemNode,
-      QuoteNode,
-      CodeNode,
-      CodeHighlightNode,
-      LinkNode,
+      lexicalRichText.HeadingNode,
+      lexicalList.ListNode,
+      lexicalList.ListItemNode,
+      lexicalRichText.QuoteNode,
+      lexicalCode.CodeNode,
+      lexicalCode.CodeHighlightNode,
+      lexicalLink.LinkNode,
     ],
     theme: editorTheme,
   });

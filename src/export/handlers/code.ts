@@ -1,5 +1,5 @@
 import { Handler } from "./index.js";
-import { CodeNode } from '@lexical/code';
+import type { CodeNode } from '@lexical/code';
 import { Code } from 'mdast';
 import lexical from 'lexical';
 
