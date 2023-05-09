@@ -17,6 +17,7 @@
   },
   "license": "MIT",
   "version": "0.0.16",
+  "type": "module",
   "main": "./lib/index.js",
   "module": "./lib/index.js",
   "exports": {
