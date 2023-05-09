@@ -1,5 +1,5 @@
 import { Image } from "mdast";
-import { $createImageNode } from "../../extensions/image/node";
+import { $createImageNode } from "../../extensions/image/node.js";
 import { Handler } from "./index.js";
 
 export const image: Handler<Image> = (node, { parent }) => {
