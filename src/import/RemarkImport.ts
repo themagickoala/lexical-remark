@@ -1,4 +1,4 @@
-import { $getRoot } from 'lexical';
+import lexical from 'lexical';
 import { Content, Parent } from 'mdast';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
@@ -14,7 +14,7 @@ export function remarkLexify(this: any, handlers: Record<string, Handler> = {}) 
 
 export function createRemarkImport(handlers?: Record<string, Handler>): (markdownString: string) => void {
   return (markdownString) => {
-    const root = $getRoot();
+    const root = lexical.$getRoot();
     root.clear();
 
     const file = unified()

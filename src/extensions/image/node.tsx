@@ -1,5 +1,5 @@
-import { $applyNodeReplacement, DecoratorNode, DOMConversionMap } from 'lexical';
-import type { DOMExportOutput, EditorConfig, LexicalNode, NodeKey, SerializedLexicalNode, Spread } from 'lexical';
+import lexical from 'lexical';
+import type { DOMExportOutput, EditorConfig, LexicalNode, NodeKey, SerializedLexicalNode, Spread, DOMConversionMap } from 'lexical';
 import { lazy, Suspense } from 'react';
 import { isHTMLElement } from '@lexical/utils';
 
@@ -26,7 +26,7 @@ export type SerializedImageNode = Spread<
 >;
 
 // istanbul ignore next: not possible to reliably test with jest
-export class ImageNode extends DecoratorNode<JSX.Element> {
+export class ImageNode extends lexical.DecoratorNode<JSX.Element> {
   __src: string;
 
   __altText: string;
@@ -137,7 +137,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
 
 // istanbul ignore next: not possible to reliably test with jest
 export function $createImageNode({ altText, height, key, src, width }: ImagePayload): ImageNode {
-  return $applyNodeReplacement(new ImageNode(src, altText, width, height, key));
+  return lexical.$applyNodeReplacement(new ImageNode(src, altText, width, height, key));
 }
 
 // istanbul ignore next: not possible to reliably test with jest

@@ -7,7 +7,7 @@ import { ListItemNode, ListNode } from "@lexical/list";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { createRemarkImport } from "../import/RemarkImport";
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
-import { $getRoot, $insertNodes, EditorThemeClasses } from 'lexical';
+import lexical, { type EditorThemeClasses } from 'lexical';
 import { createRemarkExport } from '../export/RemarkExport';
 
 type TestCase = {
@@ -138,8 +138,8 @@ testCases.forEach(({ name, markdown, html, skipExport }) => {
           const parser = new DOMParser();
           const dom = parser.parseFromString(html, 'text/html');
           const nodes = $generateNodesFromDOM(editor, dom);
-          $getRoot().select();
-          $insertNodes(nodes);
+          lexical.$getRoot().select();
+          lexical.$insertNodes(nodes);
         },
         {
           discrete: true,

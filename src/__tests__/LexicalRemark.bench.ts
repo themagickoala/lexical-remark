@@ -5,7 +5,7 @@ import { LinkNode } from "@lexical/link";
 import { ListItemNode, ListNode } from "@lexical/list";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { createRemarkImport } from "../import/RemarkImport";
-import { EditorThemeClasses } from 'lexical';
+import type { EditorThemeClasses } from 'lexical';
 import fs from 'fs';
 import path from 'path';
 

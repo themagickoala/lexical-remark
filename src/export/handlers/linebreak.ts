@@ -1,6 +1,6 @@
 import { Break } from 'mdast';
 import { Handler } from "./index.js";
-import { LineBreakNode } from 'lexical';
+import type { LineBreakNode } from 'lexical';
 
 export const linebreak: Handler<LineBreakNode> = () => {
   const remarkNode: Break = {

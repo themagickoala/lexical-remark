@@ -1,7 +1,7 @@
 import { Content, Emphasis, InlineCode, Literal, Parent, Strong } from 'mdast';
 import { Paragraph, PhrasingContent } from 'mdast';
 import { Handler } from "./index.js";
-import { $isLineBreakNode, $isTextNode, ParagraphNode, TextNode } from 'lexical';
+import lexical, { type ParagraphNode } from 'lexical';
 
 const textTypes = ['text', 'inlineCode'];
 const wrapperTypes = ['emphasis', 'strong'];
@@ -32,7 +32,7 @@ export const paragraph: Handler<ParagraphNode> = (node, { rootHandler }) => {
   for (let i = 0; i < childNodes.length; i++) {
     const child = childNodes[i];
     const newChild = rootHandler(child, { rootHandler });
-    if ($isTextNode(child) && children.length > 0) {
+    if (lexical.$isTextNode(child) && children.length > 0) {
       const lastChild = children[children.length - 1];
       if (isTextType(lastChild) && isTextType(newChild) && lastChild.type === newChild.type) {
         lastChild.value += newChild.value;
@@ -47,7 +47,7 @@ export const paragraph: Handler<ParagraphNode> = (node, { rootHandler }) => {
         (lastChild.children[0] as Literal).value += (newChild.children[0] as Literal).value;
         continue;
       }
-    } else if ($isLineBreakNode(child)) {
+    } else if (lexical.$isLineBreakNode(child)) {
       children.push({
         type: 'break',
       });

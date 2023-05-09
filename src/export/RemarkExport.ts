@@ -1,4 +1,4 @@
-import { $getRoot,  RootNode } from "lexical";
+import lexical, { type RootNode } from 'lexical';
 import { Root } from "mdast";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
@@ -10,7 +10,7 @@ function lexicalToRemark(rootNode: RootNode, options: { handlers?: Record<string
 
 export function createRemarkExport(handlers?: Record<string, Handler>): () => string {
   return () => {
-    const root = $getRoot();
+    const root = lexical.$getRoot();
 
     const remarkTree = lexicalToRemark(root, { handlers });
 

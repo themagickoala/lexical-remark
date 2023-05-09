@@ -1,4 +1,4 @@
-import { ElementNode } from "lexical";
+import type { ElementNode } from "lexical";
 import { Root } from "mdast";
 import { Handler } from "./index.js";
 

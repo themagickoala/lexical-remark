@@ -1,4 +1,4 @@
-import { LexicalNode } from "lexical";
+import type { LexicalNode } from "lexical";
 import { Content, Parent } from "mdast";
 import { zwitchFunc } from "../../utils/zwitch-func.js";
 import { code } from "./code.js";

@@ -1,6 +1,6 @@
 import { Emphasis, InlineCode, Strong, Text } from 'mdast';
 import { Handler } from "./index.js";
-import { TextNode } from 'lexical';
+import type { TextNode } from 'lexical';
 
 export const text: Handler<TextNode> = (node) => {
   let remarkNode: Text | InlineCode = {
