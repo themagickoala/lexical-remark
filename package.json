@@ -16,7 +16,7 @@
     "prepublish": "npm run build"
   },
   "license": "MIT",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "main": "./lib/index.js",
   "module": "./lib/index.js",
   "exports": {
