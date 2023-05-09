@@ -3,7 +3,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "esnext",
     "lib": ["esnext", "dom", "dom.iterable"],
-    "module": "esnext",
+    "module": "commonjs",
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "downlevelIteration": true,
