@@ -1,3 +1,4 @@
+import { YouTubeNode } from './../extensions/youtube/node';
 import { ImageNode } from '../extensions/image/node';
 import { test, expect, bench } from 'vitest';
 import { CodeHighlightNode, CodeNode } from "@lexical/code";
@@ -78,6 +79,12 @@ const testCases: TestCase[] = [
     name: 'image link',
     markdown: '[![image info](./pictures/image.png)](https://google.com)\n',
     html: '<p><a href="https://google.com"><img src="./pictures/image.png" alt="image info" width="inherit" height="inherit"></a></p>',
+    skipExport: true,
+  },
+  {
+    name: 'video',
+    markdown: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ\n',
+    html: '<iframe data-lexical-youtube="dQw4w9WgXcQ" width="560" height="315" src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" title="YouTube video"></iframe>',
   },
 ];
 
@@ -101,12 +108,15 @@ testCases.forEach(({ name, markdown, html, skipExport }) => {
         CodeHighlightNode,
         LinkNode,
         ImageNode,
+        YouTubeNode,
       ],
       theme: editorTheme,
     });
 
+
+
     editor.update(
-      () => createRemarkImport()(markdown),
+      async () => createRemarkImport()(markdown),
       {
         discrete: true,
       },
@@ -129,6 +139,7 @@ testCases.forEach(({ name, markdown, html, skipExport }) => {
           CodeHighlightNode,
           LinkNode,
           ImageNode,
+          YouTubeNode,
         ],
         theme: editorTheme,
       });

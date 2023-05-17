@@ -55,7 +55,7 @@ export const paragraph: Handler<ParagraphNode> = (node, { rootHandler }) => {
     }
 
     if (newChild) {
-      children.push(newChild);
+      children.push(newChild as Parent | Content);
     }
   }
   const remarkNode: Paragraph = {
