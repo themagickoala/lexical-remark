@@ -2,7 +2,7 @@ import { Node, YouTube } from "../types";
 import { visit } from 'unist-util-visit'
 import { Paragraph } from "mdast";
 
-const YT_RE = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:watch\?v=|embed\/|shorts\/|v\/)?)([\w\-]+)(\S+)?$/;
+export const YOUTUBE_URL_REGEX = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:watch\?v=|embed\/|shorts\/|v\/)?)([\w\-]+)(\S+)?$/;
 
 export function remarkYoutube(this: any) {
   return convertYoutubeParagraphs;
@@ -34,7 +34,7 @@ function isYoutubeParagraphNode(node: Node) {
     node.children.length === 1 &&
     node.children[0].type === 'text'
   ) {
-    const match = node.children[0].value.match(YT_RE);
+    const match = node.children[0].value.match(YOUTUBE_URL_REGEX);
     return !!match && match[6];
   }
 
