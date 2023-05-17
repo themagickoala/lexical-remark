@@ -1,5 +1,3 @@
-// @ts-expect-error
-import { remarkOembed } from 'remark-oembed';
 import lexical, { type RootNode } from 'lexical';
 import { Root } from "mdast";
 import remarkStringify from "remark-stringify";

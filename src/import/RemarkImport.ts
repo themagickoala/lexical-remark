@@ -1,8 +1,6 @@
 import lexical from 'lexical';
 import { Content, Parent } from 'mdast';
 import remarkParse from 'remark-parse';
-// @ts-expect-error
-import remarkOembed from 'remark-oembed';
 import { unified } from 'unified';
 import { Handler, importFromRemarkTree } from './handlers/index.js';
 import { remarkYoutube } from '../plugins/remark-youtube.js';
@@ -20,9 +18,6 @@ export function createRemarkImport(handlers?: Record<string, Handler>): (markdow
     const root = lexical.$getRoot();
     root.clear();
 
-
-
-    
     const file = unified()
       .use(remarkParse)
       .use<any[]>(remarkYoutube)
