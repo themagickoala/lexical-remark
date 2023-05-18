@@ -1,15 +1,15 @@
-import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext.js';
-import {$insertNodeToNearestRoot} from '@lexical/utils';
-import {COMMAND_PRIORITY_EDITOR, createCommand, LexicalCommand} from 'lexical';
+import lexicalComposerContext from '@lexical/react/LexicalComposerContext.js';
+import lexicalUtils from '@lexical/utils';
+import lexical, {type LexicalCommand} from 'lexical';
 import {useEffect} from 'react';
 import {$createYouTubeNode, YouTubeNode} from './node.js';
 
-export const INSERT_YOUTUBE_COMMAND: LexicalCommand<string> = createCommand(
+export const INSERT_YOUTUBE_COMMAND: LexicalCommand<string> = lexical.createCommand(
   'INSERT_YOUTUBE_COMMAND',
 );
 
 export function YouTubePlugin(): JSX.Element | null {
-  const [editor] = useLexicalComposerContext();
+  const [editor] = lexicalComposerContext.useLexicalComposerContext();
 
   useEffect(() => {
     if (!editor.hasNodes([YouTubeNode])) {
@@ -20,11 +20,11 @@ export function YouTubePlugin(): JSX.Element | null {
       INSERT_YOUTUBE_COMMAND,
       (payload) => {
         const youTubeNode = $createYouTubeNode(payload);
-        $insertNodeToNearestRoot(youTubeNode);
+        lexicalUtils.$insertNodeToNearestRoot(youTubeNode);
 
         return true;
       },
-      COMMAND_PRIORITY_EDITOR,
+      lexical.COMMAND_PRIORITY_EDITOR,
     );
   }, [editor]);
 

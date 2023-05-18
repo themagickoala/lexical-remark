@@ -1,5 +1,5 @@
 import { ElementFormatType, NodeKey } from "lexical";
-import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents.js";
+import lexicalBlockWithAlignableContents from "@lexical/react/LexicalBlockWithAlignableContents.js";
 
 type YouTubeComponentProps = Readonly<{
   className: Readonly<{
@@ -18,7 +18,7 @@ export const YouTubeComponent = ({
   videoID,
 }: YouTubeComponentProps) => {
   return (
-    <BlockWithAlignableContents
+    <lexicalBlockWithAlignableContents.BlockWithAlignableContents
       className={className}
       format={format}
       nodeKey={nodeKey}>
@@ -31,6 +31,6 @@ export const YouTubeComponent = ({
         allowFullScreen={true}
         title="YouTube video"
       />
-    </BlockWithAlignableContents>
+    </lexicalBlockWithAlignableContents.BlockWithAlignableContents>
   );
 }

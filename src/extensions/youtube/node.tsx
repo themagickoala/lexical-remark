@@ -1,8 +1,7 @@
-import {
-  DecoratorBlockNode,
-  SerializedDecoratorBlockNode,
+import lexicalDecoratorBlockNode, {
+  type SerializedDecoratorBlockNode,
 } from '@lexical/react/LexicalDecoratorBlockNode.js';
-import { DOMConversionMap, DOMConversionOutput, DOMExportOutput, EditorConfig, ElementFormatType, LexicalEditor, LexicalNode, NodeKey, Spread } from 'lexical';
+import type { DOMConversionMap, DOMConversionOutput, DOMExportOutput, EditorConfig, ElementFormatType, LexicalEditor, LexicalNode, NodeKey, Spread } from 'lexical';
 import { YouTubeComponent } from './component.js';
 
 export type SerializedYouTubeNode = Spread<
@@ -23,7 +22,7 @@ function convertYoutubeElement(
   return null;
 }
 
-export class YouTubeNode extends DecoratorBlockNode {
+export class YouTubeNode extends lexicalDecoratorBlockNode.DecoratorBlockNode {
   __id: string;
 
   static getType(): string {
