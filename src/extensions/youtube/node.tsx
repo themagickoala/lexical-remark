@@ -1,9 +1,9 @@
 import {
   DecoratorBlockNode,
   SerializedDecoratorBlockNode,
-} from '@lexical/react/LexicalDecoratorBlockNode';
+} from '@lexical/react/LexicalDecoratorBlockNode.js';
 import { DOMConversionMap, DOMConversionOutput, DOMExportOutput, EditorConfig, ElementFormatType, LexicalEditor, LexicalNode, NodeKey, Spread } from 'lexical';
-import { YouTubeComponent } from './component';
+import { YouTubeComponent } from './component.js';
 
 export type SerializedYouTubeNode = Spread<
   {

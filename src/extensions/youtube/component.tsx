@@ -1,5 +1,5 @@
 import { ElementFormatType, NodeKey } from "lexical";
-import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents";
+import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents.js";
 
 type YouTubeComponentProps = Readonly<{
   className: Readonly<{
