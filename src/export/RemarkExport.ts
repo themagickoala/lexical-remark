@@ -20,6 +20,6 @@ export function createRemarkExport(handlers?: Record<string, Handler>): () => st
       .use(remarkStringify, { fences: true, fence: '`' })
       .stringify(remarkTree);
 
-    return String(file);
+    return String(file).trimEnd();
   };
 }

@@ -21,69 +21,69 @@ type TestCase = {
 const testCases: TestCase[] = [
   {
     name: 'headings',
-    markdown: '# A test\n\n## A test\n\n### A test\n\n#### A test\n\n##### A test\n\n###### A test\n',
+    markdown: '# A test\n\n## A test\n\n### A test\n\n#### A test\n\n##### A test\n\n###### A test',
     html: '<h1><span>A test</span></h1><h2><span>A test</span></h2><h3><span>A test</span></h3><h4><span>A test</span></h4><h5><span>A test</span></h5><h6><span>A test</span></h6>'
   },
   {
     name: 'blockquotes',
-    markdown: '> This is a blockquote\n',
+    markdown: '> This is a blockquote',
     html: '<blockquote><p><span>This is a blockquote</span></p></blockquote>'
   },
   {
     name: 'multi-line blockquotes',
-    markdown: '> This is a blockquote\n> With multiple lines\n',
+    markdown: '> This is a blockquote\n> With multiple lines',
     html: '<blockquote><p><span>This is a blockquote</span><br><span>With multiple lines</span></p></blockquote>'
   },
   {
     name: 'links',
-    markdown: '[A link to Google](https://google.com)\n',
+    markdown: '[A link to Google](https://google.com)',
     html: '<p><a href="https://google.com"><span>A link to Google</span></a></p>'
   },
   {
     name: 'lists',
-    markdown: '1.  A list item\n\n2.  A list item\n\n3.  A list item\n',
+    markdown: '1.  A list item\n\n2.  A list item\n\n3.  A list item',
     html: '<ol><li value="1"><span>A list item</span></li><li value="2"><span>A list item</span></li><li value="3"><span>A list item</span></li></ol>'
   },
   {
     name: 'inline formatting',
-    markdown: 'This is some *italic text* in a paragraph\n',
+    markdown: 'This is some *italic text* in a paragraph',
     html: '<p><span>This is some </span><i><em class="italic">italic text</em></i><span> in a paragraph</span></p>'
   },
   {
     name: 'inline code',
-    markdown: 'This is some `inline code` in a paragraph\n',
+    markdown: 'This is some `inline code` in a paragraph',
     html: '<p><span>This is some </span><code><span class="code-inline">inline code</span></code><span> in a paragraph</span></p>'
   },
   {
     name: 'inline code',
-    markdown: 'This is some ***bold and italic text*** in a paragraph\n',
+    markdown: 'This is some ***bold and italic text*** in a paragraph',
     html: '<p><span>This is some </span><i><b><strong class="italic">bold and italic text</strong></b></i><span> in a paragraph</span></p>'
   },
   {
     name: 'code block',
-    markdown: '```\nThis is a code block\n```\n',
+    markdown: '```\nThis is a code block\n```',
     html: '<code class="code-block" spellcheck="false"><span>This is a code block</span></code>',
     skipExport: true, // $generateNodesFromDom sees this as inline code because it's not multiline
   },
   {
     name: 'multiline code block',
-    markdown: '```\nThis is a code block\nWith multiple lines\n```\n',
+    markdown: '```\nThis is a code block\nWith multiple lines\n```',
     html: '<code class="code-block" spellcheck="false"><span>This is a code block</span><br><span>With multiple lines</span></code>',
   },
   {
     name: 'image',
-    markdown: '![image info](./pictures/image.png)\n',
+    markdown: '![image info](./pictures/image.png)',
     html: '<p><img src="./pictures/image.png" alt="image info" width="inherit" height="inherit"></p>',
   },
   {
     name: 'image link',
-    markdown: '[![image info](./pictures/image.png)](https://google.com)\n',
+    markdown: '[![image info](./pictures/image.png)](https://google.com)',
     html: '<p><a href="https://google.com"><img src="./pictures/image.png" alt="image info" width="inherit" height="inherit"></a></p>',
     skipExport: true,
   },
   {
     name: 'video',
-    markdown: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ\n',
+    markdown: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     html: '<iframe data-lexical-youtube="dQw4w9WgXcQ" width="560" height="315" src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" title="YouTube video"></iframe>',
   },
 ];
