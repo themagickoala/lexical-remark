@@ -9,7 +9,7 @@ function lexicalToRemark(rootNode: RootNode, options: { handlers?: Record<string
   return exportToRemarkTree(rootNode, options) as Root;
 }
 
-export function createRemarkExport(handlers?: Record<string, Handler>): () => string {
+export function $createRemarkExport(handlers?: Record<string, Handler>): () => string {
   return () => {
     const root = lexical.$getRoot();
 

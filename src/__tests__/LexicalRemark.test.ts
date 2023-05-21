@@ -6,10 +6,10 @@ import { createHeadlessEditor } from "@lexical/headless";
 import { LinkNode } from "@lexical/link";
 import { ListItemNode, ListNode } from "@lexical/list";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import { createRemarkImport } from "../import/RemarkImport";
+import { $createRemarkImport } from "../import/RemarkImport";
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import lexical, { type EditorThemeClasses } from 'lexical';
-import { createRemarkExport } from '../export/RemarkExport';
+import { $createRemarkExport } from '../export/RemarkExport';
 
 type TestCase = {
   name: string;
@@ -116,7 +116,7 @@ testCases.forEach(({ name, markdown, html, skipExport }) => {
 
 
     editor.update(
-      async () => createRemarkImport()(markdown),
+      async () => $createRemarkImport()(markdown),
       {
         discrete: true,
       },
@@ -158,7 +158,7 @@ testCases.forEach(({ name, markdown, html, skipExport }) => {
       );
 
       expect(
-        editor.getEditorState().read(() => createRemarkExport()()),
+        editor.getEditorState().read(() => $createRemarkExport()()),
       ).toBe(markdown);
     });
   }

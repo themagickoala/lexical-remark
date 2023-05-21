@@ -13,7 +13,7 @@ export function remarkLexify(this: any, handlers: Record<string, Handler> = {}) 
   Object.assign(this, { Compiler: compiler });
 }
 
-export function createRemarkImport(handlers?: Record<string, Handler>): (markdownString: string) => void {
+export function $createRemarkImport(handlers?: Record<string, Handler>): (markdownString: string) => void {
   return (markdownString) => {
     const root = lexical.$getRoot();
     root.clear();

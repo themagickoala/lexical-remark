@@ -1,6 +1,20 @@
-export { createRemarkExport } from './export/RemarkExport.js';
+import { $createRemarkExport } from './export/RemarkExport.js';
+import { $createRemarkImport } from './import/RemarkImport.js';
+
+/**
+ * @deprecated Use `$createRemarkExport` instead.
+ */
+const createRemarkExport = $createRemarkExport;
+
+/**
+ * @deprecated Use `$createRemarkImport` instead.
+ */
+const createRemarkImport = $createRemarkImport;
+
+export { createRemarkExport, $createRemarkExport };
 export type { Handler as ExportHandler } from './export/handlers';
-export { createRemarkImport } from './import/RemarkImport.js';
+
+export { createRemarkImport, $createRemarkImport };
 export type { Handler as ImportHandler } from './import/handlers';
 
 export { ImageNode, $createImageNode, $isImageNode } from './extensions/image/node.js';

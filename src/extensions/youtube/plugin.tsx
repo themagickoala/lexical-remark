@@ -21,6 +21,11 @@ export function YouTubePlugin(): JSX.Element | null {
       (payload) => {
         const youTubeNode = $createYouTubeNode(payload);
         lexicalUtils.$insertNodeToNearestRoot(youTubeNode);
+        const root = lexical.$getRoot();
+        const lastChild = root.getLastChild();
+        if (lastChild === youTubeNode) {
+          lastChild.insertAfter(lexical.$createParagraphNode());
+        }
 
         return true;
       },
