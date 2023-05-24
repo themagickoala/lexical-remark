@@ -171,6 +171,33 @@ export function CollapsiblePlugin(): null {
         lexical.COMMAND_PRIORITY_LOW,
       ),
 
+      editor.registerCommand(
+        lexical.DELETE_CHARACTER_COMMAND,
+        () => {
+          const selection = lexical.$getSelection();
+          if (
+            !lexical.$isRangeSelection(selection) ||
+            !selection.isCollapsed() ||
+            selection.anchor.offset !== 0
+          ) {
+            return false;
+          }
+
+          const anchorNode = selection.anchor.getNode();
+          if (!$isCollapsibleTitleNode(anchorNode)) {
+            return false;
+          }
+
+          if (anchorNode.getTextContentSize() !== 0) {
+            return false;
+          }
+          anchorNode.getParent<CollapsibleContainerNode>()?.remove();
+
+          return true;
+        },
+        lexical.COMMAND_PRIORITY_LOW,
+      ),
+
       // When collapsible is the last child pressing down/right arrow will insert paragraph
       // below it to allow adding more content. It's similar what $insertBlockNode
       // (mainly for decorators), except it'll always be possible to continue adding
