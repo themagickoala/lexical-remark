@@ -269,12 +269,12 @@ export function CollapsiblePlugin(): null {
         () => {
           editor.update(() => {
             const title = $createCollapsibleTitleNode();
-            lexicalUtils.$insertNodeToNearestRoot(
+            lexical.$insertNodes([
               $createCollapsibleContainerNode(true).append(
                 title,
                 $createCollapsibleContentNode().append(lexical.$createParagraphNode()),
               ),
-            );
+              ]);
             title.select();
           });
           return true;

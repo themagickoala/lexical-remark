@@ -18,7 +18,7 @@ export const html: Handler<HTML> = (node, { parent, formatting, rootHandler }) =
       const detailsNode = childNode as unknown as Element;
 
       const openAttr = detailsNode.attrs.find((a) => a.name === 'open');
-      const isOpen = !!openAttr && openAttr.value === 'true';
+      const isOpen = !!openAttr && (openAttr.value === 'true' || openAttr.value === '');
 
       const summaryNode = detailsNode.childNodes.find((n): n is Element => 'tagName' in n && n.tagName === 'summary');
       if (!!summaryNode) {
