@@ -5,7 +5,7 @@ import lexical from 'lexical';
 import lexicalUtils from '@lexical/utils';
 import lexicalComposerContext from '@lexical/react/LexicalComposerContext.js';
 import { useCallback, useEffect, useRef } from "react";
-import { $isYouTubeNode } from "./node";
+import { $isYouTubeNode } from "./node.js";
 
 type YouTubeComponentProps = Readonly<{
   className: Readonly<{
