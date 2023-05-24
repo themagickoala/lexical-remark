@@ -1,4 +1,4 @@
-import { CollapsibleContentNode } from '../../extensions/collapsible/content/node';
+import { CollapsibleContentNode } from '../../extensions/collapsible/content/node.js';
 import { CollapsibleContainerNode } from '../../extensions/collapsible/container/node.js';
 import { HTML } from 'mdast';
 import { Handler } from "./index.js";

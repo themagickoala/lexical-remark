@@ -18,11 +18,11 @@ export { createRemarkImport, $createRemarkImport };
 export type { Handler as ImportHandler } from './import/handlers';
 
 export { ImageNode, $createImageNode, $isImageNode } from './extensions/image/node.js';
-export type { ImagePayload, SerializedImageNode } from './extensions/image/node';
+export type { ImagePayload, SerializedImageNode } from './extensions/image/node.js';
 export { ImagePlugin, INSERT_IMAGE_COMMAND } from './extensions/image/plugin.js';
 
 export { YouTubeNode, $createYouTubeNode, $isYouTubeNode } from './extensions/youtube/node.js';
-export type { SerializedYouTubeNode } from './extensions/youtube/node';
+export type { SerializedYouTubeNode } from './extensions/youtube/node.js';
 export { YouTubePlugin, INSERT_YOUTUBE_COMMAND } from './extensions/youtube/plugin.js';
 export { YOUTUBE_URL_REGEX } from './plugins/remark-youtube.js';
 
