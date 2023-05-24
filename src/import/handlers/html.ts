@@ -22,7 +22,7 @@ export const html: Handler<HTML> = (node, { parent, formatting, rootHandler }) =
 
       const summaryNode = detailsNode.childNodes.find((n): n is Element => 'tagName' in n && n.tagName === 'summary');
       if (!!summaryNode) {
-        const summaryText = summaryNode.childNodes.find((n): n is TextNode => 'value' in n && n.nodeName === '#text')?.value;
+        const summaryText = summaryNode.childNodes.find((n): n is TextNode => 'value' in n && n.nodeName === '#text')?.value ?? '';
         const titleNode = $createCollapsibleTitleNode();
         titleNode.append(lexical.$createTextNode(summaryText));
 

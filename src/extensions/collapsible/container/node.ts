@@ -20,7 +20,8 @@ type SerializedCollapsibleContainerNode = Spread<
 export function convertDetailsElement(
   domNode: HTMLDetailsElement,
 ): DOMConversionOutput | null {
-  const isOpen = domNode.open !== undefined ? domNode.open : true;
+  const openAttr = domNode.getAttribute('open');
+  const isOpen = openAttr !== null ? openAttr === 'true' : true;
   const node = $createCollapsibleContainerNode(isOpen);
   return {
     node,

@@ -6,8 +6,9 @@ import { CollapsibleTitleNode } from '../../extensions/collapsible/title/node.js
 
 export const collapsibleContainer: Handler<CollapsibleContainerNode> = (node, { rootHandler }) => {
   const [titleChild, contentChild] = node.getChildren();
-  const titleText = titleChild instanceof CollapsibleTitleNode ? titleChild.getChildren()[0]?.getTextContent() : '';
-  const contentText = contentChild instanceof CollapsibleContentNode ? contentChild.getChildren()[0]?.getChildren()[0]?.getTextContent() : '';
+  const titleText = titleChild instanceof CollapsibleTitleNode ? titleChild.getChildren()[0]?.getTextContent() ?? '' : '';
+  const contentText = contentChild instanceof CollapsibleContentNode ? contentChild.getChildren()[0]?.getChildren()[0]?.getTextContent() ?? '' : '';
+  console.log({ titleText });
   const remarkNode: HTML = {
     type: 'html',
     value: `<details${node.getOpen() ? ' open' : ''}><summary>${titleText}</summary>${contentText}</details>`

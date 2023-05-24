@@ -98,6 +98,11 @@ const testCases: TestCase[] = [
     name: 'collapsible',
     markdown: '<details><summary>Collapsible</summary>Content</details>',
     html: '<details open="false"><summary><span>Collapsible</span></summary><div data-lexical-collapsible-content="true"><p><span>Content</span></p></div></details>'
+  },
+  {
+    name: 'collapsible empty title',
+    markdown: '<details><summary></summary>Content</details>',
+    html: '<details open="false"><summary></summary><div data-lexical-collapsible-content="true"><p><span>Content</span></p></div></details>'
   }
 ];
 
