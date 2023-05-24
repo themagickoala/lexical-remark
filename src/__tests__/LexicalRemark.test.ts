@@ -1,3 +1,6 @@
+import { CollapsibleTitleNode } from './../extensions/collapsible/title/node';
+import { CollapsibleContentNode } from './../extensions/collapsible/content/node';
+import { CollapsibleContainerNode } from './../extensions/collapsible/container/node';
 import { YouTubeNode } from './../extensions/youtube/node';
 import { ImageNode } from '../extensions/image/node';
 import { test, expect, bench } from 'vitest';
@@ -86,6 +89,16 @@ const testCases: TestCase[] = [
     markdown: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     html: '<iframe data-lexical-youtube="dQw4w9WgXcQ" width="560" height="315" src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" title="YouTube video"></iframe>',
   },
+  {
+    name: 'video',
+    markdown: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    html: '<iframe data-lexical-youtube="dQw4w9WgXcQ" width="560" height="315" src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" title="YouTube video"></iframe>',
+  },
+  {
+    name: 'collapsible',
+    markdown: '<details><summary>Collapsible</summary>Content</details>',
+    html: '<details open="false"><summary><span>Collapsible</span></summary><div data-lexical-collapsible-content="true"><p><span>Content</span></p></div></details>'
+  }
 ];
 
 export const editorTheme: EditorThemeClasses = {
@@ -96,24 +109,27 @@ export const editorTheme: EditorThemeClasses = {
   },
 };
 
+const nodes = [
+  HeadingNode,
+  ListNode,
+  ListItemNode,
+  QuoteNode,
+  CodeNode,
+  CodeHighlightNode,
+  LinkNode,
+  ImageNode,
+  YouTubeNode,
+  CollapsibleContainerNode,
+  CollapsibleContentNode,
+  CollapsibleTitleNode,
+];
+
 testCases.forEach(({ name, markdown, html, skipExport }) => {
   test(`can import "${name}"`, () => {
     const editor = createHeadlessEditor({
-      nodes: [
-        HeadingNode,
-        ListNode,
-        ListItemNode,
-        QuoteNode,
-        CodeNode,
-        CodeHighlightNode,
-        LinkNode,
-        ImageNode,
-        YouTubeNode,
-      ],
+      nodes,
       theme: editorTheme,
     });
-
-
 
     editor.update(
       async () => $createRemarkImport()(markdown),
@@ -130,17 +146,7 @@ testCases.forEach(({ name, markdown, html, skipExport }) => {
   if (!skipExport) {
     test(`can export "${name}"`, () => {
       const editor = createHeadlessEditor({
-        nodes: [
-          HeadingNode,
-          ListNode,
-          ListItemNode,
-          QuoteNode,
-          CodeNode,
-          CodeHighlightNode,
-          LinkNode,
-          ImageNode,
-          YouTubeNode,
-        ],
+        nodes,
         theme: editorTheme,
       });
 

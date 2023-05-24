@@ -17,6 +17,7 @@ import { strong } from "./strong.js";
 import { text } from "./text.js";
 import { thematicBreak } from "./thematicBreak.js";
 import { youtube } from "./youtube.js";
+import { html } from "./html.js";
 
 export type Handler<
   NodeType extends Node = Node,
@@ -36,6 +37,7 @@ export const importFromRemarkTree = (tree: Node, handlers: Record<string, Handle
         emphasis,
         hardBreak,
         heading,
+        html,
         image,
         inlineCode,
         link,

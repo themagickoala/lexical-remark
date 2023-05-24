@@ -32,11 +32,12 @@
     "@lexical/list": "0.x",
     "@lexical/react": "0.x",
     "@lexical/rich-text": "0.x",
+    "@lexical/utils": "0.x",
     "lexical": "0.x",
     "react": "^18.2.0"
   },
   "dependencies": {
-    "@lexical/utils": "^0.10.0",
+    "parse5": "^7.1.2",
     "remark-parse": "^10.0.1",
     "remark-stringify": "^10.0.2",
     "unified": "^10.1.2",

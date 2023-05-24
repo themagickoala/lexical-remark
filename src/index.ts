@@ -25,3 +25,24 @@ export { YouTubeNode, $createYouTubeNode, $isYouTubeNode } from './extensions/yo
 export type { SerializedYouTubeNode } from './extensions/youtube/node';
 export { YouTubePlugin, INSERT_YOUTUBE_COMMAND } from './extensions/youtube/plugin.js';
 export { YOUTUBE_URL_REGEX } from './plugins/remark-youtube.js';
+
+export {
+  $createCollapsibleContainerNode,
+  $isCollapsibleContainerNode,
+  CollapsibleContainerNode,
+} from './extensions/collapsible/container/node.js';
+export {
+  $createCollapsibleContentNode,
+  $isCollapsibleContentNode,
+  CollapsibleContentNode,
+} from './extensions/collapsible/content/node.js';
+export {
+  $createCollapsibleTitleNode,
+  $isCollapsibleTitleNode,
+  CollapsibleTitleNode,
+} from './extensions/collapsible/title/node.js';
+export {
+  CollapsiblePlugin,
+  INSERT_COLLAPSIBLE_COMMAND,
+  TOGGLE_COLLAPSIBLE_COMMAND,
+} from './extensions/collapsible/plugin.js';

@@ -2,6 +2,7 @@ import type { LexicalNode } from "lexical";
 import { Node } from "../../types.js";
 import { zwitchFunc } from "../../utils/zwitch-func.js";
 import { code } from "./code.js";
+import { collapsibleContainer } from "./collapsibleContainer.js";
 import { heading } from "./heading.js";
 import { horizontalrule } from "./horizontalrule.js";
 import { image } from "./image.js";
@@ -38,6 +39,7 @@ export const exportToRemarkTree = (tree: LexicalNode, { handlers = {} }: { handl
         horizontalrule,
         image,
         youtube,
+        'collapsible-container': collapsibleContainer,
         ...handlers,
       },
       unknown: (_node, _args) => console.log('unknown node type'),
