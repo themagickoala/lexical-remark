@@ -43,6 +43,14 @@ const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => 
       parser.append(lexicalNode);
     } else {
       parser.stack.push(contentNode);
+      if (match.groups.content) {
+        const contentTree = fromMarkdown(match.groups.content.trim());
+        const nestedParser = new Parser();
+        const nestedContent = root(contentTree, nestedParser).getChildren();
+        if (nestedContent && Array.isArray(nestedContent)) {
+          contentNode.append(...nestedContent);
+        }
+      }
     }
     return true;
   }

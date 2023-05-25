@@ -116,7 +116,7 @@ const testCases: TestCase[] = [
   },
   {
     name: 'collapsible complex',
-    markdown: '<details><summary>Collapsible</summary>\n\n# This is some markdown content\n\n- I\'m making a list\n- I\'m checking it twice\n- I\'m going to [find](https://google.com) out who\'s **naughty** and *nice*\n</details>',
+    markdown: '<details><summary>Collapsible</summary>\n# This is some markdown content\n\n- I\'m making a list\n- I\'m checking it twice\n- I\'m going to [find](https://google.com) out who\'s **naughty** and *nice*\n</details>',
     html: `<details open="false"><summary><span>Collapsible</span></summary><div data-lexical-collapsible-content="true"><h1><span>This is some markdown content</span></h1><ul><li value="1"><span>I'm making a list</span></li><li value="2"><span>I'm checking it twice</span></li><li value="3"><span>I'm going to </span><a href="https://google.com"><span>find</span></a><span> out who's </span><b><strong>naughty</strong></b><span> and </span><i><em class="italic">nice</em></i></li></ul></div></details>`,
     skipExport: true,
   },
