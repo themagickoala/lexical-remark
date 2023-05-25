@@ -11,7 +11,7 @@ function lexicalToRemark(rootNode: RootNode, options: { handlers?: Record<string
 
 export function serializeFromRemark(tree: Root) {
   const file = unified()
-    .use(remarkStringify, { fences: true, fence: '`' })
+    .use(remarkStringify, { fences: true, fence: '`', bullet: '-', listItemIndent: 'one' })
     .stringify(tree);
 
   return String(file).trimEnd();
