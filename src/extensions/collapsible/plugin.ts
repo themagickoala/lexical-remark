@@ -23,7 +23,7 @@ import {
   CollapsibleTitleNode,
 } from './title/node.js';
 
-export const INSERT_COLLAPSIBLE_COMMAND = lexical.createCommand<void>();
+export const INSERT_COLLAPSIBLE_COMMAND = lexical.createCommand<string | void>();
 export const TOGGLE_COLLAPSIBLE_COMMAND = lexical.createCommand<NodeKey>();
 
 export function CollapsiblePlugin(): null {
@@ -266,9 +266,12 @@ export function CollapsiblePlugin(): null {
       ),
       editor.registerCommand(
         INSERT_COLLAPSIBLE_COMMAND,
-        () => {
+        (payload) => {
           editor.update(() => {
             const title = $createCollapsibleTitleNode();
+            if (payload) {
+              title.append(lexical.$createTextNode(payload));
+            }
             lexical.$insertNodes([
               $createCollapsibleContainerNode(true).append(
                 title,
