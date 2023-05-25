@@ -1,11 +1,13 @@
 import lexicalLink from "@lexical/link";
 import { Link } from "mdast";
-import { Handler } from "./index.js";
+import { Handler } from "../parser.js";
 
-export const link: Handler<Link, true> = (node, { parent, formatting = [], rootHandler }) => {
+export const link: Handler<Link> = (node, parser) => {
   const lexicalNode = lexicalLink.$createLinkNode(node.url, { title: node.title });
+  parser.stack.push(lexicalNode);
   node.children.forEach((child) => {
-    rootHandler(child, { parent: lexicalNode, formatting, rootHandler });
+    parser.parse(child);
   });
-  parent.append(lexicalNode);
+  parser.stack.pop();
+  parser.append(lexicalNode);
 };

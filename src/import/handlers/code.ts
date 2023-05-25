@@ -1,9 +1,9 @@
 import lexicalCode from "@lexical/code";
 import lexical from "lexical";
-import { Code, Text } from "mdast";
-import { Handler } from "./index.js";
+import { Code } from "mdast";
+import { Handler } from "../parser.js";
 
-export const code: Handler<Code> = (node, { rootHandler, parent, formatting }) => {
+export const code: Handler<Code> = (node, parser) => {
   const lexicalNode = lexicalCode.$createCodeNode();
   const lines = node.value.split('\n');
   lines.forEach((line, index) => {
@@ -12,9 +12,5 @@ export const code: Handler<Code> = (node, { rootHandler, parent, formatting }) =
     }
     lexicalNode.append(lexicalCode.$createCodeHighlightNode(line));
   });
-  if (parent) {
-    parent.append(lexicalNode);
-  } else {
-    return lexicalNode;
-  }
+  parser.append(lexicalNode);
 };

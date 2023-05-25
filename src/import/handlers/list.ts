@@ -1,18 +1,15 @@
 import lexicalList from "@lexical/list";
 import { List } from "mdast";
-import { Handler } from "./index.js";
+import { Handler } from "../parser.js";
 
-export const list: Handler<List> = (node, { parent, formatting, rootHandler }) => {
+export const list: Handler<List> = (node, parser) => {
   const lexicalNode = lexicalList.$createListNode(node.ordered ? "number" : "bullet");
+  parser.stack.push(lexicalNode);
   node.children.forEach((child) => {
     if (child.type === 'listItem') {
-      rootHandler(child, { parent: lexicalNode, formatting, rootHandler });
+      parser.parse(child);
     }
   });
-  
-  if (parent) {
-    parent.append(lexicalNode);
-  } else {
-    return lexicalNode;
-  }
+  parser.stack.pop();
+  parser.append(lexicalNode);
 }

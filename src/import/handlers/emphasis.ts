@@ -1,8 +1,10 @@
 import { Emphasis } from "mdast";
-import { Handler } from "./index.js";
+import { Handler } from "../parser.js";
 
-export const emphasis: Handler<Emphasis> = (node, { parent, formatting = [], rootHandler }) => {
+export const emphasis: Handler<Emphasis> = (node, parser) => {
+  parser.formatting.push('italic');
   node.children.forEach((child) => {
-    rootHandler(child, { parent, formatting: [...formatting, 'italic'], rootHandler });
+    parser.parse(child);
   });
+  parser.formatting.pop();
 };

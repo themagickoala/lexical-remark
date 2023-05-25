@@ -1,8 +1,10 @@
 import { Strong } from "mdast";
-import { Handler } from "./index.js";
+import { Handler } from "../parser.js";
 
-export const strong: Handler<Strong, true> = (node, { parent, formatting = [], rootHandler }) => {
+export const strong: Handler<Strong> = (node, parser) => {
+  parser.formatting.push('bold');
   node.children.forEach((child) => {
-    rootHandler(child, { parent, formatting: [...formatting, 'bold'], rootHandler });
+    parser.parse(child);
   });
+  parser.formatting.pop();
 };

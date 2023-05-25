@@ -1,55 +1,67 @@
+import { Parser } from '../parser.js';
 import lexical from "lexical";
 import { HTML } from "mdast";
-import { parseFragment, serializeOuter } from "parse5";
-import type { Element, TextNode } from 'parse5/dist/tree-adapters/default.js';
 import { $createCollapsibleContainerNode } from "../../extensions/collapsible/container/node.js";
 import { $createCollapsibleContentNode } from "../../extensions/collapsible/content/node.js";
 import { $createCollapsibleTitleNode } from "../../extensions/collapsible/title/node.js";
-import { Handler } from "./index.js";
+import { Handler } from "../parser.js";
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { root } from "./root.js";
 
-export const html: Handler<HTML> = (node, { parent, formatting, rootHandler }) => {
-  let lexicalNode: lexical.LexicalNode | undefined;
-  const parsedNode = parseFragment(node.value);
+const detailsRegex = /^<details\s*(?<openAttr>open(=['"](?<openAttrValue>true|false)['"])?)?><summary>(?<title>.*?)<\/summary>(?<content>.*?)(?<closingTag><\/details>)?$/s;
+const closingTagRegex = /^<\/details>$/s;
 
-  if (parsedNode.childNodes.length === 1) {
-    const childNode = parsedNode.childNodes[0];
+const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => boolean = (node, parser) => {
+  const match = node.value.match(detailsRegex);
 
-    if ('tagName' in childNode && childNode.nodeName === "details") {
-      const detailsNode = childNode as unknown as Element;
+  if (match?.groups) {
+    const { openAttr, openAttrValue } = match.groups;
+    const isOpen = !!match.groups.openAttr && match.groups.openAttrValue !== 'false';
+    const lexicalNode = $createCollapsibleContainerNode(isOpen);
 
-      const openAttr = detailsNode.attrs.find((a) => a.name === 'open');
-      const isOpen = !!openAttr && (openAttr.value === 'true' || openAttr.value === '');
+    const summaryText = match.groups.title;
 
-      const summaryNode = detailsNode.childNodes.find((n): n is Element => 'tagName' in n && n.tagName === 'summary');
-      if (!!summaryNode) {
-        const summaryText = summaryNode.childNodes.find((n): n is TextNode => 'value' in n && n.nodeName === '#text')?.value ?? '';
-        const titleNode = $createCollapsibleTitleNode();
-        titleNode.append(lexical.$createTextNode(summaryText));
+    const titleNode = $createCollapsibleTitleNode();
+    titleNode.append(lexical.$createTextNode(summaryText));
 
-        const remainder = detailsNode.childNodes.filter((n) => n.nodeName !== 'summary');
-        const text = remainder.reduce((p, c) => p + serializeOuter(c), '');
-        const contentTree = fromMarkdown(text.trim());
-        const contentNode = $createCollapsibleContentNode();
-        const nestedContent = root(contentTree, { parent: undefined, formatting, rootHandler });
-        if (nestedContent && Array.isArray(nestedContent)) {
-          contentNode.append(...nestedContent);
-        }
+    lexicalNode.append(titleNode);
 
-        lexicalNode = $createCollapsibleContainerNode(isOpen);
-        lexicalNode.append(titleNode, contentNode);
+    parser.stack.push(lexicalNode);
+
+    const contentNode = $createCollapsibleContentNode();
+
+    if (match.groups.closingTag) {    
+      const contentTree = fromMarkdown(match.groups.content.trim());
+      const nestedParser = new Parser();
+      const nestedContent = root(contentTree, nestedParser).getChildren();
+      if (nestedContent && Array.isArray(nestedContent)) {
+        contentNode.append(...nestedContent);
       }
+
+      lexicalNode.append(contentNode);
+      parser.stack.pop();
+      parser.append(lexicalNode);
+    } else {
+      parser.stack.push(contentNode);
     }
+    return true;
   }
 
-  if (!lexicalNode) {
-    lexicalNode = lexical.$createTextNode(node.value);
+  return false;
+};
+
+export const html: Handler<HTML> = (node, parser) => {
+  if (getLexicalNodeFromHtmlRemarkNode(node, parser)) {
+    return;
   }
-  
-  if (parent) {
-    parent.append(lexicalNode);
-  } else {
-    return lexicalNode as lexical.ElementNode;
+
+  if (closingTagRegex.test(node.value)) {
+    const contentNode = parser.stack.pop()!;
+    parser.append(contentNode);
+    const detailsNode = parser.stack.pop()!;
+    parser.append(detailsNode);
+    return;
   }
+
+  parser.append(lexical.$createParagraphNode().append(lexical.$createTextNode(node.value)));
 };

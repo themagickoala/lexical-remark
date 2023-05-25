@@ -1,9 +1,9 @@
 import lexical from "lexical";
 import { InlineCode } from "mdast";
-import { Handler } from "./index.js";
+import { Handler } from "../parser.js";
 
-export const inlineCode: Handler<InlineCode, true> = (node, { parent }) => {
+export const inlineCode: Handler<InlineCode> = (node, parser) => {
   const lexicalNode = lexical.$createTextNode(node.value);
   lexicalNode.toggleFormat('code');
-  parent.append(lexicalNode);
+  parser.append(lexicalNode);
 };

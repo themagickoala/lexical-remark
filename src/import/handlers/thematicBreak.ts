@@ -1,12 +1,8 @@
 import { ThematicBreak } from "mdast";
 import lexicalHorizontalRuleNode from '@lexical/react/LexicalHorizontalRuleNode.js';
-import { Handler } from "./index.js";
+import { Handler } from "../parser.js";
 
-export const thematicBreak: Handler<ThematicBreak> = (_, { parent }) => {
+export const thematicBreak: Handler<ThematicBreak> = (_, parser) => {
   const lexicalNode = lexicalHorizontalRuleNode.$createHorizontalRuleNode();
-  if (parent) {
-    parent.append(lexicalNode);
-  } else {
-    return lexicalNode;
-  }
+  parser.append(lexicalNode);
 };

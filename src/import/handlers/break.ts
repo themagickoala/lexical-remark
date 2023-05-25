@@ -1,8 +1,8 @@
 import lexical from "lexical";
 import { Break } from "mdast";
-import { Handler } from "./index.js";
+import { Handler } from "../parser.js";
 
-export const hardBreak: Handler<Break, true> = (_, { parent }) => {
+export const hardBreak: Handler<Break> = (_, parser) => {
   const lexicalNode = lexical.$createLineBreakNode();
-  parent.append(lexicalNode);
+  parser.append(lexicalNode);
 };

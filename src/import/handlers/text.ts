@@ -1,17 +1,17 @@
 import lexical from "lexical";
 import { Text } from "mdast";
-import { Handler } from "./index.js";
+import { Handler } from "../parser.js";
 
-export const text: Handler<Text, true> = (node, { parent, formatting = [] }) => {
+export const text: Handler<Text> = (node, parser) => {
   const lines = node.value.split(/\n/);
   lines.forEach((line, index) => {
     const lexicalNode = lexical.$createTextNode(line);
-    formatting.forEach((format) => {
+    parser.formatting.forEach((format) => {
       lexicalNode.toggleFormat(format);
     });
-    parent.append(lexicalNode);
+    parser.append(lexicalNode);
     if (index < lines.length - 1) {
-      parent.append(lexical.$createLineBreakNode());
+      parser.append(lexical.$createLineBreakNode());
     }
   });
 };

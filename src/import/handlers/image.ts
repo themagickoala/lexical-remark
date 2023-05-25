@@ -1,12 +1,8 @@
 import { Image } from "mdast";
 import { $createImageNode } from "../../extensions/image/node.js";
-import { Handler } from "./index.js";
+import { Handler } from "../parser.js";
 
-export const image: Handler<Image> = (node, { parent }) => {
+export const image: Handler<Image> = (node, parser) => {
   const lexicalNode = $createImageNode({ altText: node.alt ?? '', src: node.url });
-  if (parent) {
-    parent.append(lexicalNode);
-  } else {
-    return lexicalNode;
-  }
+  parser.append(lexicalNode);
 };

@@ -4,7 +4,7 @@ import lexicalHeadless from "@lexical/headless";
 import lexicalLink from "@lexical/link";
 import lexicalList from "@lexical/list";
 import lexicalRichText from "@lexical/rich-text";
-import { createRemarkImport } from "../import/RemarkImport";
+import { $createRemarkImport } from "../import/RemarkImport";
 import type { EditorThemeClasses } from 'lexical';
 import fs from 'fs';
 import path from 'path';
@@ -34,7 +34,7 @@ bench(`can export large text body`, () => {
   });
 
   editor.update(
-    () => createRemarkImport()(body),
+    () => $createRemarkImport()(body),
     {
       discrete: true,
     },
