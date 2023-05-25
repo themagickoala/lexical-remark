@@ -82,7 +82,7 @@ const testCases: TestCase[] = [
     name: 'image link',
     markdown: '[![image info](./pictures/image.png)](https://google.com)',
     html: '<p><a href="https://google.com"><img src="./pictures/image.png" alt="image info" width="inherit" height="inherit"></a></p>',
-    skipExport: true,
+    skipExport: true, // Lexical parsing from html gets this wrong
   },
   {
     name: 'video',
@@ -96,14 +96,24 @@ const testCases: TestCase[] = [
   },
   {
     name: 'collapsible',
-    markdown: '<details><summary>Collapsible</summary>Content</details>',
+    markdown: '<details><summary>Collapsible</summary>\nContent\n</details>',
     html: '<details open="false"><summary><span>Collapsible</span></summary><div data-lexical-collapsible-content="true"><p><span>Content</span></p></div></details>'
   },
   {
     name: 'collapsible empty title',
-    markdown: '<details><summary></summary>Content</details>',
+    markdown: '<details><summary></summary>\nContent\n</details>',
     html: '<details open="false"><summary></summary><div data-lexical-collapsible-content="true"><p><span>Content</span></p></div></details>'
-  }
+  },
+  {
+    name: 'collapsible multi-line',
+    markdown: '<details><summary>Collapsible</summary>\nContent\n</details>',
+    html: '<details open="false"><summary><span>Collapsible</span></summary><div data-lexical-collapsible-content="true"><p><span>Content</span></p></div></details>',
+  },
+  {
+    name: 'collapsible nested',
+    markdown: '<details><summary>Collapsible</summary>\n# Content\n</details>',
+    html: '<details open="false"><summary><span>Collapsible</span></summary><div data-lexical-collapsible-content="true"><h1><span>Content</span></h1></div></details>',
+  },
 ];
 
 export const editorTheme: EditorThemeClasses = {

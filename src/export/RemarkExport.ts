@@ -9,6 +9,14 @@ function lexicalToRemark(rootNode: RootNode, options: { handlers?: Record<string
   return exportToRemarkTree(rootNode, options) as Root;
 }
 
+export function serializeFromRemark(tree: Root) {
+  const file = unified()
+    .use(remarkStringify, { fences: true, fence: '`' })
+    .stringify(tree);
+
+  return String(file).trimEnd();
+}
+
 export function $createRemarkExport(handlers?: Record<string, Handler>): () => string {
   return () => {
     const root = lexical.$getRoot();
@@ -16,10 +24,6 @@ export function $createRemarkExport(handlers?: Record<string, Handler>): () => s
     const remarkTree = lexicalToRemark(root, { handlers });
     youtubeRemark()(remarkTree);
 
-    const file = unified()
-      .use(remarkStringify, { fences: true, fence: '`' })
-      .stringify(remarkTree);
-
-    return String(file).trimEnd();
+    return serializeFromRemark(remarkTree);
   };
 }

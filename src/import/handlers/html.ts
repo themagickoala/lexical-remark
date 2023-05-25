@@ -6,6 +6,8 @@ import { $createCollapsibleContainerNode } from "../../extensions/collapsible/co
 import { $createCollapsibleContentNode } from "../../extensions/collapsible/content/node.js";
 import { $createCollapsibleTitleNode } from "../../extensions/collapsible/title/node.js";
 import { Handler } from "./index.js";
+import { fromMarkdown } from 'mdast-util-from-markdown';
+import { root } from "./root.js";
 
 export const html: Handler<HTML> = (node, { parent, formatting, rootHandler }) => {
   let lexicalNode: lexical.LexicalNode | undefined;
@@ -27,9 +29,13 @@ export const html: Handler<HTML> = (node, { parent, formatting, rootHandler }) =
         titleNode.append(lexical.$createTextNode(summaryText));
 
         const remainder = detailsNode.childNodes.filter((n) => n.nodeName !== 'summary');
-        const text = remainder.reduce((p, c) => p + serializeOuter(c), '')
+        const text = remainder.reduce((p, c) => p + serializeOuter(c), '');
+        const contentTree = fromMarkdown(text.trim());
         const contentNode = $createCollapsibleContentNode();
-        contentNode.append(lexical.$createParagraphNode().append(lexical.$createTextNode(text)));
+        const nestedContent = root(contentTree, { parent: undefined, formatting, rootHandler });
+        if (nestedContent && Array.isArray(nestedContent)) {
+          contentNode.append(...nestedContent);
+        }
 
         lexicalNode = $createCollapsibleContainerNode(isOpen);
         lexicalNode.append(titleNode, contentNode);
