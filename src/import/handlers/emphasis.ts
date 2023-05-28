@@ -1,5 +1,6 @@
-import { Emphasis } from "mdast";
-import { Handler } from "../parser.js";
+import { Emphasis } from 'mdast';
+
+import { Handler } from '../parser.js';
 
 export const emphasis: Handler<Emphasis> = (node, parser) => {
   parser.formatting.push('italic');

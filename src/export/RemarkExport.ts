@@ -1,9 +1,10 @@
 import lexical, { type RootNode } from 'lexical';
-import { Root } from "mdast";
-import remarkStringify from "remark-stringify";
-import { unified } from "unified";
-import { exportToRemarkTree, Handler } from "./handlers/index.js";
+import { Root } from 'mdast';
+import remarkStringify from 'remark-stringify';
+import { unified } from 'unified';
+
 import { youtubeRemark } from '../plugins/remark-youtube.js';
+import { exportToRemarkTree, Handler } from './handlers/index.js';
 
 function lexicalToRemark(rootNode: RootNode, options: { handlers?: Record<string, Handler> } = {}) {
   return exportToRemarkTree(rootNode, options) as Root;
@@ -11,7 +12,12 @@ function lexicalToRemark(rootNode: RootNode, options: { handlers?: Record<string
 
 export function serializeFromRemark(tree: Root) {
   const file = unified()
-    .use(remarkStringify, { fences: true, fence: '`', bullet: '-', listItemIndent: 'one' })
+    .use(remarkStringify, {
+      bullet: '-',
+      fence: '`',
+      fences: true,
+      listItemIndent: 'one',
+    })
     .stringify(tree);
 
   return String(file).trimEnd();

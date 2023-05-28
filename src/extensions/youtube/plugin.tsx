@@ -1,12 +1,11 @@
 import lexicalComposerContext from '@lexical/react/LexicalComposerContext.js';
 import lexicalUtils from '@lexical/utils';
-import lexical, {type LexicalCommand} from 'lexical';
-import {useEffect} from 'react';
-import {$createYouTubeNode, YouTubeNode} from './node.js';
+import lexical, { type LexicalCommand } from 'lexical';
+import { useEffect } from 'react';
 
-export const INSERT_YOUTUBE_COMMAND: LexicalCommand<string> = lexical.createCommand(
-  'INSERT_YOUTUBE_COMMAND',
-);
+import { $createYouTubeNode, YouTubeNode } from './node.js';
+
+export const INSERT_YOUTUBE_COMMAND: LexicalCommand<string> = lexical.createCommand('INSERT_YOUTUBE_COMMAND');
 
 export function YouTubePlugin(): JSX.Element | null {
   const [editor] = lexicalComposerContext.useLexicalComposerContext();

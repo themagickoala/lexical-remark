@@ -1,6 +1,7 @@
-import lexicalList from "@lexical/list";
-import { ListItem } from "mdast";
-import { Handler } from "../parser.js";
+import lexicalList from '@lexical/list';
+import { ListItem } from 'mdast';
+
+import { Handler } from '../parser.js';
 
 export const listItem: Handler<ListItem> = (node, parser) => {
   if (!lexicalList.$isListNode(parser.stack[parser.stack.length - 1])) {

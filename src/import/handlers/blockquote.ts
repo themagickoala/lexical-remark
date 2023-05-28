@@ -1,6 +1,7 @@
-import lexicalRichText from "@lexical/rich-text";
-import { Blockquote } from "mdast";
-import { Handler } from "../parser.js";
+import lexicalRichText from '@lexical/rich-text';
+import { Blockquote } from 'mdast';
+
+import { Handler } from '../parser.js';
 
 export const blockquote: Handler<Blockquote> = (node, parser) => {
   const lexicalNode = lexicalRichText.$createQuoteNode();

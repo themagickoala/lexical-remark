@@ -1,7 +1,7 @@
-import { Content, Emphasis, InlineCode, Literal, Parent, Strong } from 'mdast';
-import { Paragraph, PhrasingContent } from 'mdast';
-import { Handler } from "./index.js";
 import lexical, { type ParagraphNode } from 'lexical';
+import { Content, Emphasis, InlineCode, Literal, Paragraph, Parent, PhrasingContent, Strong } from 'mdast';
+
+import { Handler } from './index.js';
 
 const textTypes = ['text', 'inlineCode'];
 const wrapperTypes = ['emphasis', 'strong'];
@@ -40,7 +40,11 @@ export const paragraph: Handler<ParagraphNode> = (node, { rootHandler }) => {
       } else if (isWrapperType(lastChild) && isWrapperType(newChild) && lastChild.type === newChild.type) {
         let lastChildTextNode = lastChild.children[0];
         let newChildTextNode = newChild.children[0];
-        while (isWrapperType(lastChildTextNode) && isWrapperType(newChildTextNode) && lastChildTextNode.type === newChildTextNode.type) {
+        while (
+          isWrapperType(lastChildTextNode) &&
+          isWrapperType(newChildTextNode) &&
+          lastChildTextNode.type === newChildTextNode.type
+        ) {
           lastChildTextNode = lastChildTextNode.children[0];
           newChildTextNode = newChildTextNode.children[0];
         }
@@ -59,17 +63,19 @@ export const paragraph: Handler<ParagraphNode> = (node, { rootHandler }) => {
     }
   }
   const remarkNode: Paragraph = {
+    children: children
+      .filter((child): child is PhrasingContent => !!child)
+      .reduce<PhrasingContent[]>((acc, child) => {
+        const latest = acc[acc.length - 1];
+        const latestButOne = acc[acc.length - 2];
+        if (latestButOne?.type === 'text' && latest?.type === 'break' && child.type === 'text') {
+          latestButOne.value += `\n${child.value}`;
+          acc.pop();
+          return acc;
+        }
+        return [...acc, child];
+      }, []),
     type: 'paragraph',
-    children: children.filter((child): child is PhrasingContent => !!child).reduce<PhrasingContent[]>((acc, child) => {
-      const latest = acc[acc.length - 1];
-      const latestButOne = acc[acc.length - 2];
-      if (latestButOne?.type === 'text' && latest?.type === 'break' && child.type === 'text') {
-        latestButOne.value += `\n${child.value}`;
-        acc.pop();
-        return acc;
-      }
-      return [...acc, child];
-    }, []),
   };
 
   return remarkNode;

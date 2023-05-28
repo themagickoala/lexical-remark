@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import lexical, {
   DOMConversionMap,
   DOMConversionOutput,
@@ -9,14 +10,12 @@ import lexical, {
   SerializedElementNode,
 } from 'lexical';
 
-import {$isCollapsibleContainerNode} from '../container/node.js';
-import {$isCollapsibleContentNode} from '../content/node.js';
+import { $isCollapsibleContainerNode } from '../container/node.js';
+import { $isCollapsibleContentNode } from '../content/node.js';
 
 type SerializedCollapsibleTitleNode = SerializedElementNode;
 
-export function convertSummaryElement(
-  domNode: HTMLElement,
-): DOMConversionOutput | null {
+export function convertSummaryElement(domNode: HTMLElement): DOMConversionOutput | null {
   const node = $createCollapsibleTitleNode();
   return {
     node,
@@ -53,15 +52,13 @@ export class CollapsibleTitleNode extends lexical.ElementNode {
     };
   }
 
-  static importJSON(
-    serializedNode: SerializedCollapsibleTitleNode,
-  ): CollapsibleTitleNode {
+  static importJSON(serializedNode: SerializedCollapsibleTitleNode): CollapsibleTitleNode {
     return $createCollapsibleTitleNode();
   }
 
   exportDOM(): DOMExportOutput {
     const element = document.createElement('summary');
-    return {element};
+    return { element };
   }
 
   exportJSON(): SerializedCollapsibleTitleNode {
@@ -81,17 +78,13 @@ export class CollapsibleTitleNode extends lexical.ElementNode {
     const containerNode = this.getParentOrThrow();
 
     if (!$isCollapsibleContainerNode(containerNode)) {
-      throw new Error(
-        'CollapsibleTitleNode expects to be child of CollapsibleContainerNode',
-      );
+      throw new Error('CollapsibleTitleNode expects to be child of CollapsibleContainerNode');
     }
 
     if (containerNode.getOpen()) {
       const contentNode = this.getNextSibling();
       if (!$isCollapsibleContentNode(contentNode)) {
-        throw new Error(
-          'CollapsibleTitleNode expects to have CollapsibleContentNode sibling',
-        );
+        throw new Error('CollapsibleTitleNode expects to have CollapsibleContentNode sibling');
       }
 
       const firstChild = contentNode.getFirstChild();
@@ -114,8 +107,6 @@ export function $createCollapsibleTitleNode(): CollapsibleTitleNode {
   return new CollapsibleTitleNode();
 }
 
-export function $isCollapsibleTitleNode(
-  node: LexicalNode | null | undefined,
-): node is CollapsibleTitleNode {
+export function $isCollapsibleTitleNode(node: LexicalNode | null | undefined): node is CollapsibleTitleNode {
   return node instanceof CollapsibleTitleNode;
 }

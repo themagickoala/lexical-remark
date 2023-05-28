@@ -13,7 +13,9 @@
     "build": "tsc",
     "test": "NODE_ENV=development vitest run",
     "test:preview": "vite preview --outDir html --open",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "lint": "eslint --ext .ts,.tsx ./src",
+    "lint:fix": "eslint --fix --ext .ts,.tsx ./src"
   },
   "license": "MIT",
   "version": "0.1.3",
@@ -37,6 +39,8 @@
     "react": "^18.2.0"
   },
   "dependencies": {
+    "@nexusmods/eslint-plugin-nexusmods": "^0.0.6",
+    "eslint": "^8.41.0",
     "mdast-util-from-markdown": "^1.3.0",
     "remark-parse": "^10.0.1",
     "remark-stringify": "^10.0.2",
@@ -46,6 +50,7 @@
   },
   "devDependencies": {
     "@lexical/headless": "^0.10.0",
+    "@lexical/html": "^0.10.0",
     "@types/react": "^18.2.6",
     "@vitest/ui": "^0.31.0",
     "jsdom": "^22.0.0",

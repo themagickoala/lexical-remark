@@ -1,9 +1,10 @@
-import { Emphasis, InlineCode, Strong, Text } from 'mdast';
-import { Handler } from "./index.js";
 import type { TextNode } from 'lexical';
+import { Emphasis, InlineCode, Strong, Text } from 'mdast';
+
+import { Handler } from './index.js';
 
 export const text: Handler<TextNode> = (node) => {
-  let remarkNode: Text | InlineCode = {
+  const remarkNode: Text | InlineCode = {
     type: node.hasFormat('code') ? 'inlineCode' : 'text',
     value: node.getTextContent(),
   };
@@ -12,16 +13,16 @@ export const text: Handler<TextNode> = (node) => {
 
   if (node.hasFormat('bold')) {
     const boldNode: Strong = {
-      type: 'strong',
       children: [nodeToAppend],
+      type: 'strong',
     };
     nodeToAppend = boldNode;
   }
 
   if (node.hasFormat('italic')) {
     const italicNode: Emphasis = {
-      type: 'emphasis',
       children: [nodeToAppend],
+      type: 'emphasis',
     };
     nodeToAppend = italicNode;
   }

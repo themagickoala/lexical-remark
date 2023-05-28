@@ -1,6 +1,7 @@
-import lexical from "lexical";
-import { Root } from "mdast";
-import { Handler } from "../parser.js";
+import lexical from 'lexical';
+import { Root } from 'mdast';
+
+import { Handler } from '../parser.js';
 
 export const root: Handler<Root> = (node, parser) => {
   const lexicalNode = new lexical.RootNode();

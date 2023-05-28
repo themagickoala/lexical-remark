@@ -1,12 +1,13 @@
 import { Image } from 'mdast';
-import { Handler } from "./index.js";
+
 import { ImageNode } from '../../extensions/image/node.js';
+import { Handler } from './index.js';
 
 export const image: Handler<ImageNode> = (node) => {
   const remarkNode: Image = {
+    alt: node.getAltText(),
     type: 'image',
     url: node.getSrc(),
-    alt: node.getAltText(),
   };
 
   return remarkNode;

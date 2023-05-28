@@ -1,6 +1,7 @@
 import lexical from 'lexical';
-import { Paragraph } from "mdast";
-import { Handler } from "../parser.js";
+import { Paragraph } from 'mdast';
+
+import { Handler } from '../parser.js';
 
 export const paragraph: Handler<Paragraph> = (node, parser) => {
   const lexicalNode = lexical.$createParagraphNode();

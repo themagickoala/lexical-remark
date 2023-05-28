@@ -1,10 +1,11 @@
-import { $isImageNode } from './node.js';
-import lexicalUtils from '@lexical/utils';
 import lexicalComposerContext from '@lexical/react/LexicalComposerContext.js';
 import lexicalNodeSelection from '@lexical/react/useLexicalNodeSelection.js';
-import lexical from 'lexical';
+import lexicalUtils from '@lexical/utils';
 import type { LexicalEditor, NodeKey } from 'lexical';
+import lexical from 'lexical';
 import { Suspense, useCallback, useEffect, useRef } from 'react';
+
+import { $isImageNode } from './node.js';
 
 // istanbul ignore next: not possible to reliably test with jest
 const LazyImage = ({

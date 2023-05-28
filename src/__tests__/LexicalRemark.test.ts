@@ -1,66 +1,68 @@
-import { CollapsibleTitleNode } from './../extensions/collapsible/title/node';
-import { CollapsibleContentNode } from './../extensions/collapsible/content/node';
-import { CollapsibleContainerNode } from './../extensions/collapsible/container/node';
-import { YouTubeNode } from './../extensions/youtube/node';
-import { ImageNode } from '../extensions/image/node';
-import { test, expect } from 'vitest';
-import { CodeHighlightNode, CodeNode } from "@lexical/code";
-import { createHeadlessEditor } from "@lexical/headless";
-import { LinkNode } from "@lexical/link";
-import { ListItemNode, ListNode } from "@lexical/list";
-import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import { $createRemarkImport } from "../import/RemarkImport";
+import { CodeHighlightNode, CodeNode } from '@lexical/code';
+import { createHeadlessEditor } from '@lexical/headless';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
+import { LinkNode } from '@lexical/link';
+import { ListItemNode, ListNode } from '@lexical/list';
+import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import lexical, { type EditorThemeClasses } from 'lexical';
+import { expect, test } from 'vitest';
+
 import { $createRemarkExport } from '../export/RemarkExport';
+import { ImageNode } from '../extensions/image/node';
+import { $createRemarkImport } from '../import/RemarkImport';
+import { CollapsibleContainerNode } from './../extensions/collapsible/container/node';
+import { CollapsibleContentNode } from './../extensions/collapsible/content/node';
+import { CollapsibleTitleNode } from './../extensions/collapsible/title/node';
+import { YouTubeNode } from './../extensions/youtube/node';
 
 type TestCase = {
-  name: string;
-  markdown: string;
   html: string;
+  markdown: string;
+  name: string;
   skipExport?: true;
-}
+};
 
+/* eslint-disable sort-keys */
 const testCases: TestCase[] = [
   {
     name: 'headings',
     markdown: '# A test\n\n## A test\n\n### A test\n\n#### A test\n\n##### A test\n\n###### A test',
-    html: '<h1><span>A test</span></h1><h2><span>A test</span></h2><h3><span>A test</span></h3><h4><span>A test</span></h4><h5><span>A test</span></h5><h6><span>A test</span></h6>'
+    html: '<h1><span>A test</span></h1><h2><span>A test</span></h2><h3><span>A test</span></h3><h4><span>A test</span></h4><h5><span>A test</span></h5><h6><span>A test</span></h6>',
   },
   {
     name: 'blockquotes',
     markdown: '> This is a blockquote',
-    html: '<blockquote><p><span>This is a blockquote</span></p></blockquote>'
+    html: '<blockquote><p><span>This is a blockquote</span></p></blockquote>',
   },
   {
     name: 'multi-line blockquotes',
     markdown: '> This is a blockquote\n> With multiple lines',
-    html: '<blockquote><p><span>This is a blockquote</span><br><span>With multiple lines</span></p></blockquote>'
+    html: '<blockquote><p><span>This is a blockquote</span><br><span>With multiple lines</span></p></blockquote>',
   },
   {
     name: 'links',
     markdown: '[A link to Google](https://google.com)',
-    html: '<p><a href="https://google.com"><span>A link to Google</span></a></p>'
+    html: '<p><a href="https://google.com"><span>A link to Google</span></a></p>',
   },
   {
     name: 'lists',
     markdown: '1. A list item\n2. A list item\n3. A list item',
-    html: '<ol><li value="1"><span>A list item</span></li><li value="2"><span>A list item</span></li><li value="3"><span>A list item</span></li></ol>'
+    html: '<ol><li value="1"><span>A list item</span></li><li value="2"><span>A list item</span></li><li value="3"><span>A list item</span></li></ol>',
   },
   {
     name: 'inline formatting',
     markdown: 'This is some *italic text* in a paragraph',
-    html: '<p><span>This is some </span><i><em class="italic">italic text</em></i><span> in a paragraph</span></p>'
+    html: '<p><span>This is some </span><i><em class="italic">italic text</em></i><span> in a paragraph</span></p>',
   },
   {
     name: 'inline code',
     markdown: 'This is some `inline code` in a paragraph',
-    html: '<p><span>This is some </span><code><span class="code-inline">inline code</span></code><span> in a paragraph</span></p>'
+    html: '<p><span>This is some </span><code><span class="code-inline">inline code</span></code><span> in a paragraph</span></p>',
   },
   {
     name: 'inline code',
     markdown: 'This is some ***bold and italic text*** in a paragraph',
-    html: '<p><span>This is some </span><i><b><strong class="italic">bold and italic text</strong></b></i><span> in a paragraph</span></p>'
+    html: '<p><span>This is some </span><i><b><strong class="italic">bold and italic text</strong></b></i><span> in a paragraph</span></p>',
   },
   {
     name: 'code block',
@@ -97,12 +99,12 @@ const testCases: TestCase[] = [
   {
     name: 'collapsible',
     markdown: '<details><summary>Collapsible</summary>\nContent\n</details>',
-    html: '<details open="false"><summary><span>Collapsible</span></summary><div data-lexical-collapsible-content="true"><p><span>Content</span></p></div></details>'
+    html: '<details open="false"><summary><span>Collapsible</span></summary><div data-lexical-collapsible-content="true"><p><span>Content</span></p></div></details>',
   },
   {
     name: 'collapsible empty title',
     markdown: '<details><summary></summary>\nContent\n</details>',
-    html: '<details open="false"><summary></summary><div data-lexical-collapsible-content="true"><p><span>Content</span></p></div></details>'
+    html: '<details open="false"><summary></summary><div data-lexical-collapsible-content="true"><p><span>Content</span></p></div></details>',
   },
   {
     name: 'collapsible multi-line',
@@ -116,10 +118,12 @@ const testCases: TestCase[] = [
   },
   {
     name: 'collapsible complex',
-    markdown: '<details><summary>Collapsible</summary>\n# This is some markdown content\n\n- I\'m making a list\n- I\'m checking it twice\n- I\'m going to [find](https://google.com) out who\'s **naughty** and *nice*\n</details>',
+    markdown:
+      "<details><summary>Collapsible</summary>\n# This is some markdown content\n\n- I'm making a list\n- I'm checking it twice\n- I'm going to [find](https://google.com) out who's **naughty** and *nice*\n</details>",
     html: `<details open="false"><summary><span>Collapsible</span></summary><div data-lexical-collapsible-content="true"><h1><span>This is some markdown content</span></h1><ul><li value="1"><span>I'm making a list</span></li><li value="2"><span>I'm checking it twice</span></li><li value="3"><span>I'm going to </span><a href="https://google.com"><span>find</span></a><span> out who's </span><b><strong>naughty</strong></b><span> and </span><i><em class="italic">nice</em></i></li></ul></div></details>`,
   },
 ];
+/* eslint-enable sort-keys */
 
 export const editorTheme: EditorThemeClasses = {
   code: 'code-block',
@@ -144,23 +148,18 @@ const nodes = [
   CollapsibleTitleNode,
 ];
 
-testCases.forEach(({ name, markdown, html, skipExport }) => {
+testCases.forEach(({ html, markdown, name, skipExport }) => {
   test(`can import "${name}"`, () => {
     const editor = createHeadlessEditor({
       nodes,
       theme: editorTheme,
     });
 
-    editor.update(
-      async () => $createRemarkImport()(markdown),
-      {
-        discrete: true,
-      },
-    );
+    editor.update(async () => $createRemarkImport()(markdown), {
+      discrete: true,
+    });
 
-    expect(
-      editor.getEditorState().read(() => $generateHtmlFromNodes(editor)),
-    ).toBe(html);
+    expect(editor.getEditorState().read(() => $generateHtmlFromNodes(editor))).toBe(html);
   });
 
   if (!skipExport) {
@@ -174,18 +173,16 @@ testCases.forEach(({ name, markdown, html, skipExport }) => {
         () => {
           const parser = new DOMParser();
           const dom = parser.parseFromString(html, 'text/html');
-          const nodes = $generateNodesFromDOM(editor, dom);
+          const generatedNodes = $generateNodesFromDOM(editor, dom);
           lexical.$getRoot().select();
-          lexical.$insertNodes(nodes);
+          lexical.$insertNodes(generatedNodes);
         },
         {
           discrete: true,
         },
       );
 
-      expect(
-        editor.getEditorState().read(() => $createRemarkExport()()),
-      ).toBe(markdown);
+      expect(editor.getEditorState().read(() => $createRemarkExport()())).toBe(markdown);
     });
   }
 });

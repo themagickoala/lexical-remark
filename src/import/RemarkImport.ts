@@ -2,8 +2,9 @@ import lexical from 'lexical';
 import { Root } from 'mdast';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
-import { Handler, importFromRemarkTree } from './handlers/index.js';
+
 import { remarkYoutube } from '../plugins/remark-youtube.js';
+import { Handler, importFromRemarkTree } from './handlers/index.js';
 import { Parser } from './parser.js';
 
 export function remarkLexify(this: any, handlers: Record<string, Handler> = {}) {
@@ -26,6 +27,6 @@ export function $createRemarkImport(handlers?: Record<string, Handler>): (markdo
       .use(remarkLexify, handlers)
       .processSync(markdownString);
 
-    root.append(...file.result as any);
+    root.append(...(file.result as any));
   };
 }

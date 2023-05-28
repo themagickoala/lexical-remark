@@ -1,6 +1,7 @@
-import lexical from "lexical";
-import { Text } from "mdast";
-import { Handler } from "../parser.js";
+import lexical from 'lexical';
+import { Text } from 'mdast';
+
+import { Handler } from '../parser.js';
 
 export const text: Handler<Text> = (node, parser) => {
   const lines = node.value.split(/\n/);

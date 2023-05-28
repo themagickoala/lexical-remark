@@ -1,7 +1,7 @@
-import { Content, Parent } from "mdast";
+import { Content, Parent } from 'mdast';
 
 export type YouTube = {
-  type: 'youtube',
+  type: 'youtube';
   videoId: string;
 };
 

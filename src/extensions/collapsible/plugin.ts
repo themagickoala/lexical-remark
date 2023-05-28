@@ -1,10 +1,6 @@
 import lexicalComposerContext from '@lexical/react/LexicalComposerContext.js';
 import lexicalUtils from '@lexical/utils';
-import lexical, {
-  ElementNode,
-  LexicalNode,
-  NodeKey,
-} from 'lexical';
+import lexical, { ElementNode, LexicalNode, NodeKey } from 'lexical';
 import { useEffect } from 'react';
 
 import {
@@ -12,16 +8,8 @@ import {
   $isCollapsibleContainerNode,
   CollapsibleContainerNode,
 } from './container/node.js';
-import {
-  $createCollapsibleContentNode,
-  $isCollapsibleContentNode,
-  CollapsibleContentNode,
-} from './content/node.js';
-import {
-  $createCollapsibleTitleNode,
-  $isCollapsibleTitleNode,
-  CollapsibleTitleNode,
-} from './title/node.js';
+import { $createCollapsibleContentNode, $isCollapsibleContentNode, CollapsibleContentNode } from './content/node.js';
+import { $createCollapsibleTitleNode, $isCollapsibleTitleNode, CollapsibleTitleNode } from './title/node.js';
 
 export const INSERT_COLLAPSIBLE_COMMAND = lexical.createCommand<string | void>();
 export const TOGGLE_COLLAPSIBLE_COMMAND = lexical.createCommand<NodeKey>();
@@ -30,13 +18,7 @@ export function CollapsiblePlugin(): null {
   const [editor] = lexicalComposerContext.useLexicalComposerContext();
 
   useEffect(() => {
-    if (
-      !editor.hasNodes([
-        CollapsibleContainerNode,
-        CollapsibleTitleNode,
-        CollapsibleContentNode,
-      ])
-    ) {
+    if (!editor.hasNodes([CollapsibleContainerNode, CollapsibleTitleNode, CollapsibleContentNode])) {
       throw new Error(
         'CollapsiblePlugin: CollapsibleContainerNode, CollapsibleTitleNode, or CollapsibleContentNode not registered on editor',
       );
@@ -44,23 +26,15 @@ export function CollapsiblePlugin(): null {
 
     const onEscapeUp = () => {
       const selection = lexical.$getSelection();
-      if (
-        lexical.$isRangeSelection(selection) &&
-        selection.isCollapsed() &&
-        selection.anchor.offset === 0
-      ) {
-        const container = lexicalUtils.$findMatchingParent(
-          selection.anchor.getNode(),
-          $isCollapsibleContainerNode,
-        );
+      if (lexical.$isRangeSelection(selection) && selection.isCollapsed() && selection.anchor.offset === 0) {
+        const container = lexicalUtils.$findMatchingParent(selection.anchor.getNode(), $isCollapsibleContainerNode);
 
         if ($isCollapsibleContainerNode(container)) {
           const parent = container.getParent<ElementNode>();
           if (
             parent !== null &&
             parent.getFirstChild<LexicalNode>() === container &&
-            selection.anchor.key ===
-              container.getFirstDescendant<LexicalNode>()?.getKey()
+            selection.anchor.key === container.getFirstDescendant<LexicalNode>()?.getKey()
           ) {
             container.insertBefore(lexical.$createParagraphNode());
           }
@@ -73,17 +47,11 @@ export function CollapsiblePlugin(): null {
     const onEscapeDown = () => {
       const selection = lexical.$getSelection();
       if (lexical.$isRangeSelection(selection) && selection.isCollapsed()) {
-        const container = lexicalUtils.$findMatchingParent(
-          selection.anchor.getNode(),
-          $isCollapsibleContainerNode,
-        );
+        const container = lexicalUtils.$findMatchingParent(selection.anchor.getNode(), $isCollapsibleContainerNode);
 
         if ($isCollapsibleContainerNode(container)) {
           const parent = container.getParent<ElementNode>();
-          if (
-            parent !== null &&
-            parent.getLastChild<LexicalNode>() === container
-          ) {
+          if (parent !== null && parent.getLastChild<LexicalNode>() === container) {
             const lastDescendant = container.getLastDescendant<LexicalNode>();
             if (
               lastDescendant !== null &&
@@ -117,20 +85,14 @@ export function CollapsiblePlugin(): null {
       editor.registerNodeTransform(CollapsibleTitleNode, (node) => {
         const parent = node.getParent<ElementNode>();
         if (!$isCollapsibleContainerNode(parent)) {
-          node.replace(
-            lexical.$createParagraphNode().append(...node.getChildren<LexicalNode>()),
-          );
+          node.replace(lexical.$createParagraphNode().append(...node.getChildren<LexicalNode>()));
           return;
         }
       }),
 
       editor.registerNodeTransform(CollapsibleContainerNode, (node) => {
         const children = node.getChildren<LexicalNode>();
-        if (
-          children.length !== 2 ||
-          !$isCollapsibleTitleNode(children[0]) ||
-          !$isCollapsibleContentNode(children[1])
-        ) {
+        if (children.length !== 2 || !$isCollapsibleTitleNode(children[0]) || !$isCollapsibleContentNode(children[1])) {
           for (const child of children) {
             node.insertBefore(child);
           }
@@ -146,11 +108,7 @@ export function CollapsiblePlugin(): null {
         lexical.DELETE_CHARACTER_COMMAND,
         () => {
           const selection = lexical.$getSelection();
-          if (
-            !lexical.$isRangeSelection(selection) ||
-            !selection.isCollapsed() ||
-            selection.anchor.offset !== 0
-          ) {
+          if (!lexical.$isRangeSelection(selection) || !selection.isCollapsed() || selection.anchor.offset !== 0) {
             return false;
           }
 
@@ -175,11 +133,7 @@ export function CollapsiblePlugin(): null {
         lexical.DELETE_CHARACTER_COMMAND,
         () => {
           const selection = lexical.$getSelection();
-          if (
-            !lexical.$isRangeSelection(selection) ||
-            !selection.isCollapsed() ||
-            selection.anchor.offset !== 0
-          ) {
+          if (!lexical.$isRangeSelection(selection) || !selection.isCollapsed() || selection.anchor.offset !== 0) {
             return false;
           }
 
@@ -202,46 +156,26 @@ export function CollapsiblePlugin(): null {
       // below it to allow adding more content. It's similar what $insertBlockNode
       // (mainly for decorators), except it'll always be possible to continue adding
       // new content even if trailing paragraph is accidentally deleted
-      editor.registerCommand(
-        lexical.KEY_ARROW_DOWN_COMMAND,
-        onEscapeDown,
-        lexical.COMMAND_PRIORITY_LOW,
-      ),
+      editor.registerCommand(lexical.KEY_ARROW_DOWN_COMMAND, onEscapeDown, lexical.COMMAND_PRIORITY_LOW),
 
-      editor.registerCommand(
-        lexical.KEY_ARROW_RIGHT_COMMAND,
-        onEscapeDown,
-        lexical.COMMAND_PRIORITY_LOW,
-      ),
+      editor.registerCommand(lexical.KEY_ARROW_RIGHT_COMMAND, onEscapeDown, lexical.COMMAND_PRIORITY_LOW),
 
       // When collapsible is the first child pressing up/left arrow will insert paragraph
       // above it to allow adding more content. It's similar what $insertBlockNode
       // (mainly for decorators), except it'll always be possible to continue adding
       // new content even if leading paragraph is accidentally deleted
-      editor.registerCommand(
-        lexical.KEY_ARROW_UP_COMMAND,
-        onEscapeUp,
-        lexical.COMMAND_PRIORITY_LOW,
-      ),
+      editor.registerCommand(lexical.KEY_ARROW_UP_COMMAND, onEscapeUp, lexical.COMMAND_PRIORITY_LOW),
 
-      editor.registerCommand(
-        lexical.KEY_ARROW_LEFT_COMMAND,
-        onEscapeUp,
-        lexical.COMMAND_PRIORITY_LOW,
-      ),
+      editor.registerCommand(lexical.KEY_ARROW_LEFT_COMMAND, onEscapeUp, lexical.COMMAND_PRIORITY_LOW),
 
       // Handling CMD+Enter to toggle collapsible element collapsed state
       editor.registerCommand(
         lexical.INSERT_PARAGRAPH_COMMAND,
         () => {
-          // @ts-ignore
+          // @ts-expect-error cast to keyboard event
           const windowEvent: KeyboardEvent | undefined = editor._window?.event;
 
-          if (
-            windowEvent &&
-            (windowEvent.ctrlKey || windowEvent.metaKey) &&
-            windowEvent.key === 'Enter'
-          ) {
+          if (windowEvent && (windowEvent.ctrlKey || windowEvent.metaKey) && windowEvent.key === 'Enter') {
             const selection = lexical.$getPreviousSelection();
             if (lexical.$isRangeSelection(selection) && selection.isCollapsed()) {
               const parent = lexicalUtils.$findMatchingParent(
@@ -277,7 +211,7 @@ export function CollapsiblePlugin(): null {
                 title,
                 $createCollapsibleContentNode().append(lexical.$createParagraphNode()),
               ),
-              ]);
+            ]);
             title.select();
           });
           return true;

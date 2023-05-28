@@ -1,7 +1,19 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import lexicalDecoratorBlockNode, {
   type SerializedDecoratorBlockNode,
 } from '@lexical/react/LexicalDecoratorBlockNode.js';
-import type { DOMConversionMap, DOMConversionOutput, DOMExportOutput, EditorConfig, ElementFormatType, LexicalEditor, LexicalNode, NodeKey, Spread } from 'lexical';
+import type {
+  DOMConversionMap,
+  DOMConversionOutput,
+  DOMExportOutput,
+  EditorConfig,
+  ElementFormatType,
+  LexicalEditor,
+  LexicalNode,
+  NodeKey,
+  Spread,
+} from 'lexical';
+
 import { YouTubeComponent } from './component.js';
 
 export type SerializedYouTubeNode = Spread<
@@ -11,13 +23,11 @@ export type SerializedYouTubeNode = Spread<
   SerializedDecoratorBlockNode
 >;
 
-function convertYoutubeElement(
-  domNode: HTMLElement,
-): null | DOMConversionOutput {
+function convertYoutubeElement(domNode: HTMLElement): null | DOMConversionOutput {
   const videoID = domNode.getAttribute('data-lexical-youtube');
   if (videoID) {
     const node = $createYouTubeNode(videoID);
-    return {node};
+    return { node };
   }
   return null;
 }
@@ -58,10 +68,7 @@ export class YouTubeNode extends lexicalDecoratorBlockNode.DecoratorBlockNode {
     element.setAttribute('data-lexical-youtube', this.__id);
     element.setAttribute('width', '560');
     element.setAttribute('height', '315');
-    element.setAttribute(
-      'src',
-      `https://www.youtube-nocookie.com/embed/${this.__id}`,
-    );
+    element.setAttribute('src', `https://www.youtube-nocookie.com/embed/${this.__id}`);
     element.setAttribute('frameborder', '0');
     element.setAttribute(
       'allow',
@@ -69,7 +76,7 @@ export class YouTubeNode extends lexicalDecoratorBlockNode.DecoratorBlockNode {
     );
     element.setAttribute('allowfullscreen', 'true');
     element.setAttribute('title', 'YouTube video');
-    return {element};
+    return { element };
   }
 
   static importDOM(): DOMConversionMap | null {
@@ -94,10 +101,7 @@ export class YouTubeNode extends lexicalDecoratorBlockNode.DecoratorBlockNode {
     return this.__id;
   }
 
-  getTextContent(
-    _includeInert?: boolean | undefined,
-    _includeDirectionless?: false | undefined,
-  ): string {
+  getTextContent(_includeInert?: boolean | undefined, _includeDirectionless?: false | undefined): string {
     return `https://www.youtube.com/watch?v=${this.__id}`;
   }
 
@@ -122,8 +126,6 @@ export function $createYouTubeNode(videoID: string): YouTubeNode {
   return new YouTubeNode(videoID);
 }
 
-export function $isYouTubeNode(
-  node: YouTubeNode | LexicalNode | null | undefined,
-): node is YouTubeNode {
+export function $isYouTubeNode(node: YouTubeNode | LexicalNode | null | undefined): node is YouTubeNode {
   return node instanceof YouTubeNode;
 }

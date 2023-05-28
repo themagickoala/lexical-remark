@@ -1,7 +1,8 @@
-import lexicalCode from "@lexical/code";
-import lexical from "lexical";
-import { Code } from "mdast";
-import { Handler } from "../parser.js";
+import lexicalCode from '@lexical/code';
+import lexical from 'lexical';
+import { Code } from 'mdast';
+
+import { Handler } from '../parser.js';
 
 export const code: Handler<Code> = (node, parser) => {
   const lexicalNode = lexicalCode.$createCodeNode();

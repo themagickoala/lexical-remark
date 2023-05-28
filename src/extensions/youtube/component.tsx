@@ -1,11 +1,11 @@
-import { ElementFormatType, LexicalEditor, NodeKey } from "lexical";
-import lexicalBlockWithAlignableContents from "@lexical/react/LexicalBlockWithAlignableContents.js";
-import lexicalNodeSelection from '@lexical/react/useLexicalNodeSelection.js';
-import lexical from 'lexical';
-import lexicalUtils from '@lexical/utils';
+import lexicalBlockWithAlignableContents from '@lexical/react/LexicalBlockWithAlignableContents.js';
 import lexicalComposerContext from '@lexical/react/LexicalComposerContext.js';
-import { useCallback, useEffect, useRef } from "react";
-import { $isYouTubeNode } from "./node.js";
+import lexicalNodeSelection from '@lexical/react/useLexicalNodeSelection.js';
+import lexicalUtils from '@lexical/utils';
+import lexical, { ElementFormatType, LexicalEditor, NodeKey } from 'lexical';
+import { useCallback, useEffect, useRef } from 'react';
+
+import { $isYouTubeNode } from './node.js';
 
 type YouTubeComponentProps = Readonly<{
   className: Readonly<{
@@ -17,12 +17,7 @@ type YouTubeComponentProps = Readonly<{
   videoID: string;
 }>;
 
-export const YouTubeComponent = ({
-  className,
-  format,
-  nodeKey,
-  videoID,
-}: YouTubeComponentProps) => {
+export const YouTubeComponent = ({ className, format, nodeKey, videoID }: YouTubeComponentProps) => {
   const videoRef = useRef<null | HTMLIFrameElement>(null);
   const [isSelected, setSelected, clearSelection] = lexicalNodeSelection.useLexicalNodeSelection(nodeKey);
   const [editor] = lexicalComposerContext.useLexicalComposerContext();
@@ -69,17 +64,18 @@ export const YouTubeComponent = ({
     <lexicalBlockWithAlignableContents.BlockWithAlignableContents
       className={className}
       format={format}
-      nodeKey={nodeKey}>
+      nodeKey={nodeKey}
+    >
       <iframe
         ref={videoRef}
-        width="560"
-        height="315"
-        src={`https://www.youtube-nocookie.com/embed/${videoID}`}
-        frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen={true}
+        frameBorder="0"
+        height="315"
+        src={`https://www.youtube-nocookie.com/embed/${videoID}`}
         title="YouTube video"
+        width="560"
       />
     </lexicalBlockWithAlignableContents.BlockWithAlignableContents>
   );
-}
+};

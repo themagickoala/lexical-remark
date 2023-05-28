@@ -1,14 +1,15 @@
-import { Parser } from '../parser.js';
-import lexical from "lexical";
-import { HTML } from "mdast";
-import { $createCollapsibleContainerNode } from "../../extensions/collapsible/container/node.js";
-import { $createCollapsibleContentNode } from "../../extensions/collapsible/content/node.js";
-import { $createCollapsibleTitleNode } from "../../extensions/collapsible/title/node.js";
-import { Handler } from "../parser.js";
+import lexical from 'lexical';
+import { HTML } from 'mdast';
 import { fromMarkdown } from 'mdast-util-from-markdown';
-import { root } from "./root.js";
 
-const detailsRegex = /^<details\s*(?<openAttr>open(=['"](?<openAttrValue>true|false)['"])?)?><summary>(?<title>.*?)<\/summary>(?<content>.*?)(?<closingTag><\/details>)?$/s;
+import { $createCollapsibleContainerNode } from '../../extensions/collapsible/container/node.js';
+import { $createCollapsibleContentNode } from '../../extensions/collapsible/content/node.js';
+import { $createCollapsibleTitleNode } from '../../extensions/collapsible/title/node.js';
+import { Handler, Parser } from '../parser.js';
+import { root } from './root.js';
+
+const detailsRegex =
+  /^<details\s*(?<openAttr>open(=['"](?<openAttrValue>true|false)['"])?)?><summary>(?<title>.*?)<\/summary>(?<content>.*?)(?<closingTag><\/details>)?$/s;
 const closingTagRegex = /^<\/details>$/s;
 
 const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => boolean = (node, parser) => {
@@ -30,7 +31,7 @@ const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => 
 
     const contentNode = $createCollapsibleContentNode();
 
-    if (match.groups.closingTag) {    
+    if (match.groups.closingTag) {
       const contentTree = fromMarkdown(match.groups.content.trim());
       const nestedParser = new Parser();
       const nestedContent = root(contentTree, nestedParser).getChildren();
@@ -64,8 +65,10 @@ export const html: Handler<HTML> = (node, parser) => {
   }
 
   if (closingTagRegex.test(node.value)) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const contentNode = parser.stack.pop()!;
     parser.append(contentNode);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const detailsNode = parser.stack.pop()!;
     parser.append(detailsNode);
     return;

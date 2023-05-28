@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
 import lexicalComposerContext from '@lexical/react/LexicalComposerContext.js';
-import { $createImageNode, ImageNode, ImagePayload } from './node.js';
-import lexical, { LexicalCommand } from 'lexical';
 import lexicalUtils from '@lexical/utils';
+import lexical, { LexicalCommand } from 'lexical';
+import { useEffect } from 'react';
+
+import { $createImageNode, ImageNode, ImagePayload } from './node.js';
 
 type InsertImagePayload = Readonly<ImagePayload>;
 

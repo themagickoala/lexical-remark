@@ -1,13 +1,13 @@
-import { Handler, InvalidHandler, UnknownHandler } from "zwitch"
+import { Handler, InvalidHandler, UnknownHandler } from 'zwitch';
 
 type Options<
   Invalid extends InvalidHandler = InvalidHandler,
   Unknown extends UnknownHandler = UnknownHandler,
-  Handlers extends Record<string, Handler> = Record<string, Handler>
+  Handlers extends Record<string, Handler> = Record<string, Handler>,
 > = {
-  handlers: Handlers,
-  invalid: Invalid,
-  unknown: Unknown,
+  handlers: Handlers;
+  invalid: Invalid;
+  unknown: Unknown;
 };
 
 const own = {}.hasOwnProperty;
@@ -18,16 +18,16 @@ const own = {}.hasOwnProperty;
 export function zwitchFunc<
   Invalid extends InvalidHandler = InvalidHandler,
   Unknown extends UnknownHandler = UnknownHandler,
-  Handlers extends Record<string, Handler> = Record<string, Handler>
+  Handlers extends Record<string, Handler> = Record<string, Handler>,
 >(
   key: string,
-  options: Options<Invalid, Unknown, Handlers>
+  options: Options<Invalid, Unknown, Handlers>,
 ): {
-  unknown: Unknown,
-  invalid: Invalid,
-  handlers: Handlers,
-  (...parameters: Parameters<Handlers[keyof Handlers]>): ReturnType<Handlers[keyof Handlers]>,
-  (...parameters: Parameters<Unknown>): ReturnType<Unknown>
+  handlers: Handlers;
+  invalid: Invalid;
+  unknown: Unknown;
+  (...parameters: Parameters<Handlers[keyof Handlers]>): ReturnType<Handlers[keyof Handlers]>;
+  (...parameters: Parameters<Unknown>): ReturnType<Unknown>;
 } {
   const settings = options || {};
 

@@ -1,13 +1,14 @@
-import { bench } from 'vitest';
-import lexicalCode from "@lexical/code";
-import lexicalHeadless from "@lexical/headless";
-import lexicalLink from "@lexical/link";
-import lexicalList from "@lexical/list";
-import lexicalRichText from "@lexical/rich-text";
-import { $createRemarkImport } from "../import/RemarkImport";
-import type { EditorThemeClasses } from 'lexical';
+import lexicalCode from '@lexical/code';
+import lexicalHeadless from '@lexical/headless';
+import lexicalLink from '@lexical/link';
+import lexicalList from '@lexical/list';
+import lexicalRichText from '@lexical/rich-text';
 import fs from 'fs';
+import type { EditorThemeClasses } from 'lexical';
 import path from 'path';
+import { bench } from 'vitest';
+
+import { $createRemarkImport } from '../import/RemarkImport';
 
 export const editorTheme: EditorThemeClasses = {
   code: 'code-block',
@@ -33,10 +34,7 @@ bench(`can export large text body`, () => {
     theme: editorTheme,
   });
 
-  editor.update(
-    () => $createRemarkImport()(body),
-    {
-      discrete: true,
-    },
-  );
+  editor.update(() => $createRemarkImport()(body), {
+    discrete: true,
+  });
 });

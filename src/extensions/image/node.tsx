@@ -1,7 +1,16 @@
-import lexical from 'lexical';
-import type { DOMExportOutput, EditorConfig, LexicalNode, NodeKey, SerializedLexicalNode, Spread, DOMConversionMap } from 'lexical';
-import { lazy, Suspense } from 'react';
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import lexicalUtils from '@lexical/utils';
+import type {
+  DOMConversionMap,
+  DOMExportOutput,
+  EditorConfig,
+  LexicalNode,
+  NodeKey,
+  SerializedLexicalNode,
+  Spread,
+} from 'lexical';
+import lexical from 'lexical';
+import { lazy, Suspense } from 'react';
 
 const ImageComponent = lazy(() => import('./component.js'));
 
@@ -64,8 +73,8 @@ export class ImageNode extends lexical.DecoratorNode<JSX.Element> {
           return { node: $createImageNode({ altText, src }) };
         },
         priority: 1,
-      })
-    }
+      }),
+    };
   }
 
   exportDOM(): DOMExportOutput {
