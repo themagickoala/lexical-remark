@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import lexical, { type LexicalNode } from 'lexical';
 import { HTML } from 'mdast';
 import { fromMarkdown } from 'mdast-util-from-markdown';
@@ -6,11 +7,11 @@ import { $createCollapsibleContainerNode } from '../../extensions/collapsible/co
 import { $createCollapsibleContentNode } from '../../extensions/collapsible/content/node.js';
 import { $createCollapsibleTitleNode } from '../../extensions/collapsible/title/node.js';
 import { Handler, Parser } from '../parser.js';
-import { dummyRoot, root } from './root.js';
+import { dummyRoot } from './root.js';
 
 const detailsRegex =
-  /^<details\s*(?<openAttr>open(=['"](?<openAttrValue>true|false)['"])?)?><summary>(?<title>.*?)<\/summary>(?<content>.*?)(?<closingTag><\/details>)?$/s;
-const closingTagRegex = /^<\/details>$/s;
+  /^<details\s*(?<openAttr>open(=['"](?<openAttrValue>true|false)['"])?)?><summary>(?<title>.*?)<\/summary>\s*(?<content>.*?)\n*?((?<closingTag><\/details>)(?<rest>.*)|$)/s;
+const closingTagRegex = /^\n*<\/details>$/s;
 
 const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => boolean = (node, parser) => {
   const match = node.value.match(detailsRegex);
@@ -41,6 +42,15 @@ const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => 
       lexicalNode.append(contentNode);
       parser.stack.pop();
       parser.append(lexicalNode);
+      if (match.groups.rest) {
+        html(
+          {
+            type: 'html',
+            value: match.groups.rest,
+          },
+          parser,
+        );
+      }
     } else {
       parser.stack.push(contentNode);
       if (match.groups.content) {

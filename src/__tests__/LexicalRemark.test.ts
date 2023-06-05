@@ -129,6 +129,12 @@ const testCases: TestCase[] = [
     markdown: 'Some text\n\n<details><summary>Collapsible</summary>\nContent\n</details>',
     html: '<p><span>Some text</span></p><details open="false"><summary><span>Collapsible</span></summary><div data-lexical-collapsible-content="true"><p><span>Content</span></p></div></details>',
   },
+  {
+    name: 'nested details',
+    markdown:
+      'Previous content\n\n<details><summary>Spoiler</summary>\nText\n\n<details><summary>View content</summary>\nMore text\n</details>\n</details>',
+    html: '<p><span>Previous content</span></p><details open="false"><summary><span>Spoiler</span></summary><div data-lexical-collapsible-content="true"><p><span>Text</span></p><details open="false"><summary><span>View content</span></summary><div data-lexical-collapsible-content="true"><p><span>More text</span></p></div></details></div></details>',
+  },
 ];
 /* eslint-enable sort-keys */
 
