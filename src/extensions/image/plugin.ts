@@ -7,9 +7,14 @@ import { $createImageNode, ImageNode, ImagePayload } from './node.js';
 
 type InsertImagePayload = Readonly<ImagePayload>;
 
+/**
+ * A command to insert an image. The argument is an {@link ImagePayload}.
+ */
 export const INSERT_IMAGE_COMMAND: LexicalCommand<InsertImagePayload> = lexical.createCommand('INSERT_IMAGE_COMMAND');
 
-// istanbul ignore next: not possible to reliably test with jest
+/**
+ * A Lexical plugin to register the INSERT_IMAGE_COMMAND
+ */
 export const ImagePlugin = (): JSX.Element | null => {
   const [editor] = lexicalComposerContext.useLexicalComposerContext();
 

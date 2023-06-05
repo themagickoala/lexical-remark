@@ -12,10 +12,12 @@ const createRemarkExport = $createRemarkExport;
 const createRemarkImport = $createRemarkImport;
 
 export { createRemarkExport, $createRemarkExport };
+export { $convertToMarkdownViaRemark } from './export/RemarkExport.js';
 export type { Handler as ExportHandler } from './export/handlers';
 
 export { createRemarkImport, $createRemarkImport };
-export type { Handler as ImportHandler } from './import/handlers';
+export { $convertFromMarkdownViaRemark } from './import/RemarkImport.js';
+export type { Handler as ImportHandler } from './import/parser.js';
 
 export { ImageNode, $createImageNode, $isImageNode } from './extensions/image/node.js';
 export type { ImagePayload, SerializedImageNode } from './extensions/image/node.js';

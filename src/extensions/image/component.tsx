@@ -7,7 +7,6 @@ import { Suspense, useCallback, useEffect, useRef } from 'react';
 
 import { $isImageNode } from './node.js';
 
-// istanbul ignore next: not possible to reliably test with jest
 const LazyImage = ({
   altText,
   className,
@@ -32,20 +31,21 @@ const LazyImage = ({
   />
 );
 
-// istanbul ignore next: not possible to reliably test with jest
+type EditorImageComponentProps = {
+  altText: string;
+  height: 'inherit' | number;
+  nodeKey: NodeKey;
+  src: string;
+  width: 'inherit' | number;
+};
+
 export default function EditorImageComponent({
   altText,
   height,
   nodeKey,
   src,
   width,
-}: {
-  altText: string;
-  height: 'inherit' | number;
-  nodeKey: NodeKey;
-  src: string;
-  width: 'inherit' | number;
-}): JSX.Element {
+}: EditorImageComponentProps): JSX.Element {
   const imageRef = useRef<null | HTMLImageElement>(null);
   const [isSelected, setSelected, clearSelection] = lexicalNodeSelection.useLexicalNodeSelection(nodeKey);
   const [editor] = lexicalComposerContext.useLexicalComposerContext();

@@ -27,6 +27,9 @@ export function convertDetailsElement(domNode: HTMLDetailsElement): DOMConversio
   };
 }
 
+/**
+ * A Lexical node to represent an HTML details container
+ */
 export class CollapsibleContainerNode extends lexical.ElementNode {
   __open: boolean;
 
@@ -95,24 +98,45 @@ export class CollapsibleContainerNode extends lexical.ElementNode {
     };
   }
 
+  /**
+   * Sets the open state of the details container
+   */
   setOpen(open: boolean): void {
     const writable = this.getWritable();
     writable.__open = open;
   }
 
+  /**
+   * Gets the open state of the details container
+   */
   getOpen(): boolean {
     return this.getLatest().__open;
   }
 
+  /**
+   * Toggles the open state of the details container
+   */
   toggleOpen(): void {
     this.setOpen(!this.getOpen());
   }
 }
 
+/**
+ * Creates a Collapsible Container node with an initial open state
+ *
+ * @param isOpen The initial open state of the container
+ * @returns A Collapsible Container node
+ */
 export function $createCollapsibleContainerNode(isOpen: boolean): CollapsibleContainerNode {
   return new CollapsibleContainerNode(isOpen);
 }
 
+/**
+ * A typeguard function to assert on a Collapsible Container node
+ *
+ * @param node A Lexical node
+ * @returns true if the node is a Collapsible Container node, otherwise false
+ */
 export function $isCollapsibleContainerNode(node: LexicalNode | null | undefined): node is CollapsibleContainerNode {
   return node instanceof CollapsibleContainerNode;
 }

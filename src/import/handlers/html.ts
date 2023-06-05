@@ -1,4 +1,4 @@
-import lexical from 'lexical';
+import lexical, { type LexicalNode } from 'lexical';
 import { HTML } from 'mdast';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 
@@ -6,7 +6,7 @@ import { $createCollapsibleContainerNode } from '../../extensions/collapsible/co
 import { $createCollapsibleContentNode } from '../../extensions/collapsible/content/node.js';
 import { $createCollapsibleTitleNode } from '../../extensions/collapsible/title/node.js';
 import { Handler, Parser } from '../parser.js';
-import { root } from './root.js';
+import { dummyRoot, root } from './root.js';
 
 const detailsRegex =
   /^<details\s*(?<openAttr>open(=['"](?<openAttrValue>true|false)['"])?)?><summary>(?<title>.*?)<\/summary>(?<content>.*?)(?<closingTag><\/details>)?$/s;
@@ -16,7 +16,6 @@ const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => 
   const match = node.value.match(detailsRegex);
 
   if (match?.groups) {
-    const { openAttr, openAttrValue } = match.groups;
     const isOpen = !!match.groups.openAttr && match.groups.openAttrValue !== 'false';
     const lexicalNode = $createCollapsibleContainerNode(isOpen);
 
@@ -34,7 +33,7 @@ const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => 
     if (match.groups.closingTag) {
       const contentTree = fromMarkdown(match.groups.content.trim());
       const nestedParser = new Parser();
-      const nestedContent = root(contentTree, nestedParser).getChildren();
+      const nestedContent = dummyRoot(contentTree, nestedParser).getChildren();
       if (nestedContent && Array.isArray(nestedContent)) {
         contentNode.append(...nestedContent);
       }
@@ -47,7 +46,7 @@ const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => 
       if (match.groups.content) {
         const contentTree = fromMarkdown(match.groups.content.trim());
         const nestedParser = new Parser();
-        const nestedContent = root(contentTree, nestedParser).getChildren();
+        const nestedContent = dummyRoot(contentTree, nestedParser).getChildren();
         if (nestedContent && Array.isArray(nestedContent)) {
           contentNode.append(...nestedContent);
         }
@@ -66,10 +65,10 @@ export const html: Handler<HTML> = (node, parser) => {
 
   if (closingTagRegex.test(node.value)) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const contentNode = parser.stack.pop()!;
+    const contentNode = parser.stack.pop() as LexicalNode;
     parser.append(contentNode);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const detailsNode = parser.stack.pop()!;
+    const detailsNode = parser.stack.pop() as LexicalNode;
     parser.append(detailsNode);
     return;
   }

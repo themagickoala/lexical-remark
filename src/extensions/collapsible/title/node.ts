@@ -22,6 +22,9 @@ export function convertSummaryElement(domNode: HTMLElement): DOMConversionOutput
   };
 }
 
+/**
+ * A Lexical node to represent an HTML summary element
+ */
 export class CollapsibleTitleNode extends lexical.ElementNode {
   static getType(): string {
     return 'collapsible-title';
@@ -103,10 +106,21 @@ export class CollapsibleTitleNode extends lexical.ElementNode {
   }
 }
 
+/**
+ * Creates a Collapsible Title node
+ *
+ * @returns A Collapsible Title node
+ */
 export function $createCollapsibleTitleNode(): CollapsibleTitleNode {
   return new CollapsibleTitleNode();
 }
 
+/**
+ * A typeguard function to assert on a Collapsible Title node
+ *
+ * @param node A Lexical node
+ * @returns true if the node is a Collapsible Title node, otherwise false
+ */
 export function $isCollapsibleTitleNode(node: LexicalNode | null | undefined): node is CollapsibleTitleNode {
   return node instanceof CollapsibleTitleNode;
 }

@@ -2,6 +2,7 @@ import { LexicalNode, RootNode, TextFormatType } from 'lexical';
 import { Root } from 'mdast';
 import { zwitch } from 'zwitch';
 
+import { DummyRootNode } from '../extensions/collapsible/dummyRoot/node.js';
 import { Node } from '../types.js';
 import { blockquote } from './handlers/blockquote.js';
 import { hardBreak } from './handlers/break.js';
@@ -24,10 +25,10 @@ import { youtube } from './handlers/youtube.js';
 export type Handler<TNodeType extends Node = Node> = (
   node: TNodeType,
   parser: Parser,
-) => TNodeType extends Root ? RootNode : void;
+) => TNodeType extends Root ? RootNode | DummyRootNode : void;
 
 export class Parser {
-  stack: LexicalNode[] = [];
+  stack: (LexicalNode | DummyRootNode)[] = [];
 
   formatting: TextFormatType[] = [];
 

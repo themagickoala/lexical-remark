@@ -8,6 +8,7 @@ import lexical, { type EditorThemeClasses } from 'lexical';
 import { expect, test } from 'vitest';
 
 import { $createRemarkExport } from '../export/RemarkExport';
+import { DummyRootNode } from '../extensions/collapsible/dummyRoot/node.js';
 import { ImageNode } from '../extensions/image/node';
 import { $createRemarkImport } from '../import/RemarkImport';
 import { CollapsibleContainerNode } from './../extensions/collapsible/container/node';
@@ -19,6 +20,7 @@ type TestCase = {
   html: string;
   markdown: string;
   name: string;
+  only?: true;
   skipExport?: true;
 };
 
@@ -122,6 +124,11 @@ const testCases: TestCase[] = [
       "<details><summary>Collapsible</summary>\n# This is some markdown content\n\n- I'm making a list\n- I'm checking it twice\n- I'm going to [find](https://google.com) out who's **naughty** and *nice*\n</details>",
     html: `<details open="false"><summary><span>Collapsible</span></summary><div data-lexical-collapsible-content="true"><h1><span>This is some markdown content</span></h1><ul><li value="1"><span>I'm making a list</span></li><li value="2"><span>I'm checking it twice</span></li><li value="3"><span>I'm going to </span><a href="https://google.com"><span>find</span></a><span> out who's </span><b><strong>naughty</strong></b><span> and </span><i><em class="italic">nice</em></i></li></ul></div></details>`,
   },
+  {
+    name: 'collapsible with previous content',
+    markdown: 'Some text\n\n<details><summary>Collapsible</summary>\nContent\n</details>',
+    html: '<p><span>Some text</span></p><details open="false"><summary><span>Collapsible</span></summary><div data-lexical-collapsible-content="true"><p><span>Content</span></p></div></details>',
+  },
 ];
 /* eslint-enable sort-keys */
 
@@ -148,8 +155,8 @@ const nodes = [
   CollapsibleTitleNode,
 ];
 
-testCases.forEach(({ html, markdown, name, skipExport }) => {
-  test(`can import "${name}"`, () => {
+testCases.forEach(({ html, markdown, name, only, skipExport }) => {
+  (only ? test.only : test)(`can import "${name}"`, () => {
     const editor = createHeadlessEditor({
       nodes,
       theme: editorTheme,
@@ -163,7 +170,7 @@ testCases.forEach(({ html, markdown, name, skipExport }) => {
   });
 
   if (!skipExport) {
-    test(`can export "${name}"`, () => {
+    (only ? test.only : test)(`can export "${name}"`, () => {
       const editor = createHeadlessEditor({
         nodes,
         theme: editorTheme,

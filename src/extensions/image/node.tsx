@@ -15,10 +15,29 @@ import { lazy, Suspense } from 'react';
 const ImageComponent = lazy(() => import('./component.js'));
 
 export interface ImagePayload {
+  /**
+   * The alt text of the image, for screen readers
+   */
   altText: string;
+
+  /**
+   * The height of the image, in pixels
+   */
   height?: number;
+
+  /**
+   * The key id of the node
+   */
   key?: NodeKey;
+
+  /**
+   * The image source url
+   */
   src: string;
+
+  /**
+   * The width of the image, in pixels
+   */
   width?: number;
 }
 
@@ -34,7 +53,9 @@ export type SerializedImageNode = Spread<
   SerializedLexicalNode
 >;
 
-// istanbul ignore next: not possible to reliably test with jest
+/**
+ * A Lexical node to represent an image
+ */
 export class ImageNode extends lexical.DecoratorNode<JSX.Element> {
   __src: string;
 
@@ -121,10 +142,16 @@ export class ImageNode extends lexical.DecoratorNode<JSX.Element> {
     return false;
   }
 
+  /**
+   * Returns the image source url
+   */
   getSrc(): string {
     return this.__src;
   }
 
+  /**
+   * Returns the alt text of the image
+   */
   getAltText(): string {
     return this.__altText;
   }
@@ -144,12 +171,21 @@ export class ImageNode extends lexical.DecoratorNode<JSX.Element> {
   }
 }
 
-// istanbul ignore next: not possible to reliably test with jest
+/**
+ * Creates an Image node from image props
+ *
+ * @returns An Image node
+ */
 export function $createImageNode({ altText, height, key, src, width }: ImagePayload): ImageNode {
   return lexical.$applyNodeReplacement(new ImageNode(src, altText, width, height, key));
 }
 
-// istanbul ignore next: not possible to reliably test with jest
+/**
+ * A typeguard function to assert on an Image node
+ *
+ * @param node A Lexical node
+ * @returns true if the node is an Image node, otherwise false
+ */
 export function $isImageNode(node: LexicalNode | null | undefined): node is ImageNode {
   return node instanceof ImageNode;
 }

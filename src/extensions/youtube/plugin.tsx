@@ -5,8 +5,14 @@ import { useEffect } from 'react';
 
 import { $createYouTubeNode, YouTubeNode } from './node.js';
 
+/**
+ * A command to insert an embedded YouTube video. The argument is a video id.
+ */
 export const INSERT_YOUTUBE_COMMAND: LexicalCommand<string> = lexical.createCommand('INSERT_YOUTUBE_COMMAND');
 
+/**
+ * A Lexical plugin to register the INSERT_YOUTUBE_COMMAND
+ */
 export function YouTubePlugin(): JSX.Element | null {
   const [editor] = lexicalComposerContext.useLexicalComposerContext();
 

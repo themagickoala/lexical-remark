@@ -4,9 +4,21 @@ import { visit } from 'unist-util-visit';
 
 import { Node, YouTube } from '../types';
 
+/**
+ * A regular expression to detect a YouTube url and parse out the video id as the sixth capture group
+ *
+ * @example
+ * function getVideoId(value: string) {
+ *   const match = value.match(YOUTUBE_URL_REGEX);
+ *   return !!match ? match[6] : null;
+ * }
+ */
 export const YOUTUBE_URL_REGEX =
   /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:watch\?v=|embed\/|shorts\/|v\/)?)([\w\-]+)(\S+)?$/;
 
+/**
+ * A remark plugin to enrich an mdast node tree by converting paragraph nodes containing only a YouTube url into YouTube nodes
+ */
 export function remarkYoutube(this: any) {
   return convertYoutubeParagraphs;
 }
@@ -20,7 +32,7 @@ function convertYoutubeParagraphs(tree: Node) {
     delete (tree as Paragraph).children;
   }
 
-  visit(tree, function (node, _, parent) {
+  visit(tree, function (node) {
     const visitedVideoId = isYoutubeParagraphNode(node);
     if (visitedVideoId) {
       node.type = 'youtube';
@@ -40,6 +52,9 @@ function isYoutubeParagraphNode(node: Node) {
   return false;
 }
 
+/**
+ * A remark plugin to simplify an mdast node tree by converting YouTube nodes back to paragraph nodes
+ */
 export function youtubeRemark(this: any) {
   return convertToYoutubeParagraphs;
 }

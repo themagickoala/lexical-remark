@@ -17,6 +17,9 @@ export function convertCollapsibleContentElement(domNode: HTMLElement): DOMConve
   };
 }
 
+/**
+ * A Lexical node to represent the content of an HTML details container which exists outside of the summary
+ */
 export class CollapsibleContentNode extends lexical.ElementNode {
   static getType(): string {
     return 'collapsible-content';
@@ -73,10 +76,21 @@ export class CollapsibleContentNode extends lexical.ElementNode {
   }
 }
 
+/**
+ * Creates a Collapsible Content node
+ *
+ * @returns A Collapsible Content node
+ */
 export function $createCollapsibleContentNode(): CollapsibleContentNode {
   return new CollapsibleContentNode();
 }
 
+/**
+ * A typeguard to assert on a Collapsible Content node
+ *
+ * @param node A Lexical node
+ * @returns true if the node is a Collapsible Content node, otherwise false
+ */
 export function $isCollapsibleContentNode(node: LexicalNode | null | undefined): node is CollapsibleContentNode {
   return node instanceof CollapsibleContentNode;
 }

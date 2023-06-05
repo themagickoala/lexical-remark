@@ -32,6 +32,9 @@ function convertYoutubeElement(domNode: HTMLElement): null | DOMConversionOutput
   return null;
 }
 
+/**
+ * A Lexical node to represent an embedded YouTube video
+ */
 export class YouTubeNode extends lexicalDecoratorBlockNode.DecoratorBlockNode {
   __id: string;
 
@@ -122,10 +125,22 @@ export class YouTubeNode extends lexicalDecoratorBlockNode.DecoratorBlockNode {
   }
 }
 
+/**
+ * Creates a YouTube node from a video id
+ *
+ * @param videoID The YouTube video id
+ * @returns A YouTube node
+ */
 export function $createYouTubeNode(videoID: string): YouTubeNode {
   return new YouTubeNode(videoID);
 }
 
+/**
+ * A typeguard function to assert on a YouTube node
+ *
+ * @param node A Lexical node
+ * @returns true if the node is a YouTube node, otherwise false
+ */
 export function $isYouTubeNode(node: YouTubeNode | LexicalNode | null | undefined): node is YouTubeNode {
   return node instanceof YouTubeNode;
 }

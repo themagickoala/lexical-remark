@@ -11,9 +11,19 @@ import {
 import { $createCollapsibleContentNode, $isCollapsibleContentNode, CollapsibleContentNode } from './content/node.js';
 import { $createCollapsibleTitleNode, $isCollapsibleTitleNode, CollapsibleTitleNode } from './title/node.js';
 
+/**
+ * A command to insert a collapsible section. The (optional) argument is the summary text content.
+ */
 export const INSERT_COLLAPSIBLE_COMMAND = lexical.createCommand<string | void>();
+
+/**
+ * A command to toggle a collapsible section open or closed. The argument is thle key of the collapsible node.
+ */
 export const TOGGLE_COLLAPSIBLE_COMMAND = lexical.createCommand<NodeKey>();
 
+/**
+ * A Lexical plugin to register commands and event handlers related to the associated Collapsible nodes
+ */
 export function CollapsiblePlugin(): null {
   const [editor] = lexicalComposerContext.useLexicalComposerContext();
 

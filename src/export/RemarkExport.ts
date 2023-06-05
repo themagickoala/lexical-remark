@@ -23,6 +23,12 @@ export function serializeFromRemark(tree: Root) {
   return String(file).trimEnd();
 }
 
+/**
+ * Creates a parsing function which converts a Lexical state to a markdown string via remark
+ *
+ * @param handlers A set of additional handlers designed to parse Lexical nodes into remark mdast nodes
+ * @returns A function which returns the state of the active Lexical editor as a markdown string
+ */
 export function $createRemarkExport(handlers?: Record<string, Handler>): () => string {
   return () => {
     const root = lexical.$getRoot();
@@ -32,4 +38,13 @@ export function $createRemarkExport(handlers?: Record<string, Handler>): () => s
 
     return serializeFromRemark(remarkTree);
   };
+}
+
+export function $convertToMarkdownViaRemark(handlers?: Record<string, Handler>): string {
+  const root = lexical.$getRoot();
+
+  const remarkTree = lexicalToRemark(root, { handlers });
+  youtubeRemark()(remarkTree);
+
+  return serializeFromRemark(remarkTree);
 }
