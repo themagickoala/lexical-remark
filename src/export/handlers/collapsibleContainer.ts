@@ -18,7 +18,7 @@ export const collapsibleContainer: Handler<CollapsibleContainerNode> = (node, { 
   });
   const remarkNode: HTML = {
     type: 'html',
-    value: `<details${node.getOpen() ? ' open' : ''}><summary>${titleText}</summary>\n${contentText}\n</details>`,
+    value: `<details><summary>${titleText}</summary>\n${contentText}\n</details>`,
   };
 
   return remarkNode;

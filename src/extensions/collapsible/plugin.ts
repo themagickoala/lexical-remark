@@ -21,6 +21,16 @@ export const INSERT_COLLAPSIBLE_COMMAND = lexical.createCommand<string | void>()
  */
 export const TOGGLE_COLLAPSIBLE_COMMAND = lexical.createCommand<NodeKey>();
 
+function visitTree(currentNode: ElementNode, visitor: (node: LexicalNode) => void) {
+  currentNode.getChildren().forEach((childNode, i) => {
+    visitor(childNode);
+
+    if (lexical.$isElementNode(childNode)) {
+      visitTree(childNode, visitor);
+    }
+  });
+}
+
 /**
  * A Lexical plugin to register commands and event handlers related to the associated Collapsible nodes
  */
@@ -108,6 +118,16 @@ export function CollapsiblePlugin(): null {
           }
           node.remove();
         }
+      }),
+
+      editor.registerEditableListener((editable) => {
+        editor.update(() => {
+          visitTree(lexical.$getRoot(), (node) => {
+            if ($isCollapsibleContainerNode(node)) {
+              node.setOpen(editable);
+            }
+          });
+        });
       }),
 
       // This handles the case when container is collapsed and we delete its previous sibling
