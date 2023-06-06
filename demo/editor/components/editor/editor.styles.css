@@ -1,0 +1,17 @@
+.editor hr {
+  padding: 2px;
+}
+
+.editor hr,
+.editor img {
+  @apply cursor-pointer;
+}
+
+.editor hr.selected,
+.editor img.selected {
+  @apply
+    outline
+    outline-1
+    outline-accent
+    outline-offset-2;
+}

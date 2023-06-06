@@ -11,6 +11,9 @@ module.exports = {
     'plugin:@nexusmods/nexusmods/typescript',
     'plugin:@nexusmods/nexusmods/testing',
   ],
+  parserOptions: {
+    project: './tsconfig.eslint.json',
+  },
   globals: {
     vi: true,
   },
@@ -22,8 +25,9 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', {
       devDependencies: [
         '**/*.d.ts',
+        './demo/**/*.*',
         'vitest.setup.js',
-        'vitest.config.ts',
+        'vite.config.ts',
         '**/__tests__/*',
       ],
     }],

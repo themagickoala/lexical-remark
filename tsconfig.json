@@ -9,7 +9,7 @@
     "downlevelIteration": true,
     "noEmit": false,
     "outDir": "lib",
-    "rootDir": "src",
+    "rootDir": "./",
     "strict": true,
     "baseUrl": ".",
     "typeRoots": ["node_modules/@types"],
