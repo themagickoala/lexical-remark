@@ -130,6 +130,16 @@ export function CollapsiblePlugin(): null {
         });
       }),
 
+      editor.registerRootListener(() => {
+        editor.update(() => {
+          visitTree(lexical.$getRoot(), (node) => {
+            if ($isCollapsibleContainerNode(node)) {
+              node.setOpen(editor.isEditable());
+            }
+          });
+        });
+      }),
+
       // This handles the case when container is collapsed and we delete its previous sibling
       // into it, it would cause collapsed content deleted (since it's display: none, and selection
       // swallows it when deletes single char). Instead we expand container, which is although
