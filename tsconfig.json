@@ -9,7 +9,7 @@
     "downlevelIteration": true,
     "noEmit": false,
     "outDir": "lib",
-    "rootDir": "./",
+    "rootDir": "src",
     "strict": true,
     "baseUrl": ".",
     "typeRoots": ["node_modules/@types"],
@@ -20,7 +20,9 @@
   "exclude": [
     "**/lib/**",
     "**/node_modules/**",
-    "vite.config.ts"
+    "vite.config.ts",
+    "**/demo/*",
+    "**/__tests__/*"
   ],
   "typedocOptions": {
     "logLevel": "Verbose"

@@ -10,10 +10,11 @@
     "remark-parse"
   ],
   "scripts": {
-    "build": "tsc",
+    "clean": "rm -rf ./lib",
+    "build": "npm run clean && tsc",
     "test": "NODE_ENV=development vitest run",
     "test:preview": "vite preview --outDir html --open",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "lint": "eslint --ext .ts,.tsx ./src",
     "lint:fix": "eslint --fix --ext .ts,.tsx ./src"
   },
