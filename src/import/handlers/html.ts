@@ -17,8 +17,7 @@ const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => 
   const match = node.value.match(detailsRegex);
 
   if (match?.groups) {
-    const isOpen = !!match.groups.openAttr && match.groups.openAttrValue !== 'false';
-    const lexicalNode = $createCollapsibleContainerNode(isOpen);
+    const lexicalNode = $createCollapsibleContainerNode(false);
 
     const summaryText = match.groups.title;
 
