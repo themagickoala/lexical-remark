@@ -48,3 +48,6 @@ export {
   INSERT_COLLAPSIBLE_COMMAND,
   TOGGLE_COLLAPSIBLE_COMMAND,
 } from './extensions/collapsible/plugin.js';
+
+export { $createAttachmentNode, $isAttachmentNode, AttachmentNode } from './extensions/attachments/node.js';
+export { AttachmentPlugin, INSERT_ATTACHMENT_COMMAND } from './extensions/attachments/plugin.js';
