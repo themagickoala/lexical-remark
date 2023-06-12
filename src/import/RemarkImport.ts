@@ -3,6 +3,7 @@ import { Root } from 'mdast';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 
+import { remarkAttachment } from '../plugins/remark-attachments.js';
 import { remarkYoutube } from '../plugins/remark-youtube.js';
 import { Handler, Parser } from './parser.js';
 
@@ -30,6 +31,7 @@ export function $createRemarkImport(handlers?: Record<string, Handler>): (markdo
     const file = unified()
       .use(remarkParse)
       .use<any[]>(remarkYoutube)
+      .use<any[]>(remarkAttachment)
       .use(remarkLexify, handlers)
       .processSync(markdownString);
 

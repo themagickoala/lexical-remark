@@ -5,4 +5,10 @@ export type YouTube = {
   videoId: string;
 };
 
-export type Node = Parent | Content | YouTube;
+export type Attachment = {
+  filename: string;
+  type: 'attachment';
+  url: string;
+};
+
+export type Node = Parent | Content | YouTube | Attachment;

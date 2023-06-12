@@ -2,6 +2,7 @@ import type { LexicalNode } from 'lexical';
 
 import { Node } from '../../types.js';
 import { zwitchFunc } from '../../utils/zwitch-func.js';
+import { attachment } from './attachment.js';
 import { code } from './code.js';
 import { collapsibleContainer } from './collapsibleContainer.js';
 import { heading } from './heading.js';
@@ -30,6 +31,7 @@ export const exportToRemarkTree = (tree: LexicalNode, { handlers = {} }: { handl
   const handle: Handler = (node, args) => {
     return zwitchFunc('getType', {
       handlers: {
+        attachment,
         code,
         'collapsible-container': collapsibleContainer,
         heading,

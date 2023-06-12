@@ -4,6 +4,7 @@ import { zwitch } from 'zwitch';
 
 import { DummyRootNode } from '../extensions/collapsible/dummyRoot/node.js';
 import { Node } from '../types.js';
+import { attachment } from './handlers/attachment.js';
 import { blockquote } from './handlers/blockquote.js';
 import { hardBreak } from './handlers/break.js';
 import { code } from './handlers/code.js';
@@ -41,6 +42,7 @@ export class Parser {
   parse<TNodeType extends Node = Node>(tree: TNodeType): TNodeType extends Root ? RootNode : void {
     return zwitch('type', {
       handlers: {
+        attachment,
         blockquote,
         break: hardBreak,
         code,

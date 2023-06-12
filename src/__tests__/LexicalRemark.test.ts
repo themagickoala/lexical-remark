@@ -15,6 +15,7 @@ import { CollapsibleContainerNode } from './../extensions/collapsible/container/
 import { CollapsibleContentNode } from './../extensions/collapsible/content/node';
 import { CollapsibleTitleNode } from './../extensions/collapsible/title/node';
 import { YouTubeNode } from './../extensions/youtube/node';
+import { AttachmentNode } from '../extensions/attachments/node';
 
 type TestCase = {
   html: string;
@@ -135,6 +136,12 @@ const testCases: TestCase[] = [
       'Previous content\n\n<details><summary>Spoiler</summary>\nText\n\n<details><summary>View content</summary>\nMore text\n</details>\n</details>',
     html: '<p><span>Previous content</span></p><details open="false"><summary><span>Spoiler</span></summary><div data-lexical-collapsible-content="true"><p><span>Text</span></p><details open="false"><summary><span>View content</span></summary><div data-lexical-collapsible-content="true"><p><span>More text</span></p></div></details></div></details>',
   },
+  {
+    name: 'attachment',
+    markdown: '[somefile.txt](/somefile.txt "attachment")',
+    html: '<p><a href="/somefile.txt" download="somefile.txt" title="Download somefile.txt">📎 somefile.txt</a></p>',
+    only: true,
+  },
 ];
 /* eslint-enable sort-keys */
 
@@ -159,6 +166,7 @@ const nodes = [
   CollapsibleContainerNode,
   CollapsibleContentNode,
   CollapsibleTitleNode,
+  AttachmentNode,
 ];
 
 testCases.forEach(({ html, markdown, name, only, skipExport }) => {

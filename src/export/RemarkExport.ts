@@ -3,6 +3,7 @@ import { Root } from 'mdast';
 import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
 
+import { attachmentRemark } from '../plugins/remark-attachments.js';
 import { youtubeRemark } from '../plugins/remark-youtube.js';
 import { exportToRemarkTree, Handler } from './handlers/index.js';
 
@@ -35,6 +36,7 @@ export function $createRemarkExport(handlers?: Record<string, Handler>): () => s
 
     const remarkTree = lexicalToRemark(root, { handlers });
     youtubeRemark()(remarkTree);
+    attachmentRemark()(remarkTree);
 
     return serializeFromRemark(remarkTree);
   };
