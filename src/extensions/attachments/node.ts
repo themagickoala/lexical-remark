@@ -35,24 +35,6 @@ export class AttachmentNode extends lexical.ElementNode {
     return new AttachmentNode(node.__url, node.__filename, node.__key);
   }
 
-  getURL(): string {
-    return this.getLatest().__url;
-  }
-
-  setURL(url: string): void {
-    const writable = this.getWritable();
-    writable.__url = url;
-  }
-
-  getFilename(): string {
-    return this.getLatest().__filename;
-  }
-
-  setFilename(filename: string): void {
-    const writable = this.getWritable();
-    writable.__filename = filename;
-  }
-
   createDOM(): HTMLElement {
     const dom = document.createElement('a');
     dom.href = this.__url;
@@ -105,6 +87,32 @@ export class AttachmentNode extends lexical.ElementNode {
       url: this.getURL(),
       version: 1,
     };
+  }
+
+  canInsertTextBefore(): false {
+    return false;
+  }
+
+  canInsertTextAfter(): false {
+    return false;
+  }
+
+  getURL(): string {
+    return this.getLatest().__url;
+  }
+
+  setURL(url: string): void {
+    const writable = this.getWritable();
+    writable.__url = url;
+  }
+
+  getFilename(): string {
+    return this.getLatest().__filename;
+  }
+
+  setFilename(filename: string): void {
+    const writable = this.getWritable();
+    writable.__filename = filename;
   }
 }
 
