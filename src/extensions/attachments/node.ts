@@ -97,6 +97,10 @@ export class AttachmentNode extends lexical.ElementNode {
     return false;
   }
 
+  isInline(): boolean {
+    return true;
+  }
+
   getURL(): string {
     return this.getLatest().__url;
   }
