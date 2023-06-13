@@ -26,19 +26,23 @@ export function remarkYoutube(this: any) {
 function convertYoutubeParagraphs(tree: Node) {
   const videoId = isYoutubeParagraphNode(tree);
   if (videoId) {
-    tree.type = 'youtube';
-    (tree as YouTube).videoId = videoId;
-    // @ts-expect-error casting to Paragraph
-    delete (tree as Paragraph).children;
+    (tree as Paragraph).children = [
+      {
+        type: 'youtube',
+        videoId,
+      },
+    ] as any;
   }
 
   visit(tree, function (node) {
     const visitedVideoId = isYoutubeParagraphNode(node);
     if (visitedVideoId) {
-      node.type = 'youtube';
-      (node as YouTube).videoId = visitedVideoId;
-      // @ts-expect-error casting to Paragraph
-      delete (node as Paragraph).children;
+      (node as Paragraph).children = [
+        {
+          type: 'youtube',
+          videoId: visitedVideoId,
+        },
+      ] as any;
     }
   });
 }

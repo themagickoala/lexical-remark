@@ -25,6 +25,8 @@ type TestCase = {
   skipExport?: true;
 };
 
+const only = true;
+
 /* eslint-disable sort-keys */
 const testCases: TestCase[] = [
   {
@@ -92,12 +94,7 @@ const testCases: TestCase[] = [
   {
     name: 'video',
     markdown: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    html: '<iframe data-lexical-youtube="dQw4w9WgXcQ" width="560" height="315" src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" title="YouTube video"></iframe>',
-  },
-  {
-    name: 'video',
-    markdown: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    html: '<iframe data-lexical-youtube="dQw4w9WgXcQ" width="560" height="315" src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" title="YouTube video"></iframe>',
+    html: '<p><iframe data-lexical-youtube="dQw4w9WgXcQ" width="560" height="315" src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" title="YouTube video"></iframe></p>',
   },
   {
     name: 'collapsible',
@@ -139,8 +136,7 @@ const testCases: TestCase[] = [
   {
     name: 'attachment',
     markdown: '[somefile.txt](/somefile.txt "attachment")',
-    html: '<p><a href="/somefile.txt" download="somefile.txt" title="Download somefile.txt">📎 somefile.txt</a></p>',
-    only: true,
+    html: '<p><a href="/somefile.txt" download="somefile.txt" title="Download somefile.txt"><span>📎 somefile.txt</span></a></p>',
   },
 ];
 /* eslint-enable sort-keys */

@@ -10,14 +10,7 @@ export type SerializedAttachmentNode = lexical.Spread<
   lexical.SerializedElementNode
 >;
 
-function convertAttachmentElement(domNode: Node): lexical.DOMConversionOutput | null {
-  if (!lexicalUtils.isHTMLAnchorElement(domNode)) {
-    return { node: null };
-  }
-
-  if (!domNode.getAttribute('download')) {
-    return { node: null };
-  }
+function convertAttachmentElement(domNode: HTMLAnchorElement): lexical.DOMConversionOutput | null {
   return {
     node: $createAttachmentNode(domNode.getAttribute('href') ?? '', domNode.getAttribute('download') ?? ''),
   };
@@ -83,7 +76,14 @@ export class AttachmentNode extends lexical.ElementNode {
 
   static importDOM(): lexical.DOMConversionMap<HTMLAnchorElement> | null {
     return {
-      a: () => {
+      a: (domNode) => {
+        if (!lexicalUtils.isHTMLAnchorElement(domNode)) {
+          return null;
+        }
+
+        if (!domNode.getAttribute('download')) {
+          return null;
+        }
         return {
           conversion: convertAttachmentElement,
           priority: lexical.COMMAND_PRIORITY_HIGH,

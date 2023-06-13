@@ -34,7 +34,7 @@ function convertAttachmentLinks(tree: Node) {
       (node as Attachment).children = [
         {
           type: 'text',
-          value: `📎 ${filename}`,
+          value: `📎 ${visitedFilename}`,
         },
       ];
     }
