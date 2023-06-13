@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import type { LinkAttributes } from '@lexical/link';
 import lexicalUtils from '@lexical/utils';
 import lexical from 'lexical';
 
@@ -8,7 +7,7 @@ export type SerializedAttachmentNode = lexical.Spread<
     filename: string;
     url: string;
   },
-  lexical.Spread<LinkAttributes, lexical.SerializedElementNode>
+  lexical.SerializedElementNode
 >;
 
 function convertAttachmentElement(domNode: Node): lexical.DOMConversionOutput | null {
@@ -66,7 +65,6 @@ export class AttachmentNode extends lexical.ElementNode {
     dom.href = this.__url;
     dom.download = this.__filename;
     dom.title = `Download ${this.__filename}`;
-    dom.textContent = `📎 ${this.__filename}`;
     return dom;
   }
 
@@ -78,7 +76,6 @@ export class AttachmentNode extends lexical.ElementNode {
     if (prevNode.__filename !== this.__filename) {
       dom.download = this.__filename;
       dom.title = `Download ${this.__filename}`;
-      dom.textContent = `📎 ${this.__filename}`;
     }
 
     return false;

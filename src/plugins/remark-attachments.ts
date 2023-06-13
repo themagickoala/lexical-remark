@@ -16,9 +16,13 @@ function convertAttachmentLinks(tree: Node) {
   if (filename) {
     tree.type = 'attachment';
     (tree as Attachment).filename = filename;
-    // @ts-expect-error casting to Link
-    delete (tree as Link).children;
     delete (tree as Link).title;
+    (tree as Attachment).children = [
+      {
+        type: 'text',
+        value: `📎 ${filename}`,
+      },
+    ];
   }
 
   visit(tree, function (node) {
@@ -26,9 +30,13 @@ function convertAttachmentLinks(tree: Node) {
     if (visitedFilename) {
       node.type = 'attachment';
       (node as Attachment).filename = visitedFilename;
-      // @ts-expect-error casting to Link
-      delete (node as Link).children;
       delete (node as Link).title;
+      (node as Attachment).children = [
+        {
+          type: 'text',
+          value: `📎 ${filename}`,
+        },
+      ];
     }
   });
 }

@@ -5,7 +5,7 @@ export type YouTube = {
   videoId: string;
 };
 
-export type Attachment = {
+export type Attachment = Parent & {
   filename: string;
   type: 'attachment';
   url: string;
