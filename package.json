@@ -19,7 +19,7 @@
     "lint:fix": "eslint --fix --ext .ts,.tsx ./src"
   },
   "license": "MIT",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "type": "module",
   "main": "./lib/index.js",
   "module": "./lib/index.js",
