@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { Paragraph } from 'mdast';
+import { Paragraph, Root } from 'mdast';
+import { Plugin } from 'unified';
 import { visit } from 'unist-util-visit';
 
 import { Node, YouTube } from '../types';
@@ -19,9 +20,9 @@ export const YOUTUBE_URL_REGEX =
 /**
  * A remark plugin to enrich an mdast node tree by converting paragraph nodes containing only a YouTube url into YouTube nodes
  */
-export function remarkYoutube(this: any) {
+export const remarkYoutube: Plugin<[], string, Root> = () => {
   return convertYoutubeParagraphs;
-}
+};
 
 function convertYoutubeParagraphs(tree: Node) {
   const videoId = isYoutubeParagraphNode(tree);

@@ -2,7 +2,7 @@ import { AttachmentNode } from '../../extensions/attachments/node.js';
 import { Attachment } from '../../types.js';
 import { Handler } from './index.js';
 
-export const attachment: Handler<AttachmentNode> = (node, { rootHandler }) => {
+export const attachment: Handler<AttachmentNode> = (node) => {
   const remarkNode: Attachment = {
     children: [
       {

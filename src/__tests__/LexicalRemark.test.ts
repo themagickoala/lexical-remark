@@ -4,7 +4,7 @@ import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
-import lexical, { type EditorThemeClasses } from 'lexical';
+import lexical, { ParagraphNode, type EditorThemeClasses, TextNode } from 'lexical';
 import { expect, test } from 'vitest';
 
 import { $createRemarkExport } from '../export/RemarkExport';
@@ -14,8 +14,9 @@ import { $createRemarkImport } from '../import/RemarkImport';
 import { CollapsibleContainerNode } from './../extensions/collapsible/container/node';
 import { CollapsibleContentNode } from './../extensions/collapsible/content/node';
 import { CollapsibleTitleNode } from './../extensions/collapsible/title/node';
-import { YouTubeNode } from './../extensions/youtube/node';
-import { AttachmentNode } from '../extensions/attachments/node';
+import { $createYouTubeNode, YouTubeNode } from './../extensions/youtube/node';
+import { $createAttachmentNode, $isAttachmentNode, AttachmentNode } from '../extensions/attachments/node';
+import { YOUTUBE_URL_REGEX } from '../plugins/remark-youtube';
 
 type TestCase = {
   html: string;
@@ -135,8 +136,9 @@ const testCases: TestCase[] = [
   },
   {
     name: 'attachment',
-    markdown: '[somefile.txt](/somefile.txt "attachment")',
-    html: '<p><a href="/somefile.txt" download="somefile.txt" title="Download somefile.txt"><span>📎 somefile.txt</span></a></p>',
+    markdown: '[somefile.txt](/uploads/somefile.txt)',
+    html: '<p><a href="/uploads/somefile.txt" download="somefile.txt"><span>📎 somefile.txt</span></a></p>',
+    only
   },
 ];
 /* eslint-enable sort-keys */
@@ -172,7 +174,7 @@ testCases.forEach(({ html, markdown, name, only, skipExport }) => {
       theme: editorTheme,
     });
 
-    editor.update(async () => $createRemarkImport()(markdown), {
+    editor.update(async () => $createRemarkImport({ attachmentPrefix: '/uploads'})(markdown), {
       discrete: true,
     });
 

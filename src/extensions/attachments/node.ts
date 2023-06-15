@@ -1,28 +1,30 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
+import lexicalLink from '@lexical/link';
 import lexicalUtils from '@lexical/utils';
 import lexical from 'lexical';
 
 export type SerializedAttachmentNode = lexical.Spread<
   {
     filename: string;
-    url: string;
   },
-  lexical.SerializedElementNode
+  lexicalLink.SerializedLinkNode
 >;
 
-function convertAttachmentElement(domNode: HTMLAnchorElement): lexical.DOMConversionOutput | null {
+function convertAttachmentElement(domNode: HTMLElement): lexical.DOMConversionOutput | null {
   return {
-    node: $createAttachmentNode(domNode.getAttribute('href') ?? '', domNode.getAttribute('download') ?? ''),
+    node: $createAttachmentNode(domNode.getAttribute('href') ?? '', domNode.getAttribute('download') ?? '', {
+      rel: domNode.getAttribute('rel'),
+      target: domNode.getAttribute('target'),
+      title: domNode.getAttribute('title'),
+    }),
   };
 }
 
-export class AttachmentNode extends lexical.ElementNode {
-  __url: string;
-
+export class AttachmentNode extends lexicalLink.LinkNode {
   __filename: string;
 
-  constructor(url: string, filename: string, key?: lexical.NodeKey) {
-    super(key);
+  constructor(url: string, filename: string, attributes = {}, key?: lexical.NodeKey) {
+    super(url, attributes, key);
     this.__url = url;
     this.__filename = filename;
   }
@@ -32,31 +34,35 @@ export class AttachmentNode extends lexical.ElementNode {
   }
 
   static clone(node: AttachmentNode): AttachmentNode {
-    return new AttachmentNode(node.__url, node.__filename, node.__key);
+    return new AttachmentNode(
+      node.__url,
+      node.__filename,
+      {
+        rel: node.__rel,
+        target: node.__target,
+        title: node.__title,
+      },
+      node.__key,
+    );
   }
 
-  createDOM(): HTMLElement {
-    const dom = document.createElement('a');
-    dom.href = this.__url;
+  createDOM(config: lexical.EditorConfig): HTMLAnchorElement {
+    const dom = super.createDOM(config);
     dom.download = this.__filename;
-    dom.title = `Download ${this.__filename}`;
     return dom;
   }
 
-  updateDOM(prevNode: AttachmentNode, dom: HTMLAnchorElement): boolean {
-    if (prevNode.__url !== this.__url) {
-      dom.href = this.__url;
-    }
+  updateDOM(prevNode: lexicalLink.LinkNode, dom: HTMLAnchorElement, config: lexical.EditorConfig): boolean {
+    super.updateDOM(prevNode, dom, config);
 
     if (prevNode.__filename !== this.__filename) {
       dom.download = this.__filename;
-      dom.title = `Download ${this.__filename}`;
     }
 
     return false;
   }
 
-  static importDOM(): lexical.DOMConversionMap<HTMLAnchorElement> | null {
+  static importDOM(): lexical.DOMConversionMap {
     return {
       a: (domNode) => {
         if (!lexicalUtils.isHTMLAnchorElement(domNode)) {
@@ -75,7 +81,14 @@ export class AttachmentNode extends lexical.ElementNode {
   }
 
   static importJSON(serializedNode: SerializedAttachmentNode): AttachmentNode {
-    const node = $createAttachmentNode(serializedNode.url, serializedNode.filename);
+    const node = $createAttachmentNode(serializedNode.url, serializedNode.filename, {
+      rel: serializedNode.rel,
+      target: serializedNode.target,
+      title: serializedNode.title,
+    });
+    node.setFormat(serializedNode.format);
+    node.setIndent(serializedNode.indent);
+    node.setDirection(serializedNode.direction);
     return node;
   }
 
@@ -84,30 +97,8 @@ export class AttachmentNode extends lexical.ElementNode {
       ...super.exportJSON(),
       filename: this.getFilename(),
       type: 'attachment',
-      url: this.getURL(),
       version: 1,
     };
-  }
-
-  canInsertTextBefore(): false {
-    return false;
-  }
-
-  canInsertTextAfter(): false {
-    return false;
-  }
-
-  isInline(): boolean {
-    return true;
-  }
-
-  getURL(): string {
-    return this.getLatest().__url;
-  }
-
-  setURL(url: string): void {
-    const writable = this.getWritable();
-    writable.__url = url;
   }
 
   getFilename(): string {
@@ -120,8 +111,13 @@ export class AttachmentNode extends lexical.ElementNode {
   }
 }
 
-export function $createAttachmentNode(url: string, filename: string, key?: lexical.NodeKey): AttachmentNode {
-  return new AttachmentNode(url, filename, key);
+export function $createAttachmentNode(
+  url: string,
+  filename: string,
+  attributes = {},
+  key?: lexical.NodeKey,
+): AttachmentNode {
+  return new AttachmentNode(url, filename, attributes, key);
 }
 
 export function $isAttachmentNode(node: lexical.LexicalNode): node is AttachmentNode {

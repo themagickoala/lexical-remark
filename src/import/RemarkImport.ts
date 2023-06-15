@@ -16,6 +16,26 @@ export function remarkLexify(this: any, handlers: Record<string, Handler> = {}) 
   Object.assign(this, { Compiler: compiler });
 }
 
+export function $convertFromMarkdownViaRemark(
+  markdownString: string,
+  options?: {
+    attachmentPrefix?: string;
+    handlers?: Record<string, Handler>;
+  },
+): void {
+  const root = lexical.$getRoot();
+  root.clear();
+
+  const file = unified()
+    .use(remarkParse)
+    .use(remarkYoutube)
+    .use(remarkAttachment, { prefix: options?.attachmentPrefix ?? '' })
+    .use(remarkLexify, options?.handlers)
+    .processSync(markdownString);
+
+  root.append(...(file.result as any));
+}
+
 /**
  * Creates a parsing function which converts a markdown string to a Lexical state via remark
  *
@@ -23,31 +43,11 @@ export function remarkLexify(this: any, handlers: Record<string, Handler> = {}) 
  * @returns A function which accepts a string in markdown format and replaces the tree of the active editor
  * with the parsed Lexical nodes
  */
-export function $createRemarkImport(handlers?: Record<string, Handler>): (markdownString: string) => void {
+export function $createRemarkImport(options: {
+  attachmentPrefix?: string;
+  handlers?: Record<string, Handler>;
+}): (markdownString: string) => void {
   return (markdownString) => {
-    const root = lexical.$getRoot();
-    root.clear();
-
-    const file = unified()
-      .use(remarkParse)
-      .use<any[]>(remarkYoutube)
-      .use<any[]>(remarkAttachment)
-      .use(remarkLexify, handlers)
-      .processSync(markdownString);
-
-    root.append(...(file.result as any));
+    $convertFromMarkdownViaRemark(markdownString, options);
   };
-}
-
-export function $convertFromMarkdownViaRemark(markdownString: string, handlers?: Record<string, Handler>): void {
-  const root = lexical.$getRoot();
-  root.clear();
-
-  const file = unified()
-    .use(remarkParse)
-    .use<any[]>(remarkYoutube)
-    .use(remarkLexify, handlers)
-    .processSync(markdownString);
-
-  root.append(...(file.result as any));
 }
