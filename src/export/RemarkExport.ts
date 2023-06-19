@@ -12,6 +12,9 @@ function lexicalToRemark(rootNode: RootNode, options: { handlers?: Record<string
 }
 
 export function serializeFromRemark(tree: Root) {
+  youtubeRemark()(tree);
+  attachmentRemark()(tree);
+
   const file = unified()
     .use(remarkStringify, {
       bullet: '-',
@@ -28,8 +31,6 @@ export function $convertToMarkdownViaRemark(options?: { handlers?: Record<string
   const root = lexical.$getRoot();
 
   const remarkTree = lexicalToRemark(root, { handlers: options?.handlers });
-  youtubeRemark()(remarkTree);
-  attachmentRemark()(remarkTree);
 
   return serializeFromRemark(remarkTree);
 }
