@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import lexicalUtils from '@lexical/utils';
-import lexical, { type LexicalEditor } from 'lexical';
+import lexical, { type LexicalEditor, type LexicalNode, type RangeSelection } from 'lexical';
 
 export type SerializedAttachmentNode = lexical.Spread<
   {
@@ -43,7 +43,9 @@ export class AttachmentNode extends lexical.ElementNode {
   }
 
   updateDOM(prevNode: AttachmentNode, dom: HTMLAnchorElement, config: lexical.EditorConfig): boolean {
-    const newText = this.getTextContent().replace(/^(?:📎)?\s*([^\s]|$)/, '$1');
+    const newText = this.getTextContent()
+      .replace(/^(?:📎)?\s*([^\s]|$)/, '$1')
+      .trim();
     if (!newText.length) {
       this.remove();
       return false;
@@ -90,6 +92,27 @@ export class AttachmentNode extends lexical.ElementNode {
       url: this.getURL(),
       version: 1,
     };
+  }
+
+  insertNewAfter(selection: RangeSelection, restoreSelection?: boolean): LexicalNode | null {
+    const element = this.getParentOrThrow().insertNewAfter(selection, restoreSelection);
+    return element;
+  }
+
+  canInsertTextBefore(): false {
+    return false;
+  }
+
+  canInsertTextAfter(): false {
+    return false;
+  }
+
+  canBeEmpty(): false {
+    return false;
+  }
+
+  isInline(): true {
+    return true;
   }
 
   getFilename(): string {
