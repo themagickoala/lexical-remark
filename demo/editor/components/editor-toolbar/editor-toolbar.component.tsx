@@ -47,7 +47,7 @@ export const EditorToolbar = ({ className = '', stickyOffset }: { className?: st
   return (
     <div
       {...(!!stickyOffset ? { style: { top: `${stickyOffset}px` } } : {})}
-      className={joinClasses(['bg-background-primary', className], {
+      className={joinClasses(['bg-slate-900 rounded-t border-t border-x border-white', className], {
         'sticky z-10': !!stickyOffset,
       })}
     >

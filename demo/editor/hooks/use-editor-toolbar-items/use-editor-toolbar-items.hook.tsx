@@ -31,6 +31,7 @@ import {
   mdiLink,
   mdiLinkOff,
   mdiMinus,
+  mdiPaperclip,
   mdiPlus,
   mdiRedo,
   mdiUndo,
@@ -56,7 +57,7 @@ import {
 } from 'lexical';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 
-import { $createRemarkExport, $createRemarkImport, $isImageNode, INSERT_COLLAPSIBLE_COMMAND } from '../../../../src';
+import { $createRemarkExport, $createRemarkImport, $isImageNode, INSERT_ATTACHMENT_COMMAND, INSERT_COLLAPSIBLE_COMMAND, INSERT_IMAGE_COMMAND } from '../../../../src';
 import { EditorToolbarButton } from '../../components/editor-toolbar/editor-toolbar-button';
 import { EditorToolbarDivider } from '../../components/editor-toolbar/editor-toolbar-divider';
 import {
@@ -263,7 +264,7 @@ export const useEditorToolbarItems = (): EditorToolbarItem[][] => {
   const handleMarkdownToggle = useCallback(() => {
     activeEditor.update(() => {
       if (isMarkdownMode && typeof document !== 'undefined') {
-        $createRemarkImport()(markdownValue);
+        $createRemarkImport({ attachmentPrefix: '/uploads' })(markdownValue);
         const root = $getRoot();
         const lastChild = root.getLastChild();
         if (lastChild) {
@@ -484,7 +485,7 @@ export const useEditorToolbarItems = (): EditorToolbarItem[][] => {
             <EditorToolbarDropdownItem
               iconPath={mdiImageOutline}
               label="Insert Image"
-              onClick={() => setShowImageModal(true)}
+              onClick={() => activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, { src: 'https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcSKYIHyX3HzbdR0OuKqMdQcMlt7LdXYFK_AJx5LpyljgTwgB_4SSvKmY0wFoCyn8U4EdDNf_mfEdfEJVHc', altText: '' })}
             />
 
             <EditorToolbarDropdownItem
@@ -498,6 +499,14 @@ export const useEditorToolbarItems = (): EditorToolbarItem[][] => {
               label="Collapsible Section"
               onClick={() => {
                 activeEditor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, 'View content');
+              }}
+            />
+
+            <EditorToolbarDropdownItem
+              iconPath={mdiPaperclip}
+              label="Attachment"
+              onClick={() => {
+                activeEditor.dispatchCommand(INSERT_ATTACHMENT_COMMAND, { filename: 's.txt', url: '/uploads/s.txt' });
               }}
             />
           </EditorToolbarDropdown>

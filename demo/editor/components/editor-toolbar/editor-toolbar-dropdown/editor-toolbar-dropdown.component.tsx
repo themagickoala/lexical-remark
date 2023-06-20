@@ -69,7 +69,7 @@ export const EditorToolbarDropdown = ({
           />
         </Menu.Button>
 
-        <Menu.Items className="bg-content-secondary border-border-container absolute left-0 z-10 mt-2 w-56 origin-top-left rounded border p-2 shadow-lg">
+        <Menu.Items className="bg-slate-700 border-border-container absolute left-0 z-10 mt-2 w-56 origin-top-left rounded border p-2 shadow-lg">
           {children}
         </Menu.Items>
       </>

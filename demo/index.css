@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  @apply bg-slate-800;
+}
+
+body {
+  @apply p-6;
+}
+
+* {
+  @apply text-white;
+}
+
+input, textarea {
+  @apply bg-slate-900;
+}

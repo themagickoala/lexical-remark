@@ -1,1 +1,1 @@
-export const EditorToolbarDivider = () => <div className="w-px bg-border-container" />;
+export const EditorToolbarDivider = () => <div className="w-px bg-slate-600" />;

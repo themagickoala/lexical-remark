@@ -28,12 +28,12 @@ export const AttachmentPlugin = (): JSX.Element | null => {
       editor.registerCommand<AttachmentPayload>(
         INSERT_ATTACHMENT_COMMAND,
         (payload) => {
-          const attachmentNode = $createAttachmentNode(payload.url, payload.filename);
-          lexical.$insertNodes([attachmentNode]);
-
-          if (lexical.$isRootOrShadowRoot(attachmentNode.getParentOrThrow())) {
-            lexicalUtils.$wrapNodeInElement(attachmentNode, lexical.$createParagraphNode).selectEnd();
-          }
+          editor.update(() => {
+            const attachmentNode = $createAttachmentNode(payload.url, payload.filename);
+            const textNode = lexical.$createTextNode(`📎 ${payload.filename}`);
+            attachmentNode.append(textNode);
+            lexical.$insertNodes([attachmentNode]);
+          });
 
           return true;
         },

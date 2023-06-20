@@ -19,6 +19,8 @@ import { MutableRefObject, useState } from 'react';
 import {
   $createRemarkExport,
   $createRemarkImport,
+  AttachmentNode,
+  AttachmentPlugin,
   CollapsibleContainerNode,
   CollapsibleContentNode,
   CollapsiblePlugin,
@@ -37,6 +39,7 @@ import { RegisterUpdateValueMethodPlugin } from '../../plugins/register-update-v
 import { EditorMarkdownView } from '../editor-markdown-view';
 import { EditorToolbar } from '../editor-toolbar';
 import { editorTheme } from './editor.theme';
+import TreeViewPlugin from '../../plugins/editor-tree-view/editor-tree-view.plugin';
 
 export type EditorProps = {
   className?: string;
@@ -98,6 +101,7 @@ export const EditorInner = ({
             CollapsibleContainerNode,
             CollapsibleContentNode,
             CollapsibleTitleNode,
+            AttachmentNode,
           ],
           onError,
           theme: editorTheme,
@@ -125,13 +129,13 @@ export const EditorInner = ({
                   ref={(element: HTMLDivElement) => setFloatingAnchorElement(element)}
                   className={joinClasses(contentClassName, {
                     'hidden': isMarkdownMode,
-                    'relative p-4 bg-background-primary border-x border-b border-border-container rounded-b-lg overflow-auto max-h-[50rem]':
+                    'relative p-4 bg-slate-900 border-x border-b border-border-container rounded-b-lg overflow-auto max-h-[50rem]':
                       isEditable,
                   })}
                 >
                   <ContentEditable
                     className={joinClasses('prose-lexical prose', {
-                      'editor min-h-40 outline-none': isEditable,
+                      'editor min-h-[10rem] max-w-full outline-none': isEditable,
                     })}
                   />
                 </div>
@@ -156,9 +160,11 @@ export const EditorInner = ({
           <HorizontalRulePlugin />
           <ImagePlugin />
           <YouTubePlugin />
+          <AttachmentPlugin />
           <CollapsiblePlugin />
           <EditorLinkPopoverPlugin anchorElement={floatingAnchorElement} />
           <RegisterUpdateValueMethodPlugin updateValueRef={updateValueRef} />
+          <TreeViewPlugin />
 
           {!!onChange && (
             <OnChangePlugin

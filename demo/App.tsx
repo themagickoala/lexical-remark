@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <h1>Vite + React</h1>
+      <h1 className="text-xl pb-4 font-bold">Lexical-remark demo</h1>
       <Editor />
     </>
   );
