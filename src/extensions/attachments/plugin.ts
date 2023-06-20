@@ -1,6 +1,6 @@
 import lexicalComposerContext from '@lexical/react/LexicalComposerContext.js';
 import lexicalUtils from '@lexical/utils';
-import lexical, { LexicalCommand } from 'lexical';
+import lexical, { $isParagraphNode, $isRangeSelection, LexicalCommand } from 'lexical';
 import { useEffect } from 'react';
 
 import { $createAttachmentNode, AttachmentNode } from './node.js';
@@ -32,6 +32,19 @@ export const AttachmentPlugin = (): JSX.Element | null => {
             const attachmentNode = $createAttachmentNode(payload.url, payload.filename);
             const textNode = lexical.$createTextNode(`📎 ${payload.filename}`);
             attachmentNode.append(textNode);
+            const selection = lexical.$getRoot().selectEnd();
+            if (
+              $isRangeSelection(selection) &&
+              selection.anchor.key === selection.focus.key &&
+              selection.anchor.offset === selection.focus.offset
+            ) {
+              const node = selection.anchor.getNode();
+              if (!$isParagraphNode(node) || !node.isEmpty()) {
+                editor.dispatchCommand(lexical.INSERT_PARAGRAPH_COMMAND, undefined);
+              }
+            } else {
+              editor.dispatchCommand(lexical.INSERT_PARAGRAPH_COMMAND, undefined);
+            }
             lexical.$insertNodes([attachmentNode]);
           });
 
