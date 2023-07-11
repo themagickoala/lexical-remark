@@ -11,6 +11,6 @@ export const listItem: Handler<ListItem> = (node, parser) => {
   const lexicalNode = lexicalList.$createListItemNode();
   parser.push(lexicalNode);
   node.children.forEach((child) => parser.parse(child));
-  parser.pop();
+  parser.pop(lexicalNode);
   parser.append(lexicalNode);
 };

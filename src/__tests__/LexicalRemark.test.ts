@@ -4,19 +4,17 @@ import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
-import lexical, { ParagraphNode, type EditorThemeClasses, TextNode } from 'lexical';
+import lexical, { type EditorThemeClasses } from 'lexical';
 import { expect, test } from 'vitest';
 
 import { $createRemarkExport } from '../export/RemarkExport';
-import { DummyRootNode } from '../extensions/collapsible/dummyRoot/node.js';
 import { ImageNode } from '../extensions/image/node';
 import { $createRemarkImport } from '../import/RemarkImport';
 import { CollapsibleContainerNode } from './../extensions/collapsible/container/node';
 import { CollapsibleContentNode } from './../extensions/collapsible/content/node';
 import { CollapsibleTitleNode } from './../extensions/collapsible/title/node';
-import { $createYouTubeNode, YouTubeNode } from './../extensions/youtube/node';
-import { $createAttachmentNode, $isAttachmentNode, AttachmentNode } from '../extensions/attachments/node';
-import { YOUTUBE_URL_REGEX } from '../plugins/remark-youtube';
+import { YouTubeNode } from './../extensions/youtube/node';
+import { AttachmentNode } from '../extensions/attachments/node';
 
 type TestCase = {
   html: string;
@@ -143,6 +141,29 @@ const testCases: TestCase[] = [
     name: 'multiple nested details',
     markdown: '<details><summary>A</summary>\n<details><summary>B</summary>\nb\n</details>\n\n<details><summary>C</summary>\nc\n</details>\n</details>',
     html: '<details open="false"><summary><span>A</span></summary><div data-lexical-collapsible-content="true"><details open="false"><summary><span>B</span></summary><div data-lexical-collapsible-content="true"><p><span>b</span></p></div></details><details open="false"><summary><span>C</span></summary><div data-lexical-collapsible-content="true"><p><span>c</span></p></div></details></div></details>',
+  },
+  {
+    name: 'immediate nested details',
+    markdown: '<details><summary>A</summary>\n<details><summary>B</summary>\nb\n</details>\n</details>',
+    html: '<details open="false"><summary><span>A</span></summary><div data-lexical-collapsible-content="true"><details open="false"><summary><span>B</span></summary><div data-lexical-collapsible-content="true"><p><span>b</span></p></div></details></div></details>',
+  },
+  {
+    name: 'immediate nested details with trailing line break',
+    markdown: '<details><summary>A</summary>\n<details><summary>B</summary>\nb\n\n</details>\n</details>',
+    html: '<details open="false"><summary><span>A</span></summary><div data-lexical-collapsible-content="true"><details open="false"><summary><span>B</span></summary><div data-lexical-collapsible-content="true"><p><span>b</span></p></div></details></div></details>',
+    skipExport: true,
+  },
+  {
+    name: 'immediate nested details with leading line break',
+    markdown: '<details><summary>A</summary>\n<details>\n  <summary>B</summary>\nb\n</details>\n</details>',
+    html: '<details open="false"><summary><span>A</span></summary><div data-lexical-collapsible-content="true"><details open="false"><summary><span>B</span></summary><div data-lexical-collapsible-content="true"><p><span>b</span></p></div></details></div></details>',
+    skipExport: true,
+  },
+  {
+    name: 'immediate nested details with multiple leading line breaks',
+    markdown: '<details><summary>A</summary>\n<details>\n\n  <summary>B</summary>\nb\n</details>\n</details>',
+    html: '<details open="false"><summary><span>A</span></summary><div data-lexical-collapsible-content="true"><details open="false"><summary><span>B</span></summary><div data-lexical-collapsible-content="true"><p><span>b</span></p></div></details></div></details>',
+    skipExport: true,
   },
   {
     name: 'attachment',

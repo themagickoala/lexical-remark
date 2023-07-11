@@ -68,12 +68,28 @@ export class Parser {
     })(tree, this) as TNodeType extends Root ? RootNode : void;
   }
 
-  pop(): LexicalNode | DummyRootNode | undefined {
-    const node = this.stack.pop();
-    if (!node) {
+  pop(
+    node?: LexicalNode | DummyRootNode | ((l: LexicalNode) => boolean) | string,
+  ): LexicalNode | DummyRootNode | undefined {
+    const returnNode = this.stack.pop();
+    if (!returnNode) {
       throw new Error('Cannot pop from empty stack');
     }
-    return node;
+    if (typeof node === 'function') {
+      if (!node(returnNode as any)) {
+        console.log({ node, returnNode });
+        throw new Error('Popped node does not match expected typeguard');
+      }
+    } else if (typeof node === 'string') {
+      if ((returnNode as any).getType?.() !== node) {
+        console.log({ node, returnNode });
+        throw new Error('Popped node does not match expected type');
+      }
+    } else if (node && node !== returnNode) {
+      console.log({ node, returnNode });
+      throw new Error('Popped node does not match expected node');
+    }
+    return returnNode;
   }
 
   push(node: LexicalNode | DummyRootNode) {
@@ -82,6 +98,7 @@ export class Parser {
 
   append(node: LexicalNode) {
     if (this.stack.length === 0) {
+      console.log({ node });
       throw new Error('Cannot append node to empty stack');
     }
     const parent = this.stack[this.stack.length - 1];

@@ -8,6 +8,6 @@ export const heading: Handler<Heading> = (node, parser) => {
   const lexicalNode = lexicalRichText.$createHeadingNode(`h${rank}`);
   parser.push(lexicalNode);
   node.children.forEach((child) => parser.parse(child));
-  parser.pop();
+  parser.pop(lexicalNode);
   parser.append(lexicalNode);
 };

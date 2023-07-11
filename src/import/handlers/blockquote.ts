@@ -7,6 +7,6 @@ export const blockquote: Handler<Blockquote> = (node, parser) => {
   const lexicalNode = lexicalRichText.$createQuoteNode();
   parser.push(lexicalNode);
   node.children.forEach((child) => parser.parse(child));
-  parser.pop();
+  parser.pop(lexicalNode);
   parser.append(lexicalNode);
 };

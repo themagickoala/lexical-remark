@@ -6,6 +6,6 @@ export const attachment: Handler<Attachment> = (node, parser) => {
   const lexicalNode = $createAttachmentNode(node.url, node.filename);
   parser.push(lexicalNode);
   node.children.forEach((child) => parser.parse(child));
-  parser.pop();
+  parser.pop(lexicalNode);
   parser.append(lexicalNode);
 };

@@ -11,6 +11,6 @@ export const list: Handler<List> = (node, parser) => {
       parser.parse(child);
     }
   });
-  parser.pop();
+  parser.pop(lexicalNode);
   parser.append(lexicalNode);
 };
