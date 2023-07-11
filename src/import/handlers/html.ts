@@ -11,7 +11,7 @@ import { dummyRoot } from './root.js';
 
 const detailsRegex =
   /^<details\s*(?<openAttr>open(=['"](?<openAttrValue>true|false)['"])?)?><summary>(?<title>.*?)<\/summary>\s*(?<content>.*?)\n*?((?<closingTag><\/details>)(?<rest>.*)|$)/s;
-const closingTagRegex = /^\n*<\/details>$/s;
+const closingTagRegex = /^\n*<\/details>(?<rest>.*)/s;
 
 const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => boolean = (node, parser) => {
   const match = node.value.match(detailsRegex);
@@ -72,13 +72,22 @@ export const html: Handler<HTML> = (node, parser) => {
     return;
   }
 
-  if (closingTagRegex.test(node.value)) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const match = node.value.match(closingTagRegex);
+
+  if (match) {
     const contentNode = parser.stack.pop() as LexicalNode;
     parser.append(contentNode);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const detailsNode = parser.stack.pop() as LexicalNode;
     parser.append(detailsNode);
+    if (match.groups?.rest) {
+      html(
+        {
+          type: 'html',
+          value: match.groups.rest,
+        },
+        parser,
+      );
+    }
     return;
   }
 

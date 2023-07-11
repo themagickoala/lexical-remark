@@ -135,11 +135,15 @@ const testCases: TestCase[] = [
     html: '<p><span>Previous content</span></p><details open="false"><summary><span>Spoiler</span></summary><div data-lexical-collapsible-content="true"><p><span>Text</span></p><details open="false"><summary><span>View content</span></summary><div data-lexical-collapsible-content="true"><p><span>More text</span></p></div></details></div></details>',
   },
   {
+    name: 'triple nested details',
+    markdown: '<details><summary>View content</summary>\ntext\n\n<details><summary>View content</summary>\nmore text\n\n<details><summary>View content</summary>\neven more text\n</details>\n</details>\n</details>',
+    html: '<details open="false"><summary><span>View content</span></summary><div data-lexical-collapsible-content="true"><p><span>text</span></p><details open="false"><summary><span>View content</span></summary><div data-lexical-collapsible-content="true"><p><span>more text</span></p><details open="false"><summary><span>View content</span></summary><div data-lexical-collapsible-content="true"><p><span>even more text</span></p></div></details></div></details></div></details>',
+  },
+  {
     name: 'attachment',
     markdown: '[somefile.txt](/uploads/somefile.txt)',
     html: '<p><a href="/uploads/somefile.txt" download="somefile.txt"><span>📎 somefile.txt</span></a></p>',
-    only
-  },
+  }
 ];
 /* eslint-enable sort-keys */
 
