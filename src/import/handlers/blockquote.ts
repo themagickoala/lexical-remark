@@ -5,8 +5,8 @@ import { Handler } from '../parser.js';
 
 export const blockquote: Handler<Blockquote> = (node, parser) => {
   const lexicalNode = lexicalRichText.$createQuoteNode();
-  parser.stack.push(lexicalNode);
+  parser.push(lexicalNode);
   node.children.forEach((child) => parser.parse(child));
-  parser.stack.pop();
+  parser.pop();
   parser.append(lexicalNode);
 };

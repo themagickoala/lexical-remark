@@ -6,16 +6,16 @@ import { Handler } from '../parser.js';
 
 export const root: Handler<Root> = (node, parser) => {
   const lexicalNode = new lexical.RootNode();
-  parser.stack.push(lexicalNode);
+  parser.push(lexicalNode);
   node.children.forEach((child) => parser.parse(child));
-  parser.stack.pop();
+  parser.pop();
   return lexicalNode;
 };
 
 export const dummyRoot: Handler<Root> = (node, parser) => {
   const lexicalNode = new DummyRootNode();
-  parser.stack.push(lexicalNode);
+  parser.push(lexicalNode);
   node.children.forEach((child) => parser.parse(child));
-  parser.stack.pop();
+  parser.pop();
   return lexicalNode;
 };

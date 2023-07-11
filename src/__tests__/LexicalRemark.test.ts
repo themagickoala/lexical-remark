@@ -140,6 +140,11 @@ const testCases: TestCase[] = [
     html: '<details open="false"><summary><span>View content</span></summary><div data-lexical-collapsible-content="true"><p><span>text</span></p><details open="false"><summary><span>View content</span></summary><div data-lexical-collapsible-content="true"><p><span>more text</span></p><details open="false"><summary><span>View content</span></summary><div data-lexical-collapsible-content="true"><p><span>even more text</span></p></div></details></div></details></div></details>',
   },
   {
+    name: 'multiple nested details',
+    markdown: '<details><summary>A</summary>\n<details><summary>B</summary>\nb\n</details>\n\n<details><summary>C</summary>\nc\n</details>\n</details>',
+    html: '<details open="false"><summary><span>A</span></summary><div data-lexical-collapsible-content="true"><details open="false"><summary><span>B</span></summary><div data-lexical-collapsible-content="true"><p><span>b</span></p></div></details><details open="false"><summary><span>C</span></summary><div data-lexical-collapsible-content="true"><p><span>c</span></p></div></details></div></details>',
+  },
+  {
     name: 'attachment',
     markdown: '[somefile.txt](/uploads/somefile.txt)',
     html: '<p><a href="/uploads/somefile.txt" download="somefile.txt"><span>📎 somefile.txt</span></a></p>',

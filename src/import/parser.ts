@@ -68,6 +68,18 @@ export class Parser {
     })(tree, this) as TNodeType extends Root ? RootNode : void;
   }
 
+  pop(): LexicalNode | DummyRootNode | undefined {
+    const node = this.stack.pop();
+    if (!node) {
+      throw new Error('Cannot pop from empty stack');
+    }
+    return node;
+  }
+
+  push(node: LexicalNode | DummyRootNode) {
+    this.stack.push(node);
+  }
+
   append(node: LexicalNode) {
     if (this.stack.length === 0) {
       throw new Error('Cannot append node to empty stack');

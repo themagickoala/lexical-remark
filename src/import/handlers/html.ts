@@ -3,14 +3,17 @@ import lexical, { type LexicalNode } from 'lexical';
 import { HTML } from 'mdast';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 
-import { $createCollapsibleContainerNode } from '../../extensions/collapsible/container/node.js';
-import { $createCollapsibleContentNode } from '../../extensions/collapsible/content/node.js';
+import {
+  $createCollapsibleContainerNode,
+  $isCollapsibleContainerNode,
+} from '../../extensions/collapsible/container/node.js';
+import { $createCollapsibleContentNode, $isCollapsibleContentNode } from '../../extensions/collapsible/content/node.js';
 import { $createCollapsibleTitleNode } from '../../extensions/collapsible/title/node.js';
 import { Handler, Parser } from '../parser.js';
 import { dummyRoot } from './root.js';
 
 const detailsRegex =
-  /^<details\s*(?<openAttr>open(=['"](?<openAttrValue>true|false)['"])?)?><summary>(?<title>.*?)<\/summary>\s*(?<content>.*?)\n*?((?<closingTag><\/details>)(?<rest>.*)|$)/s;
+  /^<details\s*(?:open(?:=['"](?:true|false)['"])?)?><summary>(?<title>.*?)<\/summary>\s*(?<content>.*?)\n*?(?:(?<closingTag><\/details>)(?<rest>.*)|$)/s;
 const closingTagRegex = /^\n*<\/details>(?<rest>.*)/s;
 
 const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => boolean = (node, parser) => {
@@ -26,32 +29,46 @@ const getLexicalNodeFromHtmlRemarkNode: (...args: Parameters<Handler<HTML>>) => 
 
     lexicalNode.append(titleNode);
 
-    parser.stack.push(lexicalNode);
+    parser.push(lexicalNode);
 
     const contentNode = $createCollapsibleContentNode();
 
     if (match.groups.closingTag) {
-      const contentTree = fromMarkdown(match.groups.content.trim());
-      const nestedParser = new Parser();
-      const nestedContent = dummyRoot(contentTree, nestedParser).getChildren();
-      if (nestedContent && Array.isArray(nestedContent)) {
-        contentNode.append(...nestedContent);
-      }
-
-      lexicalNode.append(contentNode);
-      parser.stack.pop();
-      parser.append(lexicalNode);
-      if (match.groups.rest) {
-        html(
-          {
-            type: 'html',
-            value: match.groups.rest,
-          },
-          parser,
-        );
+      // Check whether content includes another details tag
+      const contentMatch = match.groups.content.match(detailsRegex);
+      if (contentMatch && !contentMatch?.groups?.closingTag) {
+        // Nested content has no closing tag, we need to grab the one from the parent content.
+        // The parent content is now no longer self closing
+        parser.push(contentNode);
+        const contentTree = fromMarkdown((match.groups.content + '\n\n' + match.groups.closingTag).trim());
+        const nestedParser = new Parser();
+        const nestedContent = dummyRoot(contentTree, nestedParser).getChildren();
+        if (nestedContent && Array.isArray(nestedContent)) {
+          contentNode.append(...nestedContent);
+        }
+      } else {
+        // Nested content has a closing tag or no details tag at all
+        const contentTree = fromMarkdown(match.groups.content.trim());
+        const nestedParser = new Parser();
+        const nestedContent = dummyRoot(contentTree, nestedParser).getChildren();
+        if (nestedContent && Array.isArray(nestedContent)) {
+          contentNode.append(...nestedContent);
+        }
+        lexicalNode.append(contentNode);
+        parser.pop();
+        parser.append(lexicalNode);
+        if (match.groups.rest) {
+          html(
+            {
+              type: 'html',
+              value: match.groups.rest,
+            },
+            parser,
+          );
+        }
       }
     } else {
-      parser.stack.push(contentNode);
+      parser.push(contentNode);
       if (match.groups.content) {
         const contentTree = fromMarkdown(match.groups.content.trim());
         const nestedParser = new Parser();
@@ -75,9 +92,9 @@ export const html: Handler<HTML> = (node, parser) => {
   const match = node.value.match(closingTagRegex);
 
   if (match) {
-    const contentNode = parser.stack.pop() as LexicalNode;
+    const contentNode = parser.pop() as LexicalNode;
     parser.append(contentNode);
-    const detailsNode = parser.stack.pop() as LexicalNode;
+    const detailsNode = parser.pop() as LexicalNode;
     parser.append(detailsNode);
     if (match.groups?.rest) {
       html(
