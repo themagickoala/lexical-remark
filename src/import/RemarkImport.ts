@@ -9,7 +9,7 @@ import { Handler, Parser } from './parser.js';
 
 export function remarkLexify(this: any, handlers: Record<string, Handler> = {}) {
   const compiler = (tree: Root) => {
-    const parser = new Parser();
+    const parser = new Parser(handlers);
     return parser.parse(tree).getChildren();
   };
 
