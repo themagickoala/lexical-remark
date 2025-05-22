@@ -37,7 +37,7 @@
     "@lexical/rich-text": "0.x",
     "@lexical/utils": "0.x",
     "lexical": "0.x",
-    "react": "^18.2.0"
+    "react": ">=18.2.0"
   },
   "dependencies": {
     "@nexusmods/eslint-plugin-nexusmods": "^0.0.6",
